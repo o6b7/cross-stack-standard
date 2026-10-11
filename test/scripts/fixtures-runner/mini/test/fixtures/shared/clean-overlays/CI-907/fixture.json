@@ -1,0 +1,9 @@
+{
+  "hosts": ["repo"],
+  "base": "base",
+  "head": "head",
+  "commitMessages": {
+    "base": "chore: add range baseline",
+    "head": "feat: compliant change"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "hosts": ["plain"],
+  "alsoFires": ["CI-901"]
+}

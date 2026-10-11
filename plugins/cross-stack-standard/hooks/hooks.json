@@ -1,0 +1,125 @@
+{
+  "description": "Cross-Stack Standard hooks. Every event runs one Node.js entry point in exec form (no shell on any platform); it checks the project's opt-out before doing any work, enforces its own time budgets and fails open. Each timeout sits above the largest in-script budget of its event.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact|fork",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "SessionStart"],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "PreToolUse"],
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "PreToolUse"],
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "PreToolUse"],
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "PreToolUse"],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "PostToolUse"],
+            "timeout": 615
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "PostToolUse"],
+            "timeout": 615
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "PostToolUseFailure"],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "UserPromptSubmit"],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs", "Stop"],
+            "timeout": 615
+          }
+        ]
+      }
+    ]
+  }
+}

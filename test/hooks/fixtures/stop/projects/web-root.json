@@ -1,0 +1,19 @@
+{
+  "description": "A web app in web/, named by trackRoots. The tests make web/ a nested repository, a submodule, or a directory the enclosing repository ignores.",
+  "files": {
+    ".cross-stack/standard.json": {
+      "version": "1.0.0",
+      "tracks": ["web"],
+      "trackRoots": { "web": "web" }
+    },
+    "README.md": "# app\n",
+    "web/package.json": {
+      "name": "web",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check:fast": "node check.mjs" }
+    },
+    "web/check.mjs": { "$fixture": "gate/check.mjs" },
+    "web/src/app.js": "export const value = 1;\n"
+  }
+}

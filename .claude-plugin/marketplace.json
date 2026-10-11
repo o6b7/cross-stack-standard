@@ -1,0 +1,212 @@
+{
+  "name": "cross-stack-standard",
+  "owner": {
+    "name": "Qusai Abdullah",
+    "email": "qusaii.abdullah@gmail.com",
+    "url": "https://github.com/o6b7"
+  },
+  "metadata": {
+    "description": "Gates, not guidelines. One enforceable engineering standard for Laravel, Next.js, React and React Native, built for Claude Code.",
+    "version": "0.0.0"
+  },
+  "plugins": [
+    {
+      "name": "cross-stack-standard",
+      "source": "./plugins/cross-stack-standard",
+      "displayName": "Cross-Stack Standard",
+      "description": "One enforceable engineering standard for Laravel, Next.js/React and React Native (Expo) projects: architecture rules with honest enforcement labels, gated by linters, static analysis, architecture tests and CI as each gate ships, plus hooks and skills to adopt, audit, upgrade and scaffold projects. Use it when you build or review code in a project that follows the Standard.",
+      "author": {
+        "name": "Qusai Abdullah",
+        "email": "qusaii.abdullah@gmail.com",
+        "url": "https://github.com/o6b7"
+      },
+      "homepage": "https://github.com/o6b7/cross-stack-standard",
+      "repository": "https://github.com/o6b7/cross-stack-standard",
+      "license": "MIT",
+      "keywords": [
+        "laravel",
+        "nextjs",
+        "react",
+        "react-native",
+        "expo",
+        "architecture",
+        "quality-gates",
+        "code-standards",
+        "static-analysis",
+        "eslint",
+        "phpstan",
+        "pest",
+        "i18n",
+        "rtl"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "caveman",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/JuliusBrussee/caveman.git",
+        "path": "skills",
+        "ref": "v2.7.0",
+        "sha": "8b0c1d3699b8d83e87fe4605b378da20c41555e0"
+      },
+      "version": "2.7.0",
+      "description": "Companion of the Cross-Stack Standard: caveman terse-output mode (/caveman, /caveman-commit, /caveman-review, /caveman-help), skills only, off until you type /caveman. Pinned to v2.7.0.",
+      "homepage": "https://github.com/JuliusBrussee/caveman",
+      "repository": "https://github.com/JuliusBrussee/caveman",
+      "license": "MIT",
+      "category": "productivity",
+      "skills": ["./caveman", "./caveman-commit", "./caveman-review", "./caveman-help"],
+      "metadata": {
+        "crossStack": {
+          "title": "Caveman",
+          "purpose": "Terse replies on demand: /caveman, /caveman-commit, /caveman-review, /caveman-help.",
+          "scope": "user",
+          "module": null,
+          "toolPrefix": null,
+          "access": "Four skills only: no hooks, no MCP server, no file or network access of its own. Off until you type /caveman; paused in plan mode.",
+          "network": "None.",
+          "license": "MIT (the skills the entry loads; the repository's engine-linked directories are not fetched).",
+          "fallback": "Caveman is not installed: answers stay in normal prose. Run /cross-stack-standard:adopt to install it.",
+          "skills": ["caveman", "caveman-commit", "caveman-review", "caveman-help"],
+          "agents": []
+        }
+      }
+    },
+    {
+      "name": "impeccable",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/pbakaus/impeccable.git",
+        "path": ".claude",
+        "ref": "skill-v4.3.1",
+        "sha": "cd12f8660e2dde57b9615c8a6b8ea674101f9cfc"
+      },
+      "version": "4.3.1",
+      "description": "Companion of the Cross-Stack Standard: the impeccable design skill and its four agents, without its hooks. Pinned to skill-v4.3.1.",
+      "homepage": "https://github.com/pbakaus/impeccable",
+      "repository": "https://github.com/pbakaus/impeccable",
+      "license": "Apache-2.0",
+      "category": "design",
+      "metadata": {
+        "crossStack": {
+          "title": "Impeccable",
+          "purpose": "Design review of UI changes: audit, critique and polish against the project's tokens.",
+          "scope": "project",
+          "module": "design",
+          "toolPrefix": null,
+          "access": "Its skill and four agents, which read and edit files in the project like any skill; its hooks are not installed.",
+          "network": "Downloads its engine binary from GitHub on the first command; a daily version check and optional choice reporting (see the FAQ for switches).",
+          "license": "Apache-2.0.",
+          "fallback": "Impeccable is not available: the UI change was not design-reviewed. Review it against the project's tokens by hand, or install impeccable with /cross-stack-standard:adopt.",
+          "skills": ["impeccable"],
+          "agents": [
+            "impeccable-asset-producer",
+            "impeccable-documenter",
+            "impeccable-finish-reviewer",
+            "impeccable-manual-edit-applier"
+          ]
+        }
+      }
+    },
+    {
+      "name": "figma",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/figma/mcp-server-guide.git",
+        "sha": "d638a5e055e8d95e0394a94350860398cf424b74"
+      },
+      "description": "Companion of the Cross-Stack Standard: the Figma MCP server and its skills, pinned to a reviewed commit (plugin 2.2.111).",
+      "homepage": "https://github.com/figma/mcp-server-guide",
+      "repository": "https://github.com/figma/mcp-server-guide",
+      "category": "design",
+      "metadata": {
+        "crossStack": {
+          "title": "Figma MCP",
+          "purpose": "Read designs, components and variables from Figma files.",
+          "scope": "project",
+          "module": null,
+          "toolPrefix": "mcp__plugin_figma_figma__",
+          "access": "A remote MCP server that reads what your Figma account can see once you sign in; tools that write to Figma files ask first.",
+          "network": "mcp.figma.com, only after you sign in with /mcp.",
+          "license": "Upstream plugin licence (figma/mcp-server-guide); the Figma service is under Figma's terms.",
+          "fallback": "Figma MCP is not connected: sign in with /mcp, or paste the design values (colors, spacing, sizes) into the chat.",
+          "skills": [
+            "figma-code-connect",
+            "figma-create-new-file",
+            "figma-design-to-code",
+            "figma-generate-design",
+            "figma-generate-diagram",
+            "figma-generate-library",
+            "figma-generative-plugins",
+            "figma-implement-motion",
+            "figma-shaders",
+            "figma-swiftui",
+            "figma-use",
+            "figma-use-figjam",
+            "figma-use-motion",
+            "figma-use-slides"
+          ],
+          "agents": []
+        }
+      }
+    },
+    {
+      "name": "chrome-devtools-mcp",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp.git",
+        "path": "skills",
+        "ref": "chrome-devtools-mcp-v1.10.1",
+        "sha": "e52c6b59b476c5e04d8dd9fd4bd017ba3b3d65df"
+      },
+      "version": "1.10.1",
+      "description": "Companion of the Cross-Stack Standard: the Chrome DevTools MCP server with the privacy flags (isolated profile, no usage statistics, no CrUX lookups, redacted network headers) and its seven skills. Pinned to v1.10.1.",
+      "homepage": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "repository": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "license": "Apache-2.0",
+      "category": "development",
+      "skills": ["./"],
+      "mcpServers": {
+        "chrome-devtools": {
+          "command": "npx",
+          "args": [
+            "-y",
+            "chrome-devtools-mcp@1.10.1",
+            "--isolated",
+            "--no-usage-statistics",
+            "--no-performance-crux",
+            "--redact-network-headers"
+          ],
+          "env": {
+            "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": "1",
+            "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": "1"
+          }
+        }
+      },
+      "metadata": {
+        "crossStack": {
+          "title": "Chrome DevTools MCP",
+          "purpose": "Check the running app in a real browser: console, network, performance, accessibility.",
+          "scope": "project",
+          "module": "browser-check",
+          "toolPrefix": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__",
+          "access": "Drives an isolated Chrome profile that can see cookies and headers of the pages it opens; pages outside local and development hosts, page scripts and file uploads ask first.",
+          "network": "npm registry once for the pinned package, then only the pages it opens; usage statistics, CrUX lookups and update checks are off.",
+          "license": "Apache-2.0.",
+          "fallback": "Chrome DevTools MCP is not available: the UI was not checked in a browser. Open the changed screens yourself, or install it with /cross-stack-standard:adopt.",
+          "skills": [
+            "a11y-debugging",
+            "chrome-devtools",
+            "chrome-devtools-cli",
+            "cookie-debugging",
+            "debug-optimize-lcp",
+            "memory-leak-debugging",
+            "troubleshooting"
+          ],
+          "agents": []
+        }
+      }
+    }
+  ]
+}

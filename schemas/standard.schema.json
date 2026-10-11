@@ -1,0 +1,411 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/standard.schema.json",
+  "title": "Cross-Stack Standard project manifest",
+  "description": "The manifest at .cross-stack/standard.json: which version of the Standard a project adopted, its tracks, profile, tier and modules, and the settings of the Standard's hooks.",
+  "type": "object",
+  "required": ["version", "tracks"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "URL of this schema, for editor completion. Pin it to the adopted version."
+    },
+    "version": {
+      "description": "The SemVer version of the Standard the project adopted; the upgrade skill reads it.",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "tracks": {
+      "description": "Stacks present in the project: laravel (JSON API), web (Next.js or React), mobile (Expo).",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["laravel", "web", "mobile"]
+      }
+    },
+    "trackRoots": {
+      "description": "The project-relative directory of each track whose files do not sit at the project root (a directory, or a list of them); a track without an entry uses the project root.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "laravel": {
+          "$ref": "#/$defs/trackRoot"
+        },
+        "web": {
+          "$ref": "#/$defs/trackRoot"
+        },
+        "mobile": {
+          "$ref": "#/$defs/trackRoot"
+        }
+      }
+    },
+    "profile": {
+      "description": "Web profile: next (App Router) or react-spa (Vite). Only valid with the web track; defaults to next.",
+      "enum": ["next", "react-spa"]
+    },
+    "tier": {
+      "description": "Tier 1: the invariants only. Tier 2: the full Standard, for projects that are multi-tenant, have more than one developer, or are long-lived. When absent, Claude asks.",
+      "enum": [1, 2]
+    },
+    "modules": {
+      "description": "Optional modules. Each is true or false, or an object whose \"enabled\" defaults to true.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tenancy": {
+          "$ref": "#/$defs/moduleSetting"
+        },
+        "i18n": {
+          "$ref": "#/$defs/moduleSetting"
+        },
+        "api-contract": {
+          "$ref": "#/$defs/moduleSetting"
+        },
+        "bff-auth": {
+          "$ref": "#/$defs/moduleSetting"
+        },
+        "design": {
+          "$ref": "#/$defs/moduleSetting"
+        },
+        "browser-check": {
+          "$ref": "#/$defs/moduleSetting"
+        },
+        "observability": {
+          "$ref": "#/$defs/moduleSetting"
+        }
+      }
+    },
+    "locales": {
+      "description": "BCP 47 language tags in canonical form, such as en or ar-SA. The first entry is the source locale.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/locale"
+      }
+    },
+    "companions": {
+      "description": "The user's answer, per companion plugin, to adopt's install question: true approved and installed, false declined. A declined companion is never installed, and its tools are refused in this project.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "caveman": { "type": "boolean" },
+        "impeccable": { "type": "boolean" },
+        "figma": { "type": "boolean" },
+        "chrome-devtools-mcp": { "type": "boolean" }
+      }
+    },
+    "disabled": {
+      "description": "true turns every hook of the Standard off for this project.",
+      "type": "boolean",
+      "default": false
+    },
+    "hooks": {
+      "description": "Settings for the Standard's Claude Code hooks. Environment variables override them.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sessionStart": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "detect": {
+              "description": "Detect the project's tracks at session start and add a short reminder.",
+              "type": "boolean",
+              "default": true
+            }
+          }
+        },
+        "postToolUse": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "phpstan": {
+              "description": "Also run PHPStan on each edited PHP file. Off by default because it is slow.",
+              "type": "boolean",
+              "default": false
+            },
+            "budgetSeconds": {
+              "description": "Time budget in seconds for formatting and linting one edited file.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 600
+            }
+          }
+        },
+        "stop": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "description": "Run the fast gate when Claude finishes a turn. CROSS_STACK_STANDARD_STOP_GATE=0 turns it off.",
+              "type": "boolean",
+              "default": true
+            },
+            "budgetSeconds": {
+              "description": "Time budget in seconds for the fast gate.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 600,
+              "default": 90
+            },
+            "command": {
+              "description": "The name of the composer and/or npm script the fast gate runs: a script name, not a shell command.",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]*$",
+              "default": "check:fast"
+            }
+          }
+        },
+        "preToolUse": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "protect": {
+              "description": "Extra project-relative globs whose edits need confirmation, added to the built-in list.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/projectGlob"
+              }
+            },
+            "protectCommands": {
+              "description": "Extra JavaScript regular expressions for shell commands that need confirmation, added to the built-in list.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "decision": {
+              "description": "The answer to a protected tool call: ask (the user confirms) or deny (blocked, also in bypassPermissions mode; the user makes the change directly).",
+              "enum": ["ask", "deny"],
+              "default": "ask"
+            },
+            "browserHosts": {
+              "description": "Development hosts the Chrome DevTools MCP companion may open without asking, added to the built-in local hosts (localhost, 127.0.0.1, [::1], *.localhost, *.test). A leading *. matches any subdomain.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^(\\*\\.)?[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "allowlistsDir": {
+      "description": "A project-relative directory (no leading /, no .. segment, no glob characters) that holds the allowlist files, <RULE-ID>.json.",
+      "type": "string",
+      "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(?:.*/)?\\.\\.(?:/|$))[^\\\\*?{}\\[\\]]+$",
+      "default": ".cross-stack/allowlists"
+    },
+    "allowlistMaxDays": {
+      "description": "The furthest ahead an allowlist entry's expiry date may lie, in days from today (UTC). A date further ahead is a finding, so an exception cannot be made permanent by a far-future date.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3650,
+      "default": 365
+    },
+    "stack": {
+      "description": "Settings of the one-library-per-concern check. Each key other than competingGroups names a concern (state, server-state, forms, validation, http, dates, styling, unit-tests, e2e-tests) that is being migrated from one library to another.",
+      "type": "object",
+      "properties": {
+        "competingGroups": {
+          "description": "Groups of libraries that compete for one concern, added to the curated catalogue the check ships with.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["concern", "packages"],
+            "additionalProperties": false,
+            "properties": {
+              "concern": {
+                "description": "Name of the concern, such as state or dates.",
+                "type": "string",
+                "minLength": 1
+              },
+              "packages": {
+                "description": "Package names (npm or Composer) that compete for the concern.",
+                "type": "array",
+                "minItems": 2,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": {
+        "description": "A concern under migration.",
+        "type": "object",
+        "required": ["deprecated"],
+        "additionalProperties": false,
+        "properties": {
+          "deprecated": {
+            "description": "Packages being migrated away from; they may stay installed next to the winner until the migration ends.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  "dependentSchemas": {
+    "profile": {
+      "description": "\"profile\" applies only when \"tracks\" includes \"web\".",
+      "type": "object",
+      "properties": {
+        "tracks": {
+          "type": "array",
+          "contains": {
+            "const": "web"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "required": ["modules"],
+        "properties": {
+          "modules": {
+            "type": "object",
+            "required": ["bff-auth"],
+            "properties": {
+              "bff-auth": {
+                "$ref": "#/$defs/enabledModule"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "description": "The bff-auth module needs the web track with the next profile.",
+        "type": "object",
+        "properties": {
+          "tracks": {
+            "type": "array",
+            "contains": {
+              "const": "web"
+            }
+          },
+          "profile": {
+            "const": "next"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": ["modules"],
+        "properties": {
+          "modules": {
+            "type": "object",
+            "required": ["i18n"],
+            "properties": {
+              "i18n": {
+                "$ref": "#/$defs/enabledModule"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "description": "The i18n module needs a \"locales\" list; its first entry is the source locale.",
+        "type": "object",
+        "required": ["locales"],
+        "properties": {
+          "locales": true
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "moduleSetting": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        }
+      ]
+    },
+    "enabledModule": {
+      "description": "Matches a module setting that turns the module on.",
+      "anyOf": [
+        {
+          "const": true
+        },
+        {
+          "type": "object",
+          "not": {
+            "type": "object",
+            "required": ["enabled"],
+            "properties": {
+              "enabled": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "locale": {
+      "description": "A BCP 47 language tag in canonical form, such as en, ar or zh-Hant-TW.",
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-(?:[A-Z]{2}|[0-9]{3}))?(?:-(?:[0-9a-z]{5,8}|[0-9][0-9a-z]{3}))*$"
+    },
+    "projectGlob": {
+      "description": "A project-relative glob with / separators, no leading / and no .. segment.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!\\./)(?!(?:.*/)?\\.\\.(?:/|$))[^\\\\]+$"
+    },
+    "trackRoot": {
+      "description": "A project-relative directory (no leading /, no .. segment, no glob characters), or a non-empty list of them.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/projectDir"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/projectDir"
+          }
+        }
+      ]
+    },
+    "projectDir": {
+      "description": "A project-relative directory: no leading /, no drive letter, no .. segment, no glob characters.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(?:.*/)?\\.\\.(?:/|$))[^\\\\*?{}\\[\\]]+$"
+    }
+  }
+}

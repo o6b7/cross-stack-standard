@@ -1,0 +1,30 @@
+{
+  "name": "repo",
+  "description": "A scratch git repository with an initial commit, for repository-level gates: workflows, CODEOWNERS, hook configuration and commit ranges. Fixtures may add base/head commits. The gate runs the kit's cross-stack binary on the work directory (--root); exit 1 is a finding, exit 2 a usage or internal error.",
+  "git": true,
+  "setup": [],
+  "prepare": [],
+  "copy": {
+    "hardlink": [],
+    "detach": [],
+    "exclude": []
+  },
+  "vars": {
+    "kitBin": "{repoRoot}/plugins/cross-stack-standard/templates/shared/cross-stack/bin/cross-stack.mjs"
+  },
+  "gates": {
+    "script": {
+      "argv": [
+        "{node}",
+        "{kitBin}",
+        "{gateId}",
+        ["{discriminator}"],
+        "--root",
+        "{workdir}",
+        ["--base", "{base}"],
+        ["--head", "{head}"]
+      ],
+      "failExitCodes": [1]
+    }
+  }
+}

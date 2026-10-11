@@ -1,0 +1,24 @@
+# Prettier also honours .gitignore (private working directories, dependencies, build output).
+
+# Lockfiles and machine-written files
+package-lock.json
+composer.lock
+
+# Generated from registry/rules.json, schemas/ and VERSION; their generators own the layout
+docs/rules/
+skills/cross-stack-standard/references/rules/
+plugins/cross-stack-standard/data/
+scripts/brand-denylist.json
+# Vendored copies of packages/ (build-plugin-data); the sources under packages/ are checked
+plugins/cross-stack-standard/templates/*/vendor/
+
+# Fixture and harness inputs are byte-exact on purpose (violation fixtures, host apps); the
+# harness README at test/harness/README.md is documentation and stays checked
+test/harness/*/
+test/**/fixtures/
+
+# Hand-maintained wide tables; Prettier would re-pad every row on each edit
+docs/maintainers/verified-versions.md
+
+# Installed tool binaries
+.cache/

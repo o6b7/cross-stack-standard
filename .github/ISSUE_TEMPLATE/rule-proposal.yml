@@ -1,0 +1,135 @@
+name: Rule proposal
+description: Propose a new rule, or a change to an existing one, for discussion (request for comments).
+title: "rule: "
+labels: ["rule-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A rule states **one enforceable property**. It enters the registry as REVIEW with a target label, and it is promoted to FORCED or GUARDED only when its gate ships with a clean fixture that passes and a violation fixture that fails in CI. The process is in [GOVERNANCE.md](https://github.com/o6b7/cross-stack-standard/blob/main/GOVERNANCE.md).
+
+        Check the [rule catalog](https://github.com/o6b7/cross-stack-standard/blob/main/docs/rules/README.md) first: the property may already be covered.
+  - type: input
+    id: existing-rule
+    attributes:
+      label: Existing rule to change
+      description: The rule ID if you propose a change, for example WEB-012. Leave empty for a new rule.
+  - type: input
+    id: rule-title
+    attributes:
+      label: Proposed rule
+      description: One imperative sentence of at most 100 characters.
+      placeholder: Paginate every list route and cap the page size
+    validations:
+      required: true
+  - type: dropdown
+    id: track
+    attributes:
+      label: Scope
+      options:
+        - laravel
+        - web
+        - mobile
+        - client (web and mobile)
+        - shared (every project)
+    validations:
+      required: true
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Tier
+      description: Tier 1 applies to every adopting project; Tier 2 to multi-tenant, team or long-lived projects.
+      options:
+        - "1"
+        - "2"
+        - Not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - No module (core)
+        - api-contract
+        - i18n
+        - bff-auth
+        - tenancy
+        - design
+        - browser-check
+        - observability
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why
+      description: The defect this rule prevents, and evidence that it is common or costly (incidents, advisories, framework guidance). Describe it neutrally.
+    validations:
+      required: true
+  - type: dropdown
+    id: target
+    attributes:
+      label: Target label
+      options:
+        - FORCED (a gate fails on every violation; no known way around it)
+        - GUARDED (a gate fails on the direct form; known evasions listed)
+        - REVIEW (no reliable gate; code review applies it)
+    validations:
+      required: true
+  - type: textarea
+    id: gate
+    attributes:
+      label: Gate
+      description: The tool that would fail on a violation (ESLint, dependency-cruiser, Vitest, Jest, Pest, PHPStan, a script check or a CI step) and how it detects the violation. For a REVIEW target, explain why no tool can check it reliably.
+    validations:
+      required: true
+  - type: textarea
+    id: evasions
+    attributes:
+      label: Known evasions
+      description: For a GUARDED target, the ways code could break the rule without the gate noticing.
+  - type: textarea
+    id: violation
+    attributes:
+      label: Violation example
+      description: The smallest code that breaks the rule. It becomes the violation fixture.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: clean
+    attributes:
+      label: Compliant example
+      description: The same code written to follow the rule. It becomes part of the clean fixture.
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: adoption
+    attributes:
+      label: Adoption path for existing projects
+      options:
+        - Nothing needed (existing code already complies)
+        - Fix first (few violations; fix them before turning the gate on)
+        - Baseline (record existing violations in a shrink-only baseline)
+        - Allowlist (dated allowlist entries with reasons)
+        - Opt-in (off by default, switched on per project)
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Related decisions
+      description: Decision records this rule would cite or change, for example ADR 0049.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: The rule states one property, with a clear violation.
+          required: true
+        - label: It adds no library that competes with one an adopting project already has (stack-first).
+          required: true
+        - label: I understand that a new default-on gate can fail builds that pass today, so it may wait for a major release.
+          required: true

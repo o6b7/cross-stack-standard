@@ -1,0 +1,48 @@
+{
+  "extraKnownMarketplaces": {
+    "cross-stack-standard": {
+      "source": {
+        "source": "github",
+        "repo": "o6b7/cross-stack-standard"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "cross-stack-standard@cross-stack-standard": true
+  },
+  "permissions": {
+    "ask": [
+      "Edit(.cross-stack/standard.json)",
+      "Edit(.claude/settings.json)",
+      "Edit(phpstan.neon)",
+      "Edit(phpstan.neon.dist)",
+      "Edit(pint.json)",
+      "Edit(phpunit.xml)",
+      "Edit(phpunit.xml.dist)",
+      "Edit(tests/Unit/ArchTest.php)",
+      "Edit(eslint.config.js)",
+      "Edit(eslint.config.mjs)",
+      "Edit(eslint.config.ts)",
+      "Edit(.dependency-cruiser.js)",
+      "Edit(.dependency-cruiser.cjs)",
+      "Edit(.prettierrc.json)",
+      "Edit(knip.json)",
+      "Edit(.jscpd.json)",
+      "Edit(vitest.config.ts)",
+      "Edit(vitest.config.mts)",
+      "Edit(jest.config.js)",
+      "Edit(lefthook.yml)",
+      "Edit(commitlint.config.mjs)",
+      "Edit(renovate.json)",
+      "Edit(.gitleaks.toml)",
+      "Edit(.github/CODEOWNERS)"
+    ],
+    "deny": [
+      "Edit(phpstan-baseline.neon)",
+      "Edit(eslint-suppressions.json)",
+      "Edit(.dependency-cruiser-known-violations.json)",
+      "Edit(.jscpd-baseline.json)",
+      "Edit(.gitleaksignore)"
+    ]
+  }
+}

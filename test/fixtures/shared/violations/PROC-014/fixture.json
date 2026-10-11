@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "An allowlist entry whose expiry date has passed: check-allowlists fails and names the entry's file and line. The kit tool prints its check id, not the rule id.",
+  "hosts": ["node"],
+  "expect": {
+    "idPattern": "^check-allowlists \\S+:\\d+ /entries/0/expires: entry for \"src/legacy-list.tsx\" expired on 2000-01-01"
+  }
+}

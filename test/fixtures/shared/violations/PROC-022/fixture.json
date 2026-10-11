@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "The agent stops with a syntax error in src/app.mjs, so check:fast fails: the Stop hook blocks the stop with exit 2 and the failing command.",
+  "hosts": ["hook"],
+  "expect": {
+    "idPattern": "^hook Stop violation: "
+  }
+}

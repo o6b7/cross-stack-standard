@@ -1,0 +1,13 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000013",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "eslint.config.mjs",
+    "old_string": "\"no-unused-vars\": \"error\"",
+    "new_string": "\"no-unused-vars\": \"off\"",
+    "replace_all": false
+  },
+  "tool_use_id": "toolu_fixture_proc_013"
+}

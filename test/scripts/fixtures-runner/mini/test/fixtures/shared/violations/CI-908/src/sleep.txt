@@ -1,0 +1,2 @@
+SPAWN-SLEEP grandchild.pid
+SLEEP forever

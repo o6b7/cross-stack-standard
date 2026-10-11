@@ -1,0 +1,5 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "An agent edits an ordinary source file: the PreToolUse hook stays silent.",
+  "hosts": ["hook"]
+}

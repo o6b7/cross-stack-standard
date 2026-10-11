@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "The Figma companion reads a design: the PreToolUse hook stays silent.",
+  "hosts": [
+    "hook"
+  ],
+  "manifestOverlay": {
+    "companions": {
+      "figma": true
+    }
+  }
+}

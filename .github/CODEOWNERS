@@ -1,0 +1,33 @@
+# Code owners. The catch-all line covers every file; the entries below name the files that
+# enforce the Standard, so a change to them always asks for the owner's review once reviews
+# are required. Later matching lines take precedence.
+* @o6b7
+
+# Gate and enforcement configuration
+/.github/ @o6b7
+/lefthook.yml @o6b7
+/commitlint.config.mjs @o6b7
+/eslint.config.mjs @o6b7
+/.prettierrc.json @o6b7
+/.prettierignore @o6b7
+/.markdownlint-cli2.jsonc @o6b7
+/.gitleaks.toml @o6b7
+/.gitignore @o6b7
+/.gitattributes @o6b7
+/package.json @o6b7
+/package-lock.json @o6b7
+
+# Rule registry, schemas and the brand-guard denylist
+/registry/ @o6b7
+/schemas/ @o6b7
+/scripts/brand-denylist.json @o6b7
+/scripts/lib/tools.json @o6b7
+
+# Plugin hooks and the gate packages shipped to adopters
+/plugins/cross-stack-standard/hooks/ @o6b7
+/plugins/cross-stack-standard/templates/ @o6b7
+/packages/ @o6b7
+
+# Release inputs
+/VERSION @o6b7
+/CHANGELOG.md @o6b7

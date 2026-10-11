@@ -1,0 +1,4 @@
+{
+  "description": "Clean state for the shared track: no directive fails.",
+  "hosts": ["plain", "node", "repo", "combo"]
+}

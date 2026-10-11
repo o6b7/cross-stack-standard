@@ -1,0 +1,50 @@
+// markdownlint-cli2 configuration for this repository's Markdown.
+// Run with `npm run lint:md` (no arguments: the globs below apply).
+{
+  "config": {
+    "default": true,
+    // Prose and tables wrap as their authors choose; Prettier handles code formatting.
+    "MD013": false,
+    // Headings repeat across sections by design (e.g. "Added" in every changelog release).
+    "MD024": { "siblings_only": true },
+    // Allow the inline HTML used for badges, <details> blocks and marker comments.
+    "MD033": {
+      "allowed_elements": [
+        "details",
+        "summary",
+        "br",
+        "img",
+        "picture",
+        "source",
+        "a",
+        "kbd",
+        "sup",
+      ],
+    },
+    // Consistent list and emphasis markers.
+    "MD004": { "style": "dash" },
+    "MD049": { "style": "consistent" },
+    "MD050": { "style": "asterisk" },
+    // Fenced code blocks only, with a language.
+    "MD046": { "style": "fenced" },
+    "MD040": true,
+  },
+  "globs": ["**/*.md"],
+  "ignores": [
+    "**/node_modules/**",
+    "**/vendor/**",
+    "_input/**",
+    "_work/**",
+    "web/**",
+    ".cache/**",
+    "docs/rules/**",
+    "skills/cross-stack-standard/references/rules/**",
+    "plugins/cross-stack-standard/data/**",
+    // Host directories hold third-party app content; test/harness/README.md is linted.
+    "test/harness/*/**",
+    "test/**/fixtures/**",
+    // Hand-maintained data tables (also excluded from Prettier); lychee checks their links.
+    "docs/maintainers/verified-versions.md",
+  ],
+  "gitignore": true,
+}

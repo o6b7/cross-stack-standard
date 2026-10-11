@@ -1,0 +1,24 @@
+{
+  "description": "A Laravel app with Pint and Larastan in require-dev. The tests add the PHP stubs to vendor/bin.",
+  "files": {
+    "composer.json": {
+      "name": "example/api",
+      "type": "project",
+      "require": {
+        "php": "^8.4",
+        "laravel/framework": "^13.0"
+      },
+      "require-dev": {
+        "laravel/pint": "^1.32",
+        "larastan/larastan": "^3.12"
+      }
+    },
+    "pint.json": {
+      "preset": "laravel"
+    },
+    "phpstan.neon": "includes:\n    - vendor/larastan/larastan/extension.neon\n\nparameters:\n    level: 8\n    paths:\n        - app\n",
+    "app/Models/Invoice.php": "<?php\n\ndeclare(strict_types=1);\n\nnamespace App\\Models;\n\nfinal class Invoice\n{\n    /** @var list<string> */\n    public array $lines = array();   \n}\n",
+    "app/Models/Broken.php": "<?php\n\ndeclare(strict_types=1);\n\nnamespace App\\Models;\n\nfinal class Broken\n{\n    // phpstan-error method.notFound Call to an undefined method App\\Models\\Broken::missing().\n    // phpstan-error return.type Method App\\Models\\Broken::total() should return int but returns string.\n}\n",
+    "resources/views/welcome.blade.php": "<div>{{ $title }}</div>   \n"
+  }
+}

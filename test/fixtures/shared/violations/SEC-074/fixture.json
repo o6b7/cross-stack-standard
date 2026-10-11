@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "The browser companion is asked to open a public site: the PreToolUse hook answers ask.",
+  "hosts": [
+    "hook"
+  ],
+  "alsoFires": [
+    "SEC-048"
+  ],
+  "manifestOverlay": {
+    "companions": {
+      "chrome-devtools-mcp": true
+    }
+  }
+}

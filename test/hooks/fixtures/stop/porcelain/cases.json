@@ -1,0 +1,41 @@
+{
+  "description": "Output of git status --porcelain=v1 -z and the entries it must parse to (null: not that format).",
+  "cases": [
+    { "name": "clean tree", "output": "", "entries": [] },
+    {
+      "name": "modified, added, deleted and untracked files",
+      "output": " M src/app.js\u0000A  src/new.js\u0000 D src/old.js\u0000?? notes/todo list.md\u0000",
+      "entries": [
+        { "status": " M", "path": "src/app.js" },
+        { "status": "A ", "path": "src/new.js" },
+        { "status": " D", "path": "src/old.js" },
+        { "status": "??", "path": "notes/todo list.md" }
+      ]
+    },
+    {
+      "name": "a staged rename lists the new path, then the source path",
+      "output": "R  new name.txt\u0000old name.txt\u0000 M sub/b.txt\u0000",
+      "entries": [
+        { "status": "R ", "path": "new name.txt", "origPath": "old name.txt" },
+        { "status": " M", "path": "sub/b.txt" }
+      ]
+    },
+    {
+      "name": "a copy with a worktree change, and non-ASCII names",
+      "output": "CM copie.txt\u0000original.txt\u0000?? دليل/ملف.js\u0000",
+      "entries": [
+        { "status": "CM", "path": "copie.txt", "origPath": "original.txt" },
+        { "status": "??", "path": "دليل/ملف.js" }
+      ]
+    },
+    {
+      "name": "a path that contains an arrow is not a rename",
+      "output": " M a -> b.txt\u0000",
+      "entries": [{ "status": " M", "path": "a -> b.txt" }]
+    },
+    { "name": "the newline-separated format", "output": " M src/app.js\n?? other.js\n", "entries": null },
+    { "name": "a rename without its source path", "output": "R  new.txt\u0000", "entries": null },
+    { "name": "an empty field in the middle", "output": " M a.js\u0000\u0000 M b.js\u0000", "entries": null },
+    { "name": "a status field without a path", "output": " M\u0000", "entries": null }
+  ]
+}

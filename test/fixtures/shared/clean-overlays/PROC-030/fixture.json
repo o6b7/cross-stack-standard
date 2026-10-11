@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "An agent edits src/app.js, which has no lint errors: the PostToolUse hook runs file-scoped ESLint (a stub in node_modules/eslint) and stays silent.",
+  "hosts": ["hook"],
+  "rename": {
+    "eslint-stub": "node_modules/eslint"
+  }
+}

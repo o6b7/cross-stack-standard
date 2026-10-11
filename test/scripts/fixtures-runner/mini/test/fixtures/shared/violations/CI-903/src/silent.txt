@@ -1,0 +1,2 @@
+PRINT something went wrong
+EXIT 1

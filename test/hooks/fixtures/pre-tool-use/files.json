@@ -1,0 +1,720 @@
+{
+  "description": "PreToolUse cases for the file tools, run in a copy of project.json. \"path\" is project-relative (a \\ in it becomes the Windows separator form). Ask cases list the protection entries that must match, exactly; silent cases must produce no output.",
+  "ask": [
+    {
+      "name": "lowering the PHPStan level",
+      "tool": "Edit",
+      "path": "phpstan.neon",
+      "input": {
+        "old_string": "level: 8",
+        "new_string": "level: 5"
+      },
+      "entries": [
+        "phpstan-config"
+      ],
+      "reason": "phpstan.neon is a protected file (PHPStan configuration and baselines)"
+    },
+    {
+      "name": "rewriting the PHPStan baseline",
+      "tool": "Write",
+      "path": "phpstan-baseline.neon",
+      "input": {
+        "content": "parameters:\n  ignoreErrors:\n    - '#.*#'\n"
+      },
+      "entries": [
+        "phpstan-config"
+      ]
+    },
+    {
+      "name": "a nested PHPStan configuration",
+      "tool": "Edit",
+      "path": "api/phpstan.neon",
+      "input": {
+        "old_string": "level: 8",
+        "new_string": "level: 1"
+      },
+      "entries": [
+        "phpstan-config"
+      ],
+      "reason": "api/phpstan.neon is a protected file"
+    },
+    {
+      "name": "the ESLint configuration",
+      "tool": "Write",
+      "path": "eslint.config.mjs",
+      "input": {
+        "content": "export default [{ rules: {} }];\n"
+      },
+      "entries": [
+        "eslint-config"
+      ]
+    },
+    {
+      "name": "a new nested ESLint configuration",
+      "tool": "Write",
+      "path": "apps/web/eslint.config.ts",
+      "input": {
+        "content": "export default [];\n"
+      },
+      "entries": [
+        "eslint-config"
+      ]
+    },
+    {
+      "name": "ESLint bulk suppressions",
+      "tool": "Write",
+      "path": "eslint-suppressions.json",
+      "input": {
+        "content": "{}\n"
+      },
+      "entries": [
+        "eslint-suppressions"
+      ]
+    },
+    {
+      "name": "the dependency-cruiser configuration",
+      "tool": "Write",
+      "path": ".dependency-cruiser.cjs",
+      "input": {
+        "content": "module.exports = { forbidden: [] };\n"
+      },
+      "entries": [
+        "dependency-cruiser-config"
+      ]
+    },
+    {
+      "name": "the Prettier configuration",
+      "tool": "Write",
+      "path": ".prettierrc.json",
+      "input": {
+        "content": "{}\n"
+      },
+      "entries": [
+        "prettier-config"
+      ]
+    },
+    {
+      "name": "the Pint configuration",
+      "tool": "Edit",
+      "path": "pint.json",
+      "input": {
+        "old_string": "laravel",
+        "new_string": "psr12"
+      },
+      "entries": [
+        "pint-config"
+      ]
+    },
+    {
+      "name": "the jscpd configuration",
+      "tool": "Write",
+      "path": ".jscpd.json",
+      "input": {
+        "content": "{ \"threshold\": 100 }\n"
+      },
+      "entries": [
+        "jscpd-config"
+      ]
+    },
+    {
+      "name": "the jscpd baseline",
+      "tool": "Write",
+      "path": ".jscpd-baseline.json",
+      "input": {
+        "content": "{ \"version\": 1, \"fingerprints\": {} }\n"
+      },
+      "entries": [
+        "jscpd-config"
+      ]
+    },
+    {
+      "name": "the knip configuration",
+      "tool": "Write",
+      "path": "knip.config.ts",
+      "input": {
+        "content": "export default { ignore: ['**'] };\n"
+      },
+      "entries": [
+        "knip-config"
+      ]
+    },
+    {
+      "name": "the Laravel architecture test",
+      "tool": "Edit",
+      "path": "tests/Unit/ArchTest.php",
+      "input": {
+        "old_string": "arch()->preset()->laravel();",
+        "new_string": ""
+      },
+      "entries": [
+        "architecture-tests"
+      ]
+    },
+    {
+      "name": "a web architecture test",
+      "tool": "Write",
+      "path": "src/features/layers.arch.test.ts",
+      "input": {
+        "content": "export {};\n"
+      },
+      "entries": [
+        "architecture-tests"
+      ]
+    },
+    {
+      "name": "the PHPUnit configuration (coverage thresholds)",
+      "tool": "Write",
+      "path": "phpunit.xml",
+      "input": {
+        "content": "<phpunit/>\n"
+      },
+      "entries": [
+        "test-runner-config"
+      ]
+    },
+    {
+      "name": "the Vitest configuration",
+      "tool": "Write",
+      "path": "vitest.config.mts",
+      "input": {
+        "content": "export default {};\n"
+      },
+      "entries": [
+        "test-runner-config"
+      ]
+    },
+    {
+      "name": "an npm script",
+      "tool": "Edit",
+      "path": "package.json",
+      "input": {
+        "old_string": "eslint . --max-warnings=0",
+        "new_string": "echo skipped"
+      },
+      "entries": [
+        "package-scripts"
+      ],
+      "reason": "the edit changes /scripts"
+    },
+    {
+      "name": "package.json turned into invalid JSON",
+      "tool": "Edit",
+      "path": "package.json",
+      "input": {
+        "old_string": "\"private\": true,",
+        "new_string": "\"private\": true,,"
+      },
+      "entries": [
+        "package-scripts"
+      ],
+      "reason": "the edit could not be checked"
+    },
+    {
+      "name": "the Composer audit policy",
+      "tool": "Edit",
+      "path": "composer.json",
+      "input": {
+        "old_string": "\"abandoned\": \"fail\"",
+        "new_string": "\"abandoned\": \"ignore\""
+      },
+      "entries": [
+        "composer-scripts"
+      ],
+      "reason": "the edit changes /config/audit"
+    },
+    {
+      "name": "a CI workflow",
+      "tool": "Edit",
+      "path": ".github/workflows/ci.yml",
+      "input": {
+        "old_string": "on: [push]",
+        "new_string": "on: [workflow_dispatch]"
+      },
+      "entries": [
+        "ci-workflows"
+      ]
+    },
+    {
+      "name": "CODEOWNERS",
+      "tool": "Write",
+      "path": ".github/CODEOWNERS",
+      "input": {
+        "content": "* @someone\n"
+      },
+      "entries": [
+        "codeowners"
+      ]
+    },
+    {
+      "name": "a lefthook local override",
+      "tool": "Write",
+      "path": "lefthook-local.yml",
+      "input": {
+        "content": "pre-commit:\n  skip: true\n"
+      },
+      "entries": [
+        "lefthook-config"
+      ]
+    },
+    {
+      "name": "an installed git hook",
+      "tool": "Write",
+      "path": ".git/hooks/pre-commit",
+      "input": {
+        "content": "#!/bin/sh\nexit 0\n"
+      },
+      "entries": [
+        "git-hooks"
+      ]
+    },
+    {
+      "name": "the commitlint configuration",
+      "tool": "Write",
+      "path": "commitlint.config.mjs",
+      "input": {
+        "content": "export default { rules: {} };\n"
+      },
+      "entries": [
+        "commitlint-config"
+      ]
+    },
+    {
+      "name": "the Renovate configuration",
+      "tool": "Write",
+      "path": "renovate.json",
+      "input": {
+        "content": "{}\n"
+      },
+      "entries": [
+        "dependency-update-config"
+      ]
+    },
+    {
+      "name": "the gitleaks ignore list",
+      "tool": "Write",
+      "path": ".gitleaksignore",
+      "input": {
+        "content": "abc123:src/a.ts:generic-api-key:1\n"
+      },
+      "entries": [
+        "gitleaks-config"
+      ]
+    },
+    {
+      "name": "the project's Claude Code settings",
+      "tool": "Write",
+      "path": ".claude/settings.json",
+      "input": {
+        "content": "{}\n"
+      },
+      "entries": [
+        "claude-settings"
+      ]
+    },
+    {
+      "name": "an installed gate package",
+      "tool": "Write",
+      "path": "node_modules/@cross-stack-standard/eslint-config/index.js",
+      "input": {
+        "content": "export default [];\n"
+      },
+      "entries": [
+        "installed-gate-packages"
+      ]
+    },
+    {
+      "name": "an allowlist",
+      "tool": "Write",
+      "path": ".cross-stack/allowlists/PROC-014.json",
+      "input": {
+        "content": "{ \"entries\": [{ \"match\": \"**\" }] }\n"
+      },
+      "entries": [
+        "cross-stack-config"
+      ]
+    },
+    {
+      "name": "\"disabled\": true in the manifest",
+      "tool": "Edit",
+      "path": ".cross-stack/standard.json",
+      "input": {
+        "old_string": "\"tier\": 2",
+        "new_string": "\"tier\": 2,\n  \"disabled\": true"
+      },
+      "entries": [
+        "manifest-disabled",
+        "cross-stack-config"
+      ],
+      "optOut": true,
+      "reason": "This edit to .cross-stack/standard.json sets \"disabled\": true"
+    },
+    {
+      "name": "the opt-out line added to CLAUDE.md",
+      "tool": "Edit",
+      "path": "CLAUDE.md",
+      "input": {
+        "old_string": "# Project notes\n",
+        "new_string": "# Project notes\n\ncross-stack-standard: declined\n"
+      },
+      "entries": [
+        "opt-out-line"
+      ],
+      "optOut": true,
+      "reason": "This edit to CLAUDE.md adds the opt-out line (cross-stack-standard: declined)."
+    },
+    {
+      "name": "the opt-out line written to .claude/CLAUDE.md",
+      "tool": "Write",
+      "path": ".claude/CLAUDE.md",
+      "input": {
+        "content": "# Notes\n\n- Cross-Stack-Standard: Declined.\n"
+      },
+      "entries": [
+        "opt-out-line"
+      ],
+      "optOut": true
+    },
+    {
+      "name": "the opt-out line written to CLAUDE.local.md",
+      "tool": "Write",
+      "path": "CLAUDE.local.md",
+      "input": {
+        "content": "cross-stack-standard: declined\n"
+      },
+      "entries": [
+        "opt-out-line"
+      ],
+      "optOut": true
+    },
+    {
+      "name": "the opt-out line added to a nested CLAUDE.md",
+      "tool": "Edit",
+      "path": "apps/web/CLAUDE.md",
+      "input": {
+        "old_string": "The web app lives here.\n",
+        "new_string": "The web app lives here.\n\n**cross-stack-standard:** declined\n"
+      },
+      "entries": [
+        "opt-out-line"
+      ],
+      "optOut": true
+    },
+    {
+      "name": "a fenced opt-out line made effective by removing the fence",
+      "tool": "Edit",
+      "path": "CLAUDE.md",
+      "files": {
+        "CLAUDE.md": "# Notes\n\n```text\ncross-stack-standard: declined\n```\n"
+      },
+      "input": {
+        "old_string": "```text\ncross-stack-standard: declined\n```\n",
+        "new_string": "cross-stack-standard: declined\n"
+      },
+      "entries": [
+        "opt-out-line"
+      ],
+      "optOut": true
+    },
+    {
+      "name": "the opt-out line staged inside a code fence",
+      "tool": "Edit",
+      "path": "CLAUDE.md",
+      "input": {
+        "old_string": "# Project notes\n",
+        "new_string": "# Project notes\n\n```\ncross-stack-standard: declined\n```\n"
+      },
+      "entries": [
+        "opt-out-line"
+      ],
+      "optOut": true
+    },
+    {
+      "name": "a Windows path with backslashes",
+      "tool": "Edit",
+      "path": "api\\phpstan.neon",
+      "input": {
+        "old_string": "level: 8",
+        "new_string": "level: 0"
+      },
+      "entries": [
+        "phpstan-config"
+      ]
+    },
+    {
+      "name": "a Windows path to a workflow",
+      "tool": "Write",
+      "path": ".github\\workflows\\release.yml",
+      "input": {
+        "content": "name: Release\n"
+      },
+      "entries": [
+        "ci-workflows"
+      ]
+    },
+    {
+      "name": "hooksPath in the repository's git configuration (#17)",
+      "tool": "Write",
+      "path": ".git/config",
+      "input": {
+        "content": "[core]\n\thooksPath = /dev/null\n"
+      },
+      "entries": [
+        "git-config"
+      ]
+    },
+    {
+      "name": "npm running scripts with a no-op shell (#14)",
+      "tool": "Write",
+      "path": ".npmrc",
+      "input": {
+        "content": "script-shell=true\n"
+      },
+      "entries": [
+        "package-manager-config"
+      ]
+    },
+    {
+      "name": "a nested Yarn configuration (#14)",
+      "tool": "Write",
+      "path": "apps/web/.yarnrc.yml",
+      "input": {
+        "content": "nodeLinker: node-modules\n"
+      },
+      "entries": [
+        "package-manager-config"
+      ]
+    },
+    {
+      "name": "disableAllHooks in the local Claude Code settings (#18)",
+      "tool": "Write",
+      "path": ".claude/settings.local.json",
+      "input": {
+        "content": "{\"disableAllHooks\": true}\n"
+      },
+      "entries": [
+        "claude-settings-switch"
+      ]
+    },
+    {
+      "name": "a CROSS_STACK_STANDARD_ variable in the settings env block (#18)",
+      "tool": "Write",
+      "path": ".claude/settings.local.json",
+      "input": {
+        "content": "{\"env\": {\"CROSS_STACK_STANDARD_STOP_BUDGET_SECONDS\": \"1\"}}\n"
+      },
+      "entries": [
+        "claude-settings-switch"
+      ]
+    },
+    {
+      "name": "the plugin set to false in the project settings (#18)",
+      "tool": "Write",
+      "path": ".claude/settings.json",
+      "input": {
+        "content": "{\"enabledPlugins\": {\"cross-stack-standard@cross-stack-standard\": false}}\n"
+      },
+      "entries": [
+        "claude-settings",
+        "claude-settings-switch"
+      ]
+    },
+    {
+      "name": "pnpm's shell emulator switched on (#14)",
+      "tool": "Write",
+      "path": "pnpm-workspace.yaml",
+      "input": {
+        "content": "packages:\n  - apps/*\nshellEmulator: true\n"
+      },
+      "entries": [
+        "pnpm-script-settings"
+      ]
+    },
+    {
+      "name": "TypeScript strict mode turned off (#14)",
+      "tool": "Edit",
+      "path": "tsconfig.json",
+      "files": {
+        "tsconfig.json": "{\n  \"compilerOptions\": { \"strict\": true, \"target\": \"ES2022\" }\n}\n"
+      },
+      "input": {
+        "old_string": "\"strict\": true",
+        "new_string": "\"strict\": false"
+      },
+      "entries": [
+        "typescript-strictness"
+      ]
+    },
+    {
+      "name": "a .gitignore that ignores everything (#15)",
+      "tool": "Write",
+      "path": ".gitignore",
+      "input": {
+        "content": "*\n"
+      },
+      "entries": [
+        "gitignore-everything"
+      ]
+    },
+    {
+      "name": "the local git excludes file (#15)",
+      "tool": "Write",
+      "path": ".git/info/exclude",
+      "input": {
+        "content": "src/\n"
+      },
+      "entries": [
+        "git-config"
+      ]
+    }
+  ],
+  "silent": [
+    {
+      "name": "application code",
+      "tool": "Edit",
+      "path": "src/app/page.tsx",
+      "input": {
+        "old_string": "return null;",
+        "new_string": "return <main />;"
+      }
+    },
+    {
+      "name": "a new application file",
+      "tool": "Write",
+      "path": "src/lib/format.ts",
+      "input": {
+        "content": "export const format = (n: number) => String(n);\n"
+      }
+    },
+    {
+      "name": "a dependency added to package.json",
+      "tool": "Edit",
+      "path": "package.json",
+      "input": {
+        "old_string": "\"react\": \"19.2.0\"",
+        "new_string": "\"react\": \"19.2.0\",\n    \"zod\": \"4.1.0\""
+      }
+    },
+    {
+      "name": "package.json rewritten with its scripts reordered",
+      "tool": "Write",
+      "path": "package.json",
+      "input": {
+        "content": "{\n  \"name\": \"example-web\",\n  \"private\": true,\n  \"scripts\": { \"check:fast\": \"npm run lint\", \"lint\": \"eslint . --max-warnings=0\" },\n  \"dependencies\": { \"next\": \"16.3.7\", \"react\": \"19.2.0\" }\n}\n"
+      }
+    },
+    {
+      "name": "a new workspace package.json with scripts",
+      "tool": "Write",
+      "path": "packages/ui/package.json",
+      "input": {
+        "content": "{ \"name\": \"@example/ui\", \"scripts\": { \"test\": \"vitest\" } }\n"
+      }
+    },
+    {
+      "name": "a Composer requirement",
+      "tool": "Edit",
+      "path": "composer.json",
+      "input": {
+        "old_string": "\"laravel/framework\": \"^13.0\"",
+        "new_string": "\"laravel/framework\": \"^13.1\""
+      }
+    },
+    {
+      "name": "a normal section in CLAUDE.md",
+      "tool": "Edit",
+      "path": "CLAUDE.md",
+      "input": {
+        "old_string": "# Project notes\n",
+        "new_string": "# Project notes\n\n## Testing\n\nRun npm test.\n"
+      }
+    },
+    {
+      "name": "an Edit whose old_string is not in the file",
+      "tool": "Edit",
+      "path": "CLAUDE.md",
+      "input": {
+        "old_string": "no such text",
+        "new_string": "## Testing\n"
+      }
+    },
+    {
+      "name": "a doc page named after PHPStan",
+      "tool": "Edit",
+      "path": "docs/phpstan.md",
+      "input": {
+        "old_string": "# How PHPStan runs",
+        "new_string": "# How PHPStan runs in CI"
+      }
+    },
+    {
+      "name": "a helper named like an ESLint config",
+      "tool": "Write",
+      "path": "src/lib/eslint.config.helpers.ts",
+      "input": {
+        "content": "export {};\n"
+      }
+    },
+    {
+      "name": "personal Claude Code settings",
+      "tool": "Write",
+      "path": ".claude/settings.local.json",
+      "input": {
+        "content": "{}\n"
+      }
+    },
+    {
+      "name": "a notebook",
+      "tool": "NotebookEdit",
+      "path": "notebooks/report.ipynb",
+      "input": {
+        "cell_id": "cell-1",
+        "new_source": "print(1)",
+        "edit_mode": "replace"
+      }
+    },
+    {
+      "name": "permission rules in the local settings",
+      "tool": "Write",
+      "path": ".claude/settings.local.json",
+      "input": {
+        "content": "{\"permissions\": {\"allow\": [\"Bash(npm test)\"]}}\n"
+      }
+    },
+    {
+      "name": "a path alias in tsconfig.json",
+      "tool": "Edit",
+      "path": "tsconfig.json",
+      "files": {
+        "tsconfig.json": "{\n  \"compilerOptions\": { \"strict\": true, \"target\": \"ES2022\" }\n}\n"
+      },
+      "input": {
+        "old_string": "\"target\": \"ES2022\"",
+        "new_string": "\"target\": \"ES2022\", \"paths\": { \"@/*\": [\"./src/*\"] }"
+      }
+    },
+    {
+      "name": "workspace packages in pnpm-workspace.yaml",
+      "tool": "Write",
+      "path": "pnpm-workspace.yaml",
+      "input": {
+        "content": "packages:\n  - apps/*\n"
+      }
+    },
+    {
+      "name": "notes that mention the opt-out line outside a memory file",
+      "tool": "Write",
+      "path": "docs/opt-out.md",
+      "input": {
+        "content": "# Opting out\n\ncross-stack-standard: declined\n"
+      }
+    },
+    {
+      "name": "an ordinary .gitignore entry",
+      "tool": "Write",
+      "path": ".gitignore",
+      "input": {
+        "content": "node_modules/\n*.log\ndist/*\n"
+      }
+    }
+  ]
+}

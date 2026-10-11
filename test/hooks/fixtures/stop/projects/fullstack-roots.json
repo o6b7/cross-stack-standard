@@ -1,0 +1,31 @@
+{
+  "description": "A Laravel API in api/ and a web app in web/, named by trackRoots. The root package.json has a failing check:fast that must not run, because the root is not a track root.",
+  "files": {
+    ".cross-stack/standard.json": {
+      "version": "1.0.0",
+      "tracks": ["laravel", "web"],
+      "trackRoots": { "laravel": "api", "web": "web" }
+    },
+    "package.json": {
+      "name": "stop-monorepo",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check:fast": "node -e \"process.exit(7)\"" }
+    },
+    "api/composer.json": {
+      "name": "acme/stop-api",
+      "type": "project",
+      "scripts": { "check:fast": ["@php check.php"] }
+    },
+    "api/check.php": { "$fixture": "gate/check.php" },
+    "api/src/App.php": "<?php\n\nreturn 1;\n",
+    "web/package.json": {
+      "name": "stop-web",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check:fast": "node check.mjs" }
+    },
+    "web/check.mjs": { "$fixture": "gate/check.mjs" },
+    "web/src/app.js": "export const value = 1;\n"
+  }
+}

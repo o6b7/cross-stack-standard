@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "A Next.js app in apps/web that the manifest does not cover: tracks lists web, but trackRoots names no web root, so the web checks would run at the project root. The kit tool prints its check id and sub-check, not the rule id.",
+  "hosts": ["node"],
+  "expect": {
+    "idPattern": "^check-standard-config:schema \\S+:\\d+ /trackRoots/web: apps/web/package\\.json is a web manifest"
+  }
+}

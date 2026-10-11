@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "The Figma companion is asked to edit a Figma file: the PreToolUse hook answers ask.",
+  "hosts": [
+    "hook"
+  ],
+  "manifestOverlay": {
+    "companions": {
+      "figma": true
+    }
+  }
+}

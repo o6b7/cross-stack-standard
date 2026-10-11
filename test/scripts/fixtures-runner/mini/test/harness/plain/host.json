@@ -1,0 +1,34 @@
+{
+  "name": "plain",
+  "description": "Test host: a plain directory whose node_modules is hard-linked into each work directory.",
+  "setup": [["{node}", "-e", "require('node:fs').appendFileSync('setup-count.txt', 'x')"]],
+  "prepare": [["{node}", "-e", "require('node:fs').writeFileSync('prepared.txt', 'ok')"]],
+  "copy": {
+    "hardlink": ["node_modules"],
+    "detach": ["node_modules/dep/cache.json"],
+    "exclude": ["setup-count.txt", "*.log"]
+  },
+  "vars": {
+    "gateBin": "{repoRoot}/gate.mjs"
+  },
+  "env": {
+    "FIXTURE_HOST_ENV": "{hostDir}"
+  },
+  "gates": {
+    "script": {
+      "argv": [
+        "{node}",
+        "{gateBin}",
+        "{gateId}",
+        ["--discriminator", "{discriminator}"],
+        "--rule",
+        "{ruleId}",
+        ["--base", "{base}"],
+        ["--head", "{head}"]
+      ],
+      "env": {
+        "FIXTURE_GATE_KIND": "{gateKind}"
+      }
+    }
+  }
+}

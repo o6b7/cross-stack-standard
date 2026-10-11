@@ -1,0 +1,10 @@
+{
+  "version": "0.0.0",
+  "tracks": ["shared"],
+  "modules": {
+    "demo": {
+      "strict": false,
+      "level": 1
+    }
+  }
+}

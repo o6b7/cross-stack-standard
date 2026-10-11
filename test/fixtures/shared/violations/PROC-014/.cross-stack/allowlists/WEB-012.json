@@ -1,0 +1,11 @@
+{
+  "rule": "WEB-012",
+  "entries": [
+    {
+      "match": "src/legacy-list.tsx",
+      "reason": "The legacy list moves to server pagination with the next API release.",
+      "expires": "2000-01-01",
+      "owner": "maintainers"
+    }
+  ]
+}

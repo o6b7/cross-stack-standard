@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/main/schemas/fixture.schema.json",
+  "title": "Cross-Stack Standard fixture",
+  "description": "fixture.json in a fail-then-pass fixture directory: test/fixtures/<track>/clean/, test/fixtures/<track>/clean-overlays/<RULE-ID>/ or test/fixtures/<track>/violations/<RULE-ID>/. Every other file in the directory is copied onto the harness host. alsoFires and expect are only valid in a violation fixture.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["hosts"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "description": {
+      "description": "Reviewer note: what the fixture shows and why it violates or satisfies the rule.",
+      "type": "string",
+      "minLength": 1
+    },
+    "hosts": {
+      "description": "Harness hosts (test/harness/<name>/) the fixture runs on. A violation fixture runs once per host; clean layers must list every host their rules use.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/hostName"
+      }
+    },
+    "manifestOverlay": {
+      "description": "JSON Merge Patch (RFC 7396) applied to .cross-stack/standard.json in the work directory after this layer's files (the file is created when missing).",
+      "type": "object"
+    },
+    "base": {
+      "description": "Directory inside the fixture committed as the base commit. Needs a host with git.",
+      "$ref": "#/$defs/relativePath"
+    },
+    "head": {
+      "description": "Directory inside the fixture committed as the head commit. Needs a host with git.",
+      "$ref": "#/$defs/relativePath"
+    },
+    "commitMessages": {
+      "description": "Commit messages for the base and head commits.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "base": {
+          "type": "string",
+          "minLength": 1
+        },
+        "head": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "remove": {
+      "description": "Work-directory paths deleted after this layer is applied (for presence rules whose violation is a missing file).",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/relativePath"
+      }
+    },
+    "rename": {
+      "description": "Fixture file or directory to work-directory path, for names that cannot be committed as-is (for example .env or vendor/).",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/relativePath"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/relativePath"
+      }
+    },
+    "alsoFires": {
+      "description": "Other rule ids the violation fixture is expected to trigger. Any other id in the gate output fails the run.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/ruleId"
+      }
+    },
+    "expect": {
+      "description": "Custom expectations for the violation run.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "idPattern": {
+          "description": "JavaScript regular expression the gate output must match instead of the rule id (for tools that print only their own rule name). It must not match an empty output.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "$defs": {
+    "hostName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^(BE|WEB|MOB|SEC|I18N|UI|PROC|CI)-[0-9]{3}$"
+    },
+    "relativePath": {
+      "description": "Relative POSIX path: no leading slash, drive letter, backslash, empty segment, or '.'/'..' segment.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*\\\\)(?!.*//)(?!.*/$)(?!(?:.*/)?\\.\\.?(?:/|$)).+$"
+    }
+  }
+}

@@ -1,0 +1,474 @@
+{
+  "$comment": "Built-in protection list for the PreToolUse hook. \"paths\" globs are project-relative with / separators: ** matches zero or more directories, * matches within one path segment, ? matches one character, {a,b} matches either alternative; matching ignores letter case on Windows and macOS and is case-sensitive elsewhere, and \\ in a tool's path counts as /. An entry with \"jsonPointers\" protects only edits that change those locations of an existing JSON file; \"containment\": false means deleting or moving a directory that holds the entry's files does not count (they are reinstalled from a protected source). \"contentRules\" protect edits whose result adds text matching \"addedPattern\" (compiled with the u flag plus any \"flags\") to a file matching \"globs\" (project-relative) or \"homeGlobs\" (relative to the user's home directory); \"matcher\": \"opt-out-line\" also catches an edit that makes the file state the opt-out line as the opt-out guard reads it. \"commands\" and \"pathCommands\" without \"matcher\" are JavaScript regular expressions, compiled with the u flag plus any \"flags\", tested against the raw Bash or PowerShell command and against a normalised form (quotes and escapes removed, segments split at ;, &&, ||, |, & and line breaks, nested command strings such as bash -c or pwsh -Command parsed too); they must run in linear time (a quantified gap is bounded and never followed by another unbounded gap). An optional \"words\" list is matched as a sequence of words within one segment, each word by its own expression. An entry with \"matcher\" is checked by a built-in check on the parsed command and its \"pattern\" only documents the simplest form it catches: \"shell-write\" (writing, moving, linking, restoring or patching a protected file), \"shell-delete\" (deleting, or changing the mode of, a protected file or a directory that holds one), \"delete-operand\" (a verb from \"verbs\" whose operand's file name matches \"operandPattern\"), \"shell-write-content\" (a write to a file matching \"targetGlobs\" whose content shows \"evidencePattern\" in the command, comes from a source file holding it — the opt-out line for \"sourceMatcher\": \"opt-out-line\", \"sourcePattern\" otherwise — or, with \"opaque\", comes from a source the hook cannot read; \"targetEvidence\" also counts evidence already in the target), \"git-hook-skip\" and \"git-force-push\" (git invocations read with their global options and aliases). \"effect\": \"opt-out\" marks entries that turn the Standard off. A command that an \"allowCommands\" pattern matches as a whole is not inspected. Projects extend the lists with hooks.preToolUse.protect and hooks.preToolUse.protectCommands in .cross-stack/standard.json.",
+  "version": 1,
+  "paths": [
+    {
+      "id": "cross-stack-config",
+      "description": "The Standard's manifest, allowlists, baselines and vendored gates",
+      "globs": ["**/.cross-stack/**"]
+    },
+    {
+      "id": "phpstan-config",
+      "description": "PHPStan configuration and baselines",
+      "globs": [
+        "**/phpstan.neon",
+        "**/phpstan.neon.dist",
+        "**/phpstan.dist.neon",
+        "**/phpstan-baseline.neon",
+        "**/phpstan-baseline.php"
+      ]
+    },
+    {
+      "id": "eslint-config",
+      "description": "ESLint configuration",
+      "globs": [
+        "**/eslint.config.{js,mjs,cjs,ts,mts,cts}",
+        "**/.eslintrc",
+        "**/.eslintrc.{js,cjs,json,yml,yaml}"
+      ]
+    },
+    {
+      "id": "eslint-suppressions",
+      "description": "ESLint bulk suppressions (baseline)",
+      "globs": ["**/eslint-suppressions.json"]
+    },
+    {
+      "id": "dependency-cruiser-config",
+      "description": "dependency-cruiser configuration and known violations",
+      "globs": [
+        "**/.dependency-cruiser.{js,cjs,mjs,ts,cts,mts,json}",
+        "**/.dependency-cruiser-known-violations.json"
+      ]
+    },
+    {
+      "id": "prettier-config",
+      "description": "Prettier configuration and ignore file",
+      "globs": [
+        "**/.prettierrc",
+        "**/.prettierrc.{json,json5,yaml,yml,toml,js,cjs,mjs,ts,cts,mts}",
+        "**/prettier.config.{js,cjs,mjs,ts,cts,mts}",
+        "**/.prettierignore"
+      ]
+    },
+    {
+      "id": "pint-config",
+      "description": "Laravel Pint configuration",
+      "globs": ["**/pint.json"]
+    },
+    {
+      "id": "jscpd-config",
+      "description": "jscpd configuration and baseline",
+      "globs": ["**/.jscpd.json", "**/.jscpd-baseline.json"]
+    },
+    {
+      "id": "knip-config",
+      "description": "knip configuration",
+      "globs": [
+        "**/knip.json",
+        "**/knip.jsonc",
+        "**/.knip.json",
+        "**/.knip.jsonc",
+        "**/knip.ts",
+        "**/knip.js",
+        "**/knip.config.ts",
+        "**/knip.config.js"
+      ]
+    },
+    {
+      "id": "architecture-tests",
+      "description": "Architecture tests",
+      "globs": [
+        "**/tests/Unit/ArchTest.php",
+        "**/tests/Arch/**",
+        "**/*.arch.test.{ts,tsx,js,jsx,mjs,cjs}"
+      ]
+    },
+    {
+      "id": "test-runner-config",
+      "description": "Test runner configuration, including coverage thresholds",
+      "globs": [
+        "**/phpunit.xml",
+        "**/phpunit.xml.dist",
+        "**/phpunit.dist.xml",
+        "**/vitest.config.{ts,mts,cts,js,mjs,cjs}",
+        "**/jest.config.{js,ts,mjs,cjs,json}"
+      ]
+    },
+    {
+      "id": "package-scripts",
+      "description": "npm scripts and tool settings kept in package.json",
+      "globs": ["**/package.json"],
+      "jsonPointers": ["/scripts", "/knip", "/commitlint", "/prettier"]
+    },
+    {
+      "id": "composer-scripts",
+      "description": "Composer scripts and audit policy",
+      "globs": ["**/composer.json"],
+      "jsonPointers": ["/scripts", "/config/audit", "/config/policy"]
+    },
+    {
+      "id": "ci-workflows",
+      "description": "GitHub Actions workflows",
+      "globs": [".github/workflows/**"]
+    },
+    {
+      "id": "codeowners",
+      "description": "Code owners (the human review backstop)",
+      "globs": ["CODEOWNERS", ".github/CODEOWNERS", "docs/CODEOWNERS"]
+    },
+    {
+      "id": "lefthook-config",
+      "description": "lefthook configuration, including local overrides",
+      "globs": [
+        "**/lefthook.{yml,yaml,toml,json,jsonc}",
+        "**/.lefthook.{yml,yaml,toml,json,jsonc}",
+        "**/.config/lefthook.{yml,yaml,toml,json,jsonc}",
+        "**/lefthook-local.{yml,yaml,toml,json,jsonc}",
+        "**/.lefthook-local.{yml,yaml,toml,json,jsonc}",
+        "**/.config/lefthook-local.{yml,yaml,toml,json,jsonc}"
+      ]
+    },
+    {
+      "id": "git-hooks",
+      "description": "The git hooks installed in the repository",
+      "globs": [".git/hooks/**"]
+    },
+    {
+      "id": "git-config",
+      "description": "The repository's git configuration (hooks path, aliases, includes, local ignore and sparse-checkout rules)",
+      "globs": [
+        ".git/config",
+        ".git/config.worktree",
+        ".git/worktrees/*/config.worktree",
+        ".git/info/exclude",
+        ".git/info/sparse-checkout"
+      ]
+    },
+    {
+      "id": "commitlint-config",
+      "description": "commitlint configuration",
+      "globs": [
+        "**/.commitlintrc",
+        "**/.commitlintrc.{json,yaml,yml,js,cjs,mjs,ts,cts,mts}",
+        "**/commitlint.config.{js,cjs,mjs,ts,cts,mts}"
+      ]
+    },
+    {
+      "id": "dependency-update-config",
+      "description": "Renovate and Dependabot configuration",
+      "globs": [
+        "renovate.json",
+        "renovate.json5",
+        ".github/renovate.json",
+        ".github/renovate.json5",
+        ".gitlab/renovate.json",
+        ".gitlab/renovate.json5",
+        ".renovaterc",
+        ".renovaterc.json",
+        ".renovaterc.json5",
+        ".github/dependabot.yml",
+        ".github/dependabot.yaml"
+      ]
+    },
+    {
+      "id": "gitleaks-config",
+      "description": "gitleaks configuration and ignore list",
+      "globs": ["**/.gitleaks.toml", "**/.gitleaksignore"]
+    },
+    {
+      "id": "package-manager-config",
+      "description": "Package manager settings that change how scripts run (script shell, Node.js options, pnpm hooks)",
+      "globs": [
+        "**/.npmrc",
+        "**/.yarnrc",
+        "**/.yarnrc.yml",
+        "**/bunfig.toml",
+        "**/.pnpmfile.{cjs,mjs}"
+      ]
+    },
+    {
+      "id": "claude-settings",
+      "description": "Claude Code project settings that hold the Standard's permission rules",
+      "globs": [".claude/settings.json"]
+    },
+    {
+      "id": "installed-gate-packages",
+      "description": "The Standard's gate packages as installed from .cross-stack/vendor",
+      "globs": ["**/node_modules/@cross-stack-standard/**", "**/vendor/o6b7/**"],
+      "containment": false
+    }
+  ],
+  "contentRules": [
+    {
+      "id": "opt-out-line",
+      "description": "Adds the opt-out line (cross-stack-standard: declined)",
+      "effect": "opt-out",
+      "globs": ["**/CLAUDE.md", "**/CLAUDE.local.md"],
+      "addedPattern": "cross-stack-standard[\\s`*_]*:[\\s`*_]*declined",
+      "flags": "i",
+      "matcher": "opt-out-line"
+    },
+    {
+      "id": "manifest-disabled",
+      "description": "Sets \"disabled\": true in the Standard's configuration",
+      "effect": "opt-out",
+      "globs": ["**/.cross-stack/**"],
+      "addedPattern": "\"disabled\"\\s*:\\s*true\\b"
+    },
+    {
+      "id": "claude-settings-switch",
+      "description": "Turns the Standard's hooks off through Claude Code settings (a CROSS_STACK_STANDARD_ variable, disableAllHooks, allowManagedHooksOnly or the plugin set to false)",
+      "effect": "opt-out",
+      "globs": ["**/.claude/settings.json", "**/.claude/settings.local.json"],
+      "homeGlobs": [".claude/settings.json", ".claude/settings.local.json"],
+      "addedPattern": "CROSS_STACK_STANDARD_(?!DEBUG\\b)[A-Z0-9_]+|\"disableAllHooks\"\\s*:\\s*true|\"allowManagedHooksOnly\"\\s*:\\s*true|\"cross-stack-standard@[^\"\\n]{0,100}\"\\s*:\\s*false"
+    },
+    {
+      "id": "pnpm-script-settings",
+      "description": "Changes how pnpm runs scripts (script shell, shell emulator, Node.js options, ignored scripts)",
+      "globs": ["**/pnpm-workspace.yaml"],
+      "addedPattern": "\\b(?:script-?shell|shell-?emulator|node-?options|ignore-?scripts)\\b",
+      "flags": "i"
+    },
+    {
+      "id": "typescript-strictness",
+      "description": "Turns off TypeScript strictness checks",
+      "globs": ["**/tsconfig.json", "**/tsconfig.*.json"],
+      "addedPattern": "\"(?:strict\\w*|noImplicit\\w+|noUnchecked\\w+|noPropertyAccessFromIndexSignature|exactOptionalPropertyTypes|noFallthroughCasesInSwitch|useUnknownInCatchVariables|alwaysStrict)\"\\s*:\\s*false"
+    },
+    {
+      "id": "gitignore-everything",
+      "description": "Makes .gitignore ignore every file, which hides changes from the checks",
+      "globs": ["**/.gitignore"],
+      "addedPattern": "^[ \\t]*/?\\*{1,2}(?:/\\*{1,2})?[ \\t]*\\r?$",
+      "flags": "m"
+    }
+  ],
+  "commands": [
+    {
+      "id": "git-no-verify",
+      "description": "Skips git hooks",
+      "pattern": "(?<![\\w-])--no-verify(?![\\w-])"
+    },
+    {
+      "id": "git-commit-short-n",
+      "description": "Skips git hooks",
+      "pattern": "\\bgit\\b[^;&|\\n]{0,200}\\scommit\\b[^;&|\\n]{0,200}\\s-(?!-)[A-Za-z]*n",
+      "matcher": "git-hook-skip"
+    },
+    {
+      "id": "git-push-force",
+      "description": "Force-pushes, which replaces history that other people and CI checks have seen",
+      "pattern": "\\bgit\\b[^;&|\\n]{0,200}\\spush\\b[^;&|\\n]{0,200}\\s(?:--force(?:-with-lease|-if-includes)?(?![\\w-])|-(?!-)[A-Za-z]*f[A-Za-z]*(?![\\w-])|\\+[^\\s;&|]+)",
+      "matcher": "git-force-push"
+    },
+    {
+      "id": "lefthook-disabled",
+      "description": "Turns lefthook off",
+      "pattern": "\\bLEFTHOOK[\"']?(?:\\s*[=,]\\s*|\\s+)[\"']?(?:0|false)\\b",
+      "flags": "i"
+    },
+    {
+      "id": "lefthook-environment",
+      "description": "Changes which lefthook jobs, config or binary run",
+      "pattern": "\\bLEFTHOOK_(?:EXCLUDE|CONFIG|BIN)\\b"
+    },
+    {
+      "id": "lefthook-uninstall",
+      "description": "Removes the installed git hooks",
+      "pattern": "\\blefthook\\b[^;&|\\n]{0,200}\\suninstall\\b",
+      "words": ["\\blefthook\\b", "^uninstall$"]
+    },
+    {
+      "id": "git-hooks-path",
+      "description": "Points git at a different hooks directory",
+      "pattern": "hooksPath\\b",
+      "flags": "i"
+    },
+    {
+      "id": "git-config-override",
+      "description": "Points git at other configuration (a global or system config file, an include or an alias from the environment)",
+      "pattern": "\\bGIT_CONFIG_(?:GLOBAL|SYSTEM|NOSYSTEM|PARAMETERS|COUNT)[\"']?\\s*(?:=(?!=)|,)|\\bGIT_CONFIG_KEY_\\d+[\"']?\\s*=\\s*[\"']?(?:alias|include)|\\bsetx\\s+[\"']?GIT_CONFIG_|\\binclude(?:If\\.[^\\s=]{0,200})?\\.path\\b|--config-env[=\\s]\\s*[\"']?(?:alias|include)",
+      "flags": "i"
+    },
+    {
+      "id": "git-index-steering",
+      "description": "Hides changes from git (assume-unchanged, skip-worktree, sparse checkout or another excludes file), so the checks do not see them",
+      "pattern": "--(?:no-)?assume-unchanged\\b|--(?:no-)?skip-worktree\\b|\\bsparse-checkout\\b|\\bcore\\.excludesFile\\b(?![\"']?[ \\t]*(?:[;&|\\n)]|$))",
+      "flags": "i"
+    },
+    {
+      "id": "gitleaks-inline-allow",
+      "description": "Adds an inline gitleaks allow comment",
+      "pattern": "#gitleaks:allow",
+      "flags": "i"
+    },
+    {
+      "id": "gitleaks-config-environment",
+      "description": "Replaces the gitleaks configuration",
+      "pattern": "\\bGITLEAKS_CONFIG\\w*"
+    },
+    {
+      "id": "gitleaks-baseline",
+      "description": "Scans for secrets against a baseline of accepted findings",
+      "pattern": "\\bgitleaks\\b[^;&|\\n]{0,200}\\s--baseline-path\\b",
+      "words": ["\\bgitleaks\\b", "^--baseline-path\\b"]
+    },
+    {
+      "id": "test-do-not-fail-on",
+      "description": "Stops the test runner failing on incomplete, risky, skipped or deprecated tests",
+      "pattern": "--do-not-fail-on-[a-z-]+"
+    },
+    {
+      "id": "composer-no-blocking",
+      "description": "Installs packages that Composer's security policy blocks",
+      "pattern": "--no-(?:security-)?blocking\\b|\\bCOMPOSER_NO_(?:BLOCKING|SECURITY_BLOCKING)\\b"
+    },
+    {
+      "id": "composer-no-audit",
+      "description": "Skips or relaxes Composer's security audit",
+      "pattern": "\\bcomposer\\b[^;&|\\n]{0,200}\\s--no-audit\\b|\\bCOMPOSER_NO_AUDIT\\b|\\bCOMPOSER_AUDIT_ABANDONED\\s*=\\s*[\"']?(?:ignore|report)\\b",
+      "words": ["\\bcomposer\\b", "^--no-audit$"]
+    },
+    {
+      "id": "composer-audit-policy",
+      "description": "Changes Composer's audit or security-blocking policy",
+      "pattern": "\\bcomposer\\b[^;&|\\n]{0,200}\\sconfig\\b[^;&|\\n]{0,40}\\s[\"']?(?:policy|audit)\\b",
+      "words": ["\\bcomposer\\b", "^config$", "^(?:policy|audit)\\b"]
+    },
+    {
+      "id": "npm-audit-level-none",
+      "description": "Makes the dependency audit pass whatever it finds",
+      "pattern": "audit[-_]level(?:\\s*=\\s*|\\s+)[\"']?none\\b",
+      "flags": "i"
+    },
+    {
+      "id": "npm-script-shell-config",
+      "description": "Changes how npm runs scripts (script-shell, node-options, ignore-scripts or shell-emulator)",
+      "pattern": "\\bnpm_config_(?:script_shell|node_options|ignore_scripts|shell_emulator)\\b|\\b(?:npm|pnpm|yarn)\\s+(?:config\\s+)?set\\s+[\"']?(?:script-shell|node-options|ignore-scripts|shell-emulator)\\b",
+      "flags": "i"
+    },
+    {
+      "id": "package-scripts-cli",
+      "description": "Changes the npm scripts or tool settings in package.json",
+      "pattern": "\\bnpm\\b[^;&|\\n]{0,200}\\spkg\\s+(?:set|delete)\\b[^;&|\\n]{0,40}\\s[\"']?(?:scripts|knip|commitlint|prettier)\\b",
+      "words": [
+        "\\bnpm\\b",
+        "^pkg$",
+        "^(?:set|delete)$",
+        "^(?:scripts|knip|commitlint|prettier)\\b"
+      ]
+    },
+    {
+      "id": "baseline-regenerate",
+      "description": "Regenerates a baseline or suppression file outside its baseline:update script",
+      "pattern": "--generate-baseline\\b|\\bphpstan\\b[^;&|\\n]{0,200}\\s-b(?:\\s|=|$)|--suppress-(?:all|rule)\\b|--update-baseline\\b|(?:--output-type|-T)(?:=|\\s+)baseline\\b",
+      "words": ["\\bphpstan\\b", "^-b(?:=.*)?$"]
+    },
+    {
+      "id": "baseline-delete",
+      "description": "Deletes a baseline or suppression file",
+      "pattern": "(?<![\\w.-])(?:rm|del|erase|unlink|shred|truncate|ri|Remove-Item|Clear-Content|clc|git\\s+rm)\\b[^;&|\\n]{0,200}?(?:[\\w.-]*baseline[\\w.-]*\\.(?:neon|json|jsonc|ya?ml|xml|txt)|[\\w.-]*phpstan[\\w.-]*baseline[\\w.-]*\\.php|eslint-suppressions\\.json|known-violations\\.json)(?![\\w.-])",
+      "flags": "i",
+      "matcher": "delete-operand",
+      "verbs": [
+        "rm",
+        "del",
+        "erase",
+        "unlink",
+        "shred",
+        "truncate",
+        "ri",
+        "Remove-Item",
+        "Clear-Content",
+        "clc"
+      ],
+      "operandPattern": "^(?=[\\w.-]*baseline)[\\w.-]*\\.(?:neon|json|jsonc|ya?ml|xml|txt)$|^[\\w.-]*phpstan[\\w.-]*baseline[\\w.-]*\\.php$|^eslint-suppressions\\.json$|known-violations\\.json$"
+    },
+    {
+      "id": "standard-switch-environment",
+      "description": "Sets a variable that switches the Standard's hooks off or changes their settings",
+      "effect": "opt-out",
+      "pattern": "\\bCROSS_STACK_STANDARD_(?!DEBUG\\b)[A-Z0-9_]+[\"']?\\s*(?:=(?!=)|,|:(?![-=?+]))|\\bsetx\\s+[\"']?CROSS_STACK_STANDARD_(?!DEBUG\\b)[A-Z0-9_]+|\\bSet-Item\\s+(?:-Path\\s+)?[\"']?env:[\\\\/]?CROSS_STACK_STANDARD_(?!DEBUG\\b)[A-Z0-9_]+",
+      "flags": "i"
+    },
+    {
+      "id": "plugin-disable",
+      "description": "Turns the Cross-Stack Standard plugin off",
+      "effect": "opt-out",
+      "pattern": "\\bplugins?\\s+(?:disable|uninstall|remove|rm)\\b[^;&|\\n]{0,200}?cross-stack-standard",
+      "words": [
+        "\\bclaude\\b",
+        "^plugins?$",
+        "^(?:disable|uninstall|remove|rm)$",
+        "cross-stack-standard"
+      ]
+    },
+    {
+      "id": "claude-settings-switch-shell",
+      "description": "Turns the Standard's hooks off through Claude Code settings (disableAllHooks, allowManagedHooksOnly or the plugin set to false)",
+      "effect": "opt-out",
+      "pattern": "\\bdisableAllHooks\\b|\\ballowManagedHooksOnly\\b|cross-stack-standard@[\\w.-]{0,100}[\"'\\\\]{0,2}\\]?\\s*[:=]\\s*false\\b",
+      "flags": "i"
+    },
+    {
+      "id": "plugin-state",
+      "description": "Changes the Standard's plugin files or stored state (the plugin cache, CLAUDE_PLUGIN_DATA or the Stop gate's fingerprint)",
+      "pattern": "\\bCLAUDE_PLUGIN_DATA\\b|\\.claude[\\\\/]plugins[\\\\/](?:data|cache|marketplaces)[\\\\/][^\\s\"';&|]{0,200}cross-stack-standard|\\bfingerprint\\.mjs\\b"
+    },
+    {
+      "id": "gitignore-everything-shell",
+      "description": "Makes .gitignore ignore every file, which hides changes from the checks",
+      "pattern": "(?:^|\\s)[\"']?/?\\*{1,2}[\"']?\\s*>{1,2}\\s*\\S*\\.gitignore\\b"
+    },
+    {
+      "id": "opt-out-line-shell",
+      "description": "Writes the opt-out line (cross-stack-standard: declined) into a CLAUDE.md file",
+      "effect": "opt-out",
+      "pattern": "^(?=[\\s\\S]*cross-stack-standard[\\s`*_]*:[\\s`*_]*declined)(?=[\\s\\S]*(?:(?<![<>&=-])>{1,2}(?!&)|\\b(?:tee|Tee-Object)\\b|\\b(?:Add|Set)-Content\\b|\\bOut-File\\b|\\bsed\\b[^;&|\\n]*\\s-(?:[A-Za-z]*i|-in-place)|\\bperl\\b[^;&|\\n]*\\s-[A-Za-z]*i|\\b(?:New-Item|ni)\\b)[^;&|\\n]*CLAUDE[\\w.-]*\\.md)",
+      "flags": "i",
+      "matcher": "shell-write-content",
+      "targetGlobs": ["**/CLAUDE.md", "**/CLAUDE.local.md"],
+      "evidencePattern": "declined|cross-stack-standard[^\\w\\n]{0,16}:",
+      "evidenceFlags": "i",
+      "sourceMatcher": "opt-out-line",
+      "opaque": true,
+      "targetEvidence": true
+    },
+    {
+      "id": "opt-out-manifest-shell",
+      "description": "Writes \"disabled\": true into the Standard's configuration",
+      "effect": "opt-out",
+      "pattern": "^(?=[\\s\\S]*[\"']?disabled[\"']?\\s*[:=]\\s*\\$?true\\b)(?=[\\s\\S]*(?:(?<![<>&=-])>{1,2}(?!&)|\\b(?:tee|Tee-Object)\\b|\\b(?:Add|Set)-Content\\b|\\bOut-File\\b|\\bsed\\b[^;&|\\n]*\\s-(?:[A-Za-z]*i|-in-place)|\\bperl\\b[^;&|\\n]*\\s-[A-Za-z]*i|\\b(?:New-Item|ni|cp|mv|Copy-Item|Move-Item)\\b)[^;&|\\n]*\\.cross-stack[\\\\/])",
+      "flags": "i",
+      "matcher": "shell-write-content",
+      "targetGlobs": ["**/.cross-stack/**"],
+      "evidencePattern": "[\"']?disabled[\"']?\\s*[:=]\\s*\\$?true\\b",
+      "evidenceFlags": "i",
+      "sourcePattern": "\"disabled\"\\s*:\\s*true\\b"
+    },
+    {
+      "id": "write-to-protected-path",
+      "description": "Writes, moves or links a protected file (an in-place edit, a redirect, a copy, a patch, a restore from git or a script)",
+      "pattern": "\\bsed\\b[^;&|\\n]*\\s-(?:[A-Za-z]*i|-in-place)|\\bperl\\b[^;&|\\n]*\\s-[A-Za-z]*i|(?<![<>&=-])>{1,2}(?!&)|\\b(?:tee|Tee-Object|sponge)\\b|\\b(?:Set|Add|Clear)-Content\\b|\\bOut-File\\b|\\b(?:New-Item|ni)\\b|\\[(?:System\\.)?IO\\.File\\]::(?:Write|Append|Create|Copy|Move|Replace|Delete)\\w*|(?<![\\w.-])(?:cp|copy|cpi|mv|move|mi|ln|truncate|Copy-Item|Move-Item|Rename-Item|ren|rni)\\b",
+      "flags": "i",
+      "matcher": "shell-write"
+    }
+  ],
+  "pathCommands": [
+    {
+      "id": "delete-protected-path",
+      "description": "Deletes a protected file, or a directory that holds one, or changes its permissions",
+      "pattern": "(?<![\\w.-])(?:(?:rm|rmdir|del|erase|rd|ri|unlink|shred|chmod|Remove-Item)\\b|git\\s+rm\\b|find\\b[^;&|\\n]*\\s-(?:delete|exec(?:dir)?\\s+(?:rm|mv|shred|truncate|chmod))\\b)",
+      "flags": "i",
+      "matcher": "shell-delete"
+    }
+  ],
+  "allowCommands": [
+    {
+      "id": "baseline-update-script",
+      "description": "A sanctioned <tool>:baseline:update script, which regenerates the baseline and fails when it grows",
+      "pattern": "^\\s*(?:npm\\s+run(?:-script)?|pnpm(?:\\s+run)?|yarn(?:\\s+run)?|bun\\s+run|composer(?:\\s+run(?:-script)?)?)\\s+[a-z][a-z0-9-]*:baseline:update\\s*$"
+    }
+  ]
+}

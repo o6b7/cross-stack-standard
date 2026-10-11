@@ -1,0 +1,7 @@
+{
+  "hosts": ["repo"],
+  "head": "head",
+  "commitMessages": {
+    "head": "feat: VIOLATION sneaky change"
+  }
+}

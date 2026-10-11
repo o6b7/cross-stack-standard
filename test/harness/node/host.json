@@ -1,0 +1,20 @@
+{
+  "name": "node",
+  "description": "A plain Node.js project with no dependencies, for script gates. The gate runs the kit's dependency-free cross-stack binary on the work directory (--root); exit 1 is a finding, exit 2 a usage or internal error.",
+  "setup": [],
+  "prepare": [],
+  "copy": {
+    "hardlink": [],
+    "detach": [],
+    "exclude": []
+  },
+  "vars": {
+    "kitBin": "{repoRoot}/plugins/cross-stack-standard/templates/shared/cross-stack/bin/cross-stack.mjs"
+  },
+  "gates": {
+    "script": {
+      "argv": ["{node}", "{kitBin}", "{gateId}", ["{discriminator}"], "--root", "{workdir}"],
+      "failExitCodes": [1]
+    }
+  }
+}

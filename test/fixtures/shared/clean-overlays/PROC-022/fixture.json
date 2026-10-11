@@ -1,0 +1,5 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "The project's check:fast script (a syntax check of src/app.mjs) passes when the agent stops: the Stop hook lets the stop through.",
+  "hosts": ["hook"]
+}

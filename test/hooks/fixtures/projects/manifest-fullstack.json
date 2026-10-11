@@ -1,0 +1,40 @@
+{
+  "description": "An adopted project: the manifest is authoritative for tracks, profile, tier and modules.",
+  "files": {
+    ".cross-stack/standard.json": {
+      "version": "1.0.0",
+      "tracks": [
+        "web",
+        "laravel"
+      ],
+      "profile": "next",
+      "tier": 2,
+      "modules": {
+        "api-contract": true,
+        "i18n": {
+          "enabled": true
+        },
+        "tenancy": {
+          "enabled": false
+        }
+      },
+      "locales": [
+        "en",
+        "ar"
+      ]
+    },
+    "api/composer.json": {
+      "name": "acme/api",
+      "require": {
+        "laravel/framework": "^13.0"
+      }
+    },
+    "web/package.json": {
+      "name": "web",
+      "dependencies": {
+        "next": "16.3.6",
+        "react": "19.2.0"
+      }
+    }
+  }
+}

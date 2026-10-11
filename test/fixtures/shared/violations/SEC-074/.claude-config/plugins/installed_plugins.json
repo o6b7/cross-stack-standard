@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "plugins": {
+    "chrome-devtools-mcp@cross-stack-standard": [
+      {
+        "scope": "user",
+        "version": "1.10.1",
+        "gitCommitSha": "e52c6b59b476c5e04d8dd9fd4bd017ba3b3d65df"
+      }
+    ]
+  }
+}

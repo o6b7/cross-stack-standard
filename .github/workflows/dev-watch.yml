@@ -1,0 +1,226 @@
+# Early-warning checks on every push to dev (and on demand). None of these jobs is a required
+# check: they watch the outside world (dead links, stale verified versions, upstream releases)
+# rather than the change itself. Scheduled copies of the same checks start working once a
+# schedule exists on the default branch; GitHub runs schedules only from the default branch.
+name: Dev watch
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NODE_VERSION: "24"
+  STALE_AFTER_DAYS: "90"
+
+jobs:
+  links:
+    name: links (lychee)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install lychee (pinned, checksum-verified)
+        run: node scripts/install-tool.mjs lychee --dest "$RUNNER_TEMP/tools" --github-path
+
+      - name: Check links in tracked Markdown
+        env:
+          # Read-only token: raises GitHub's rate limit for github.com links.
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          inputs="$RUNNER_TEMP/markdown-files.txt"
+          git ls-files -- '*.md' > "$inputs"
+          report="$RUNNER_TEMP/lychee.md"
+          # Local-only addresses (localhost, private and link-local ranges) and placeholder
+          # domains are never reachable from CI. Links to tags and releases that do not exist
+          # yet (compare views, tagged raw files) are excluded until the release creates them.
+          status=0
+          lychee \
+            --no-progress \
+            --exclude-all-private \
+            --exclude '^https?://([a-z0-9-]+\.)*example\.(com|org|net)([/:?#]|$)' \
+            --exclude '^https://github\.com/o6b7/cross-stack-standard/(compare|releases/tag)/' \
+            --exclude '^https://raw\.githubusercontent\.com/o6b7/cross-stack-standard/v[0-9]' \
+            --max-retries 3 \
+            --retry-wait-time 5 \
+            --timeout 30 \
+            --accept '200..=299,429' \
+            --root-dir "$GITHUB_WORKSPACE" \
+            --format markdown \
+            --output "$report" \
+            --files-from "$inputs" || status=$?
+          if [ -f "$report" ]; then cat "$report" >> "$GITHUB_STEP_SUMMARY"; fi
+          exit "$status"
+
+  staleness:
+    name: verified-versions staleness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      CROSS_STACK_STANDARD_BRAND_KEY: ${{ secrets.CROSS_STACK_STANDARD_BRAND_KEY }}
+    outputs:
+      stale: ${{ steps.scan.outputs.stale }}
+      publishable: ${{ steps.guard.outputs.publishable }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Find rows verified more than the allowed number of days ago, or never
+        id: scan
+        run: |
+          mkdir -p "$RUNNER_TEMP/staleness"
+          node --input-type=module - <<'EOF'
+          import { appendFileSync, readFileSync, writeFileSync } from "node:fs";
+          const file = "docs/maintainers/verified-versions.md";
+          // A summary table whose rows repeat values dated in the domain tables.
+          const SUMMARY_SECTIONS = new Set(["Key pins at a glance"]);
+          const maxAge = Number(process.env.STALE_AFTER_DAYS);
+          const now = Date.now();
+          const stale = [];
+          const undated = [];
+          const lines = readFileSync(file, "utf8").split("\n");
+          const cellsOf = (line) =>
+            line.split(/(?<!\\)\|/).slice(1, -1).map((cell) => cell.trim());
+          const isSeparator = (line) =>
+            line.startsWith("|") && cellsOf(line).every((cell) => /^:?-{3,}:?$/.test(cell));
+          const label = (text) => (text.length > 100 ? `${text.slice(0, 99)}…` : text);
+          let section = "";
+          let subsection = "";
+          lines.forEach((line, index) => {
+            if (line.startsWith("## ")) {
+              section = line.slice(3).trim();
+              subsection = "";
+            }
+            if (line.startsWith("### ")) subsection = line.slice(4).trim();
+            if (!line.startsWith("|") || isSeparator(line)) return;
+            if (isSeparator(lines[index + 1] ?? "")) return; // a header row
+            if (SUMMARY_SECTIONS.has(section)) return;
+            const cells = cellsOf(line);
+            const where = subsection ? `${section} / ${subsection}` : section;
+            const date = cells.find((cell) => /^\d{4}-\d{2}-\d{2}$/.test(cell));
+            if (!date) {
+              undated.push(`| ${label(cells[0])} | ${where} | ${index + 1} |`);
+              return;
+            }
+            const age = Math.floor((now - Date.parse(`${date}T00:00:00Z`)) / 86_400_000);
+            if (age <= maxAge) return;
+            stale.push(`| ${label(cells[0])} | ${where} | ${date} | ${age} | ${index + 1} |`);
+          });
+          const out = `${process.env.RUNNER_TEMP}/staleness/staleness.md`;
+          writeFileSync(
+            out,
+            [
+              `Rows in \`${file}\` last verified more than ${maxAge} days ago. Re-verify each`,
+              "value against its official source and update the value, source and date together.",
+              "",
+              "| Item | Section | Verified on | Age (days) | Line |",
+              "| --- | --- | --- | --- | --- |",
+              ...stale,
+              "",
+              "Rows with no verification date. Verify each one against its official source, then",
+              "record the date (or move the row out of the unverified section).",
+              "",
+              "| Item | Section | Line |",
+              "| --- | --- | --- |",
+              ...undated,
+              "",
+            ].join("\n"),
+          );
+          appendFileSync(process.env.GITHUB_OUTPUT, `stale=${stale.length + undated.length > 0}\n`);
+          console.log(`${stale.length} row(s) older than ${maxAge} days; ${undated.length} row(s) without a date`);
+          EOF
+
+      - name: Brand guard on the report
+        id: guard
+        if: steps.scan.outputs.stale == 'true'
+        run: |
+          if [ -z "$CROSS_STACK_STANDARD_BRAND_KEY" ]; then
+            echo "::notice title=Staleness issue not published::The brand-guard key is not available; the report stays in this run's log."
+            cat "$RUNNER_TEMP/staleness/staleness.md"
+            echo "publishable=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          report="$RUNNER_TEMP/staleness/staleness.md"
+          node scripts/check-brand-leak.mjs --stdin --label "staleness report" < "$report"
+          node scripts/check-narrative.mjs --stdin --label "staleness report" < "$report"
+          echo "publishable=true" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the report
+        if: steps.guard.outputs.publishable == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: staleness-report
+          path: ${{ runner.temp }}/staleness/staleness.md
+          if-no-files-found: error
+          retention-days: 7
+
+  staleness-issue:
+    name: staleness issue
+    needs: staleness
+    if: needs.staleness.outputs.stale == 'true' && needs.staleness.outputs.publishable == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    # The only job with write access; it runs no repository code.
+    permissions:
+      actions: read
+      issues: write
+    steps:
+      - name: Open or update the staleness issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh run download "$RUN_ID" --name staleness-report --dir "$RUNNER_TEMP/report"
+          body="$RUNNER_TEMP/report/staleness.md"
+          title="verified-versions.md has stale or undated entries"
+          number="$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file "$body"
+            echo "Updated issue #$number"
+          else
+            gh issue create --title "$title" --body-file "$body"
+          fi
+
+  next-floor-watch:
+    name: Next.js floor watch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Placeholder
+        run: echo "::notice title=Next.js floor watch::Placeholder. The web track adds the check that the Next.js security floor is still the latest patched release."
+
+  eslint-10-canary:
+    name: ESLint 10 canary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Placeholder
+        run: echo "::notice title=ESLint 10 canary::Placeholder. The web track adds a run of the shipped ESLint configs against the latest ESLint 10 release."

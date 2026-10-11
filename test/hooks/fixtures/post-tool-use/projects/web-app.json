@@ -1,0 +1,29 @@
+{
+  "description": "A web app with a flat ESLint config and Prettier declared in package.json. The tests add the tools (stubs or the repository's own copies) to node_modules.",
+  "files": {
+    "package.json": {
+      "name": "web-app",
+      "private": true,
+      "scripts": {
+        "lint": "eslint",
+        "format": "prettier --write ."
+      },
+      "devDependencies": {
+        "eslint": "9.39.5",
+        "prettier": "3.9.9"
+      }
+    },
+    "eslint.config.mjs": "export default [];\n",
+    "src/clean.ts": "export const answer = 42;\n",
+    "src/app/page.tsx": "export default function Page() {\n\treturn null;   \n}\n",
+    "src/errors.ts": "export const answer = 42;\n// lint-error no-unused-vars 'x' is assigned a value but never used.\n  // lint-warning no-console Unexpected console statement.\n// lint-fatal Parsing error: Unexpected token\n",
+    "styles/site.css": "body {\n\tmargin: 0;   \n}\n",
+    "styles/theme.scss": "$gap: 4px;   \n",
+    "docs/notes.md": "# Notes   \n",
+    "config/app.yml": "name: web   \n",
+    "config/app.json": "{ \"name\": \"web\" }   \n",
+    "README.txt": "Plain text.\n",
+    "public/logo.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"/>\n",
+    "notebooks/report.ipynb": "{\"cells\": []}\n"
+  }
+}

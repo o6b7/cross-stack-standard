@@ -1,0 +1,18 @@
+{
+  "description": "An adopted project with check scripts but no usable check:fast: npm defines only check, and Composer's check:fast is empty.",
+  "files": {
+    ".cross-stack/standard.json": { "version": "1.0.0", "tracks": ["laravel", "web"] },
+    "package.json": {
+      "name": "stop-no-script",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check": "node -e \"process.exit(1)\"" }
+    },
+    "composer.json": {
+      "name": "acme/stop-no-script",
+      "type": "project",
+      "scripts": { "check:fast": [] }
+    },
+    "src/app.js": "LINT_ERROR\n"
+  }
+}

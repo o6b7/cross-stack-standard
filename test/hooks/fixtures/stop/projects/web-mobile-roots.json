@@ -1,0 +1,32 @@
+{
+  "description": "A web app in apps/web and an Expo app in apps/mobile, named by trackRoots. The root package.json has a failing check:fast that must not run.",
+  "files": {
+    ".cross-stack/standard.json": {
+      "version": "1.0.0",
+      "tracks": ["mobile", "web"],
+      "trackRoots": { "web": "apps/web", "mobile": ["apps/mobile"] }
+    },
+    "package.json": {
+      "name": "stop-apps",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check:fast": "node -e \"process.exit(7)\"" }
+    },
+    "apps/web/package.json": {
+      "name": "web",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check:fast": "node check.mjs" }
+    },
+    "apps/web/check.mjs": { "$fixture": "gate/check.mjs" },
+    "apps/web/src/app.js": "export const value = 1;\n",
+    "apps/mobile/package.json": {
+      "name": "mobile",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check:fast": "node check.mjs" }
+    },
+    "apps/mobile/check.mjs": { "$fixture": "gate/check.mjs" },
+    "apps/mobile/src/index.js": "export const screen = 1;\n"
+  }
+}

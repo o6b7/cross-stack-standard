@@ -1,0 +1,87 @@
+# Git hooks for this repository (lefthook 2.1). `npm ci` installs them through the root
+# "prepare" script. CI runs the same checks, so a hook skipped locally is still enforced there.
+# Hooks run under sh on every OS, Windows included.
+#
+# Brand guard key: the hooks find it in CROSS_STACK_STANDARD_BRAND_KEY, the file named by
+# CROSS_STACK_STANDARD_BRAND_KEY_FILE, or the clone's own `.git/cross-stack-standard/brand.key`
+# (maintainers install it once; see CONTRIBUTING.md). Without any key the brand jobs print a
+# notice and pass (contributors); a key that exists but cannot be used fails them.
+
+pre-commit:
+  jobs:
+    - name: brand guard (staged files, names and commit identity)
+      run: node scripts/check-brand-leak.mjs --staged --skip-without-key
+
+    - name: narrative lint (staged files)
+      run: node scripts/check-narrative.mjs --staged
+
+    - name: gitleaks (staged changes)
+      # The pinned, checksum-verified binary first (node scripts/install-tool.mjs gitleaks); a
+      # gitleaks on PATH only when it is the pinned version, so local results match CI.
+      run: |
+        pin="$(node -e 'process.stdout.write(require("./scripts/lib/tools.json").tools.gitleaks.version)')"
+        bin=""
+        for candidate in .cache/tools/gitleaks .cache/tools/gitleaks.exe; do
+          if [ -x "$candidate" ]; then bin="$candidate"; break; fi
+        done
+        if [ -z "$bin" ] && command -v gitleaks >/dev/null 2>&1; then
+          found="$(gitleaks version 2>/dev/null | tr -d 'v\r')"
+          if [ "$found" = "$pin" ]; then
+            bin=gitleaks
+          else
+            echo "gitleaks on PATH is ${found:-an unknown version}, not the pinned $pin; not used."
+          fi
+        fi
+        if [ -z "$bin" ]; then
+          echo "The pinned gitleaks $pin is not installed; skipped (CI still scans). Install it with:"
+          echo "  node scripts/install-tool.mjs gitleaks"
+          exit 0
+        fi
+        "$bin" git --pre-commit --redact --staged --no-banner
+
+    - name: prettier (staged files)
+      run: npx --no -- prettier --check --ignore-unknown {staged_files}
+
+commit-msg:
+  jobs:
+    - name: brand guard (message)
+      run: node scripts/check-brand-leak.mjs --commit-msg {1} --skip-without-key
+
+    - name: narrative lint (message)
+      run: node scripts/check-narrative.mjs --commit-msg {1}
+
+    - name: commitlint
+      run: npx --no -- commitlint --edit {1}
+
+pre-push:
+  jobs:
+    - name: brand guard on pushed commits; refuse main and tags
+      # One job reads the pushed refs once. Every commit a push would publish is brand-scanned
+      # (messages, identities, added paths and every file version), because a pushed branch is
+      # public before CI runs. Pushes to main and all tags go through a reviewed release
+      # (docs/maintainers/release.md); CROSS_STACK_STANDARD_ALLOW_MAIN_PUSH=1 lifts only that
+      # refusal, for the one-time repository bootstrap, never the brand scan.
+      use_stdin: true
+      run: |
+        refs="$(cat)"
+        status=0
+        printf '%s\n' "$refs" | node scripts/check-brand-leak.mjs --pre-push --skip-without-key || status=1
+        if [ "${CROSS_STACK_STANDARD_ALLOW_MAIN_PUSH:-}" = "1" ]; then
+          echo "pre-push: main and tag pushes allowed by CROSS_STACK_STANDARD_ALLOW_MAIN_PUSH=1 (bootstrap only)"
+          exit "$status"
+        fi
+        while read -r _ _ remote_ref _; do
+          case "$remote_ref" in
+            refs/heads/main)
+              echo "pre-push: refusing to push to main. Open a pull request into main from a release/ or hotfix/ branch." >&2
+              status=1
+              ;;
+            refs/tags/*)
+              echo "pre-push: refusing to push tag ${remote_ref#refs/tags/}. Release tags are pushed only as part of an approved release." >&2
+              status=1
+              ;;
+          esac
+        done <<EOF
+        $refs
+        EOF
+        exit "$status"

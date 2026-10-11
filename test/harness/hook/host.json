@@ -1,0 +1,33 @@
+{
+  "name": "hook",
+  "description": "An empty project for hook gates. The gate runs the plugin's real hook entry point through hooks/hooks.json, with the fixture's hook-input.json on stdin and CLAUDE_PROJECT_DIR set to the work directory, and maps the answer to an exit code: 0 clean, 1 a violation (a PreToolUse ask or deny decision, or a PostToolUse or Stop exit 2), 2 a run that judged nothing.",
+  "setup": [],
+  "prepare": [],
+  "copy": {
+    "hardlink": [],
+    "detach": [],
+    "exclude": []
+  },
+  "vars": {
+    "pluginRoot": "{repoRoot}/plugins/cross-stack-standard",
+    "hookGate": "{repoRoot}/scripts/lib/fixtures/hook-gate.mjs"
+  },
+  "gates": {
+    "hook": {
+      "argv": [
+        "{node}",
+        "{hookGate}",
+        "--plugin",
+        "{pluginRoot}",
+        "--event",
+        "{gateId}",
+        ["--tool", "{discriminator}"]
+      ],
+      "stdin": "hook-input.json",
+      "env": {
+        "CLAUDE_PROJECT_DIR": "{workdir}"
+      },
+      "failExitCodes": [1]
+    }
+  }
+}

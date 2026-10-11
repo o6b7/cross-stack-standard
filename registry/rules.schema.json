@@ -1,0 +1,412 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/main/registry/rules.schema.json",
+  "title": "Cross-Stack Standard rule registry",
+  "description": "The single source of truth for every rule of the Standard. Rule IDs are unique, gates are unique per identity and cross-file references are verified by scripts/check-registry.mjs, which this schema cannot express.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "rules"],
+  "properties": {
+    "$schema": {
+      "description": "Path or URL of this schema, for editor support.",
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "description": "Registry format version. It changes only when this schema changes in a way that breaks existing readers.",
+      "const": 1
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
+    }
+  },
+  "$defs": {
+    "ruleId": {
+      "description": "Prefix and three digits. Prefixes: BE (Laravel backend), WEB, MOB, SEC, I18N, UI, PROC (process), CI.",
+      "type": "string",
+      "pattern": "^(BE|WEB|MOB|SEC|I18N|UI|PROC|CI)-\\d{3}$"
+    },
+    "enforcement": {
+      "description": "FORCED: enforced structurally, with no known way around it. GUARDED: catches the direct form, and the known evasions are listed. REVIEW: prose only, checked in code review.",
+      "enum": ["FORCED", "GUARDED", "REVIEW"]
+    },
+    "line": {
+      "description": "One line of text with no leading or trailing whitespace.",
+      "type": "string",
+      "minLength": 3,
+      "pattern": "^\\S(?:.*\\S)?$"
+    },
+    "gateKind": {
+      "enum": ["eslint", "depcruise", "vitest", "jest", "pest", "phpstan", "script", "ci", "hook"]
+    },
+    "gate": {
+      "description": "The tool check that enforces the rule. id per kind — eslint: rule id; depcruise: rule name; vitest/jest: exact test title; pest: exact test description containing the rule ID; phpstan: error identifier; script: script name; ci: workflow step id or name; hook: hook event name. discriminator per kind — eslint: text that must appear in the enabling config (a selector, import path or message tag); script: sub-check, listed as <id>:<discriminator>; hook: a tool name the event's matcher must cover; ci: the job that holds the step.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/gateKind"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "discriminator": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        }
+      },
+      "allOf": [
+        {
+          "description": "A hook gate names a hook event (such as PreToolUse) and, optionally, a tool name its matcher must cover.",
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "hook"
+              }
+            },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Za-z]+$"
+              },
+              "discriminator": {
+                "description": "A tool name; MCP tool names carry hyphens from their plugin and server names.",
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+              }
+            }
+          }
+        },
+        {
+          "description": "A script gate names a kebab-case script and, optionally, a kebab-case sub-check.",
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "script"
+              }
+            },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "discriminator": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              }
+            }
+          }
+        },
+        {
+          "description": "Only eslint, script, ci and hook gates take a discriminator.",
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": ["depcruise", "vitest", "jest", "pest", "phpstan"]
+              }
+            },
+            "required": ["kind"]
+          },
+          "then": {
+            "not": {
+              "required": ["discriminator"]
+            }
+          }
+        }
+      ]
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "track",
+        "tier",
+        "module",
+        "enforcement",
+        "gate",
+        "decision",
+        "defaultEnabled",
+        "since",
+        "summary",
+        "adoption"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "title": {
+          "description": "The property as an imperative statement, at most 100 characters and without a trailing period; detail belongs in the summary.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 100,
+          "pattern": "^\\S(?:.*[^\\s.])?$"
+        },
+        "track": {
+          "description": "laravel, web or mobile: that track only. client: both JavaScript client tracks (web and mobile), never Laravel. shared: every project, whatever its tracks.",
+          "enum": ["laravel", "web", "mobile", "client", "shared"]
+        },
+        "tier": {
+          "description": "1: one of the Tier-1 invariants that apply to every project. 2: applies once the project declares Tier 2.",
+          "enum": [1, 2]
+        },
+        "invariant": {
+          "description": "The Tier-1 invariant (1 to 10, in the order of the tier model decision record) the rule belongs to. Required for a tier 1 rule; a tier 2 rule has none.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "module": {
+          "description": "The opt-in module the rule belongs to, or null for the track's core.",
+          "enum": [
+            null,
+            "tenancy",
+            "i18n",
+            "api-contract",
+            "bff-auth",
+            "design",
+            "browser-check",
+            "observability"
+          ]
+        },
+        "enforcement": {
+          "$ref": "#/$defs/enforcement"
+        },
+        "targetEnforcement": {
+          "description": "The level the rule is being promoted to. Defaults to enforcement. It may be higher than enforcement only while enforcement is REVIEW; the change that ships the gate and both fixtures promotes the rule.",
+          "$ref": "#/$defs/enforcement"
+        },
+        "gate": {
+          "description": "Required for FORCED and GUARDED. A REVIEW rule with a higher target may name its planned gate; any other REVIEW rule has null.",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/gate"
+            }
+          ]
+        },
+        "evasions": {
+          "description": "Known ways around the gate. Required and non-empty for GUARDED.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/line"
+          }
+        },
+        "decision": {
+          "description": "Number of the architecture decision record the rule follows (docs/decisions/<NNNN>-*.md).",
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        },
+        "defaultEnabled": {
+          "description": "Whether the rule is on when the project has not configured it; a module rule is on whenever its module is. A default-off rule names its switch (rules.<RULE-ID>.enabled or a module option) in configurable. At a release, a default-on rule must be at its target level (check-registry --release), because promoting a default-on rule later is a MAJOR change.",
+          "type": "boolean"
+        },
+        "since": {
+          "description": "The Standard version that first shipped the rule, or, for a rule whose profile or module ships after the current release, the version it is planned for.",
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "configurable": {
+          "description": "Project configuration keys (in .cross-stack/standard.json) that tune or switch the rule. <name> marks a user-chosen segment. A REVIEW rule may name a planned key under trackRoots, stack, decisions, rules or modules before the manifest schema declares it; the change that promotes the rule adds the key.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*(?:\\.(?:[A-Za-z][A-Za-z0-9-]*|<[a-z][A-Za-z0-9-]*>))*$"
+          }
+        },
+        "profiles": {
+          "description": "Web profiles the rule applies to. Omitted means every profile.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["next", "react-spa"]
+          }
+        },
+        "summary": {
+          "description": "One sentence that states the rule and what it protects.",
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 400,
+          "pattern": "^\\S.*[.!?]$"
+        },
+        "adoption": {
+          "description": "One sentence on how an existing project adopts the rule without failing on its first run, starting with one of: Nothing needed (the rule passes as installed or adopt does the work), Fix first (the project changes code or configuration before the check is enabled), Baseline (existing findings go into a shrink-only baseline), Allowlist (existing findings get dated allowlist entries), Opt-in (the rule is off until the project turns it or its module on).",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 400,
+          "pattern": "^(?:Nothing needed|Fix first|Baseline|Allowlist|Opt-in)(?:: \\S.*)?[.!?]$"
+        }
+      },
+      "allOf": [
+        {
+          "description": "A tier 1 rule names the Tier-1 invariant it belongs to.",
+          "if": {
+            "properties": {
+              "tier": {
+                "const": 1
+              }
+            },
+            "required": ["tier"]
+          },
+          "then": {
+            "required": ["invariant"],
+            "properties": {
+              "invariant": true
+            }
+          }
+        },
+        {
+          "description": "Only a tier 1 rule names an invariant.",
+          "if": {
+            "properties": {
+              "tier": {
+                "const": 2
+              }
+            },
+            "required": ["tier"]
+          },
+          "then": {
+            "not": {
+              "required": ["invariant"],
+              "properties": {
+                "invariant": true
+              }
+            }
+          }
+        },
+        {
+          "description": "A GUARDED rule lists at least one known evasion.",
+          "if": {
+            "properties": {
+              "enforcement": {
+                "const": "GUARDED"
+              }
+            },
+            "required": ["enforcement"]
+          },
+          "then": {
+            "required": ["evasions"],
+            "properties": {
+              "evasions": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "A FORCED or GUARDED rule names its gate.",
+          "if": {
+            "properties": {
+              "enforcement": {
+                "enum": ["FORCED", "GUARDED"]
+              }
+            },
+            "required": ["enforcement"]
+          },
+          "then": {
+            "properties": {
+              "gate": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        {
+          "description": "A FORCED rule has no other target; only a REVIEW rule may target a higher level.",
+          "if": {
+            "properties": {
+              "enforcement": {
+                "const": "FORCED"
+              }
+            },
+            "required": ["enforcement"]
+          },
+          "then": {
+            "properties": {
+              "targetEnforcement": {
+                "const": "FORCED"
+              }
+            }
+          }
+        },
+        {
+          "description": "A GUARDED rule targets GUARDED; only a REVIEW rule may target a higher level.",
+          "if": {
+            "properties": {
+              "enforcement": {
+                "const": "GUARDED"
+              }
+            },
+            "required": ["enforcement"]
+          },
+          "then": {
+            "properties": {
+              "targetEnforcement": {
+                "const": "GUARDED"
+              }
+            }
+          }
+        },
+        {
+          "description": "A REVIEW rule with no higher target has no gate (null).",
+          "if": {
+            "properties": {
+              "enforcement": {
+                "const": "REVIEW"
+              },
+              "targetEnforcement": {
+                "const": "REVIEW"
+              }
+            },
+            "required": ["enforcement"]
+          },
+          "then": {
+            "properties": {
+              "gate": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "description": "Profiles apply only to web-track rules.",
+          "if": {
+            "properties": {
+              "profiles": {
+                "type": "array"
+              }
+            },
+            "required": ["profiles"]
+          },
+          "then": {
+            "properties": {
+              "track": {
+                "const": "web"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

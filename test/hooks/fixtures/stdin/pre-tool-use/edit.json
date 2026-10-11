@@ -1,0 +1,15 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000003",
+  "transcript_path": "{{transcriptPath}}",
+  "cwd": "{{cwd}}",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "{{cwd}}/src/app/page.tsx",
+    "old_string": "Hello",
+    "new_string": "Hello, world",
+    "replace_all": false
+  },
+  "tool_use_id": "toolu_hooktest_pre_edit"
+}

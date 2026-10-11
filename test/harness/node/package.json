@@ -1,0 +1,11 @@
+{
+  "name": "fixture-host-node",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Harness host: a plain Node.js project with no dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

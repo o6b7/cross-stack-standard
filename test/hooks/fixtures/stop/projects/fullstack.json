@@ -1,0 +1,20 @@
+{
+  "description": "Laravel and web tracks sharing the project directory: both check:fast scripts run, Composer first.",
+  "files": {
+    ".cross-stack/standard.json": { "version": "1.0.0", "tracks": ["web", "laravel"] },
+    "composer.json": {
+      "name": "acme/stop-fullstack",
+      "type": "project",
+      "scripts": { "check:fast": ["@php check.php"] }
+    },
+    "package.json": {
+      "name": "stop-fullstack",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check:fast": "node check.mjs" }
+    },
+    "check.php": { "$fixture": "gate/check.php" },
+    "check.mjs": { "$fixture": "gate/check.mjs" },
+    "src/app.js": "export const value = 1;\n"
+  }
+}

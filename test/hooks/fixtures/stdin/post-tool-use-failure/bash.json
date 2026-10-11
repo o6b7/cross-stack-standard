@@ -1,0 +1,11 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000006",
+  "transcript_path": "{{transcriptPath}}",
+  "cwd": "{{cwd}}",
+  "permission_mode": "default",
+  "hook_event_name": "PostToolUseFailure",
+  "tool_name": "Bash",
+  "tool_input": { "command": "npm test" },
+  "tool_use_id": "toolu_01",
+  "error": "Exit code 1"
+}

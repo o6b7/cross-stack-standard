@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "plugins": {
+    "figma@cross-stack-standard": [
+      {
+        "scope": "user",
+        "version": "0",
+        "gitCommitSha": "d638a5e055e8d95e0394a94350860398cf424b74"
+      }
+    ]
+  }
+}

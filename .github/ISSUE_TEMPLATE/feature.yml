@@ -1,0 +1,56 @@
+name: Feature request
+description: Suggest an improvement to the plugin, the skills, the kit or the documentation.
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for the idea. To propose a **new rule** or a change to an existing one, use the rule-proposal form instead: rules follow their own process, described in [GOVERNANCE.md](https://github.com/o6b7/cross-stack-standard/blob/main/GOVERNANCE.md).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Hooks
+        - Skills
+        - Kit templates
+        - Project tool
+        - Modules
+        - Documentation
+        - Repository tooling
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What you are trying to do, and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What you would like to happen. Name the tools, commands or settings involved.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other ways to solve the problem, including ones that need no change to the Standard.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Effect on adopters
+      description: Could this change fail a build that passes today, add always-on context, reach the network, or add a dependency to adopting projects?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: I searched the existing issues and the roadmap, and this is not already planned.
+          required: true
+        - label: I would like to help implement this.

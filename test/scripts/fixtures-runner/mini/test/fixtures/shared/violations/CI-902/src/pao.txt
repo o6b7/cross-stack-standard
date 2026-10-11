@@ -1,0 +1,2 @@
+PRINT P\Tests\Unit\ArchTest::__pest_evaluable_CI_902_uses_strict_types
+EXIT 1

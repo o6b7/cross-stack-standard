@@ -1,0 +1,1658 @@
+{
+  "description": "PreToolUse cases for the shell tools, run in a copy of project.json. {{root}} is the project directory. Ask cases list the protection entries that must match, exactly; silent cases must produce no output. \"cwd\" is project-relative; \"files\" add or override project files.",
+  "ask": [
+    {
+      "tool": "Bash",
+      "command": "git commit --no-verify -m 'wip'",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git push --no-verify",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit \"--no-verify\" -m wip",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit --no-ver\"\"ify -m wip",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit --no-verif\\y -m wip",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit $'\\x2d\\x2dno-verify' -m wip",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "FLAG=--no-verify; git commit $FLAG -m wip",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit -nm 'wip'",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git -C api commit -a -n",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git${IFS}commit${IFS}-n${IFS}-m${IFS}wip",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git add -A && git commit -n -m wip",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npm test; git commit -n -m wip",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npm run lint || git commit -n -m wip",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git status | cat & git commit -n -m wip",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npm test\ngit commit -n -m wip",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "bash -c \"git commit -n -m wip\"",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git push --force origin main",
+      "entries": [
+        "git-push-force"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git push -f",
+      "entries": [
+        "git-push-force"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git push origin +main",
+      "entries": [
+        "git-push-force"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git push --force-with-lease",
+      "entries": [
+        "git-push-force"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "LEFTHOOK=0 git commit -m x",
+      "entries": [
+        "lefthook-disabled"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "export LEFTHOOK=false",
+      "entries": [
+        "lefthook-disabled"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "LEFTHOOK_EXCLUDE=lint git commit -m x",
+      "entries": [
+        "lefthook-environment"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "LEFTHOOK_CONFIG=/tmp/empty.yml git commit -m x",
+      "entries": [
+        "lefthook-environment"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npx lefthook uninstall",
+      "entries": [
+        "lefthook-uninstall"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git config core.hooksPath /dev/null",
+      "entries": [
+        "git-hooks-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo 'const key = x; // #gitleaks:allow' >> src/lib/util.ts",
+      "entries": [
+        "gitleaks-inline-allow"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "GITLEAKS_CONFIG=/tmp/loose.toml gitleaks git",
+      "entries": [
+        "gitleaks-config-environment"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "gitleaks git --baseline-path report.json",
+      "entries": [
+        "gitleaks-baseline"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "vendor/bin/pest --do-not-fail-on-incomplete",
+      "entries": [
+        "test-do-not-fail-on"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "composer update --no-blocking",
+      "entries": [
+        "composer-no-blocking"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "COMPOSER_NO_SECURITY_BLOCKING=1 composer require a/b",
+      "entries": [
+        "composer-no-blocking"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "composer install --no-audit",
+      "entries": [
+        "composer-no-audit"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "COMPOSER_AUDIT_ABANDONED=ignore composer audit",
+      "entries": [
+        "composer-no-audit"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "composer config policy false",
+      "entries": [
+        "composer-audit-policy"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npm audit --audit-level=none",
+      "entries": [
+        "npm-audit-level-none"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "pnpm audit --audit-level none",
+      "entries": [
+        "npm-audit-level-none"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npm pkg set scripts.lint=\"echo ok\"",
+      "entries": [
+        "package-scripts-cli"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "vendor/bin/phpstan analyse --generate-baseline",
+      "entries": [
+        "baseline-regenerate"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npx eslint . --suppress-all",
+      "entries": [
+        "baseline-regenerate"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npx jscpd src --update-baseline",
+      "entries": [
+        "baseline-regenerate"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npx depcruise src -T baseline > .dependency-cruiser-known-violations.json",
+      "entries": [
+        "baseline-regenerate",
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm phpstan-baseline.neon",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git rm eslint-suppressions.json",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "truncate -s 0 {{root}}/phpstan-baseline.neon",
+      "entries": [
+        "baseline-delete",
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "export CROSS_STACK_STANDARD_DISABLE=1",
+      "entries": [
+        "standard-switch-environment"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "echo 'export CROSS_STACK_STANDARD_STOP_GATE=0' >> ~/.zshrc",
+      "entries": [
+        "standard-switch-environment"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "claude plugin disable cross-stack-standard@cross-stack-standard",
+      "entries": [
+        "plugin-disable"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "echo \"cross-stack-standard: declined\" >> CLAUDE.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "printf 'cross-stack-standard: declined\\n' | tee -a .claude/CLAUDE.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "cat >> CLAUDE.local.md <<'EOF'\n## Local\ncross-stack-standard: declined\nEOF",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "sed -i '1i cross-stack-standard: declined' CLAUDE.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "jq '.disabled = true' .cross-stack/standard.json > /tmp/manifest.json && mv /tmp/manifest.json .cross-stack/standard.json",
+      "entries": [
+        "opt-out-manifest-shell",
+        "write-to-protected-path"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "sed -i '' 's/level: 8/level: 5/' phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "perl -pi -e 's/8/5/' phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo '{}' > .cross-stack/standard.json",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo 'export default [];' >eslint.config.mjs",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npx prettier --write . &> .prettierignore",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "cp /tmp/loose.neon phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "cp /tmp/ci.yml .github/workflows/",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "cp -t .github/workflows /tmp/release.yml",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "mv phpstan.neon /tmp/phpstan.neon.bak",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git mv pint.json pint.json.old",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "ln -sf /tmp/loose.neon phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo x > \"$CLAUDE_PROJECT_DIR/phpstan.neon\"",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "cd api && sed -i 's/8/5/' phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "sed -i 's/8/5/' phpstan.neon",
+      "cwd": "api",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "sed -i 's/level: 8/level: 5/' phpstan.neon && npm run phpstan:baseline:update",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "cd .github && rm workflows/ci.yml",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf .github",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf api",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf tests",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm tests/Unit/ArchTest.php",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm phpstan*",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -f phpstan{.neon,-baseline.neon}",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "find . -name phpstan-baseline.neon -delete",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "chmod -x .git/hooks/pre-commit",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "sh -c 'rm pint.json'",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "eval \"rm phpstan-baseline.neon\"",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo $(cat /tmp/loose.neon > phpstan.neon)",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo `sed -i s/8/5/ phpstan.neon`",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "cmd /c \"del phpstan-baseline.neon\"",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "git commit --no-verify -m wip",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "git commit --no-ver`ify -m wip",
+      "entries": [
+        "git-no-verify"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "git commit -n -m \"wip\"; npm test",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "npm test && git commit -n -m wip",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "$env:LEFTHOOK = \"0\"; git commit -m x",
+      "entries": [
+        "lefthook-disabled"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "[Environment]::SetEnvironmentVariable('LEFTHOOK', '0')",
+      "entries": [
+        "lefthook-disabled"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "$env:LEFTHOOK_EXCLUDE = 'lint'",
+      "entries": [
+        "lefthook-environment"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "$env:CROSS_STACK_STANDARD_DISABLE = \"1\"",
+      "entries": [
+        "standard-switch-environment"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Remove-Item phpstan-baseline.neon",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Remove-Item .dependency-cruiser-known-violations.json",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Remove-Item -Recurse -Force .cross-stack",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Set-Content -Path pint.json -Value '{}'",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Set-Content -Path .cross-stack\\standard.json -Value '{}'",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "'x' | Out-File -FilePath .github\\workflows\\ci.yml",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "(Get-Content phpstan.neon) -replace 'level: 8','level: 5' | Set-Content phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Copy-Item C:\\temp\\loose.neon phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Move-Item phpstan.neon phpstan.old",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "[IO.File]::WriteAllText('pint.json', '{}')",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Rename-Item pint.json pint.bak",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Add-Content CLAUDE.md \"cross-stack-standard: declined\"",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Add-Content -Path CLAUDE.md -Value @\"\ncross-stack-standard: declined\n\"@",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "PowerShell",
+      "command": "pwsh -NoProfile -EncodedCommand UgBlAG0AbwB2AGUALQBJAHQAZQBtACAAcABoAHAAcwB0AGEAbgAtAGIAYQBzAGUAbABpAG4AZQAuAG4AZQBvAG4A",
+      "entries": [
+        "baseline-delete",
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "pwsh -Command \"Remove-Item pint.json\"",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Invoke-Expression 'git commit -n -m wip'",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo script-shell=true >> .npmrc",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npm config set script-shell /usr/bin/true",
+      "entries": [
+        "npm-script-shell-config"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "npm_config_script_shell=true npm run check:fast",
+      "entries": [
+        "npm-script-shell-config"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit --no-veri -m x",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git push --no-verif",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git -c alias.ci=commit ci -n -m x",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git -c alias.c='commit -n' c -m x",
+      "entries": [
+        "git-commit-short-n"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git ci -n -m x",
+      "entries": [
+        "git-commit-short-n"
+      ],
+      "files": {
+        ".git/config": "[core]\n\tbare = false\n[alias]\n\tci = commit\n\tsave = commit --no-verify\n\tpf = push --force\n\twipe = !rm pint.json\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "git save -m wip",
+      "entries": [
+        "git-commit-short-n"
+      ],
+      "files": {
+        ".git/config": "[core]\n\tbare = false\n[alias]\n\tci = commit\n\tsave = commit --no-verify\n\tpf = push --force\n\twipe = !rm pint.json\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "git pf origin main",
+      "entries": [
+        "git-push-force"
+      ],
+      "files": {
+        ".git/config": "[core]\n\tbare = false\n[alias]\n\tci = commit\n\tsave = commit --no-verify\n\tpf = push --force\n\twipe = !rm pint.json\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "git wipe",
+      "entries": [
+        "delete-protected-path"
+      ],
+      "files": {
+        ".git/config": "[core]\n\tbare = false\n[alias]\n\tci = commit\n\tsave = commit --no-verify\n\tpf = push --force\n\twipe = !rm pint.json\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "GIT_CONFIG_GLOBAL=/tmp/hooks.gitconfig git commit -m x",
+      "entries": [
+        "git-config-override"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git -c include.path=/tmp/hooks.gitconfig commit -m x",
+      "entries": [
+        "git-config-override"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "printf '[core]\\n\\thooksPath = /dev/null\\n' >> .git/config",
+      "entries": [
+        "git-hooks-path",
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo '{\"env\":{\"CROSS_STACK_STANDARD_DISABLE\":\"1\"}}' > .claude/settings.local.json",
+      "entries": [
+        "standard-switch-environment"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "export CROSS_STACK_STANDARD_STOP_BUDGET_SECONDS=1",
+      "entries": [
+        "standard-switch-environment"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "echo '{\"disableAllHooks\":true}' > .claude/settings.local.json",
+      "entries": [
+        "claude-settings-switch-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "echo '{\"enabledPlugins\":{\"cross-stack-standard@cross-stack-standard\":false}}' > ~/.claude/settings.json",
+      "entries": [
+        "claude-settings-switch-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "mv docs/optout.md CLAUDE.local.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "files": {
+        "docs/optout.md": "# Notes\ncross-stack-standard: declined\n"
+      },
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "cp docs/optout.md CLAUDE.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "files": {
+        "docs/optout.md": "# Notes\ncross-stack-standard: declined\n"
+      },
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "ln -s docs/optout.md CLAUDE.local.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "files": {
+        "docs/optout.md": "# Notes\ncross-stack-standard: declined\n"
+      },
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "cat docs/optout.md >> CLAUDE.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "files": {
+        "docs/optout.md": "# Notes\ncross-stack-standard: declined\n"
+      },
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "cat docs/optout.md | tee -a CLAUDE.local.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "files": {
+        "docs/optout.md": "# Notes\ncross-stack-standard: declined\n"
+      },
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "printf 'cross-stack-standard: %s\\n' declined >> CLAUDE.local.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "X=declined; echo \"cross-stack-standard: $X\" >> CLAUDE.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "git checkout optout-branch -- CLAUDE.md",
+      "entries": [
+        "opt-out-line-shell"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "ln phpstan.neon notes.txt; echo 'parameters: {level: 0}' > notes.txt",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "ln -s .git/hooks h && rm -f h/pre-commit",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "ln -s .github/workflows wf && rm -rf wf/",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "cp -T /tmp/weak.neon phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "ln -T /tmp/weak.neon phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git checkout HEAD~1 -- phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git checkout HEAD~1 phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git restore -s HEAD~1 phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "patch -p1 < weaken.patch",
+      "entries": [
+        "write-to-protected-path"
+      ],
+      "files": {
+        "weaken.patch": "--- a/phpstan.neon\n+++ b/phpstan.neon\n@@ -1 +1 @@\n-includes:\n+parameters: {level: 0}\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "git apply weaken.patch",
+      "entries": [
+        "write-to-protected-path"
+      ],
+      "files": {
+        "weaken.patch": "--- a/phpstan.neon\n+++ b/phpstan.neon\n@@ -1 +1 @@\n-includes:\n+parameters: {level: 0}\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "dd if=/dev/null of=phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "install -m644 /tmp/weak.neon phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rsync /tmp/weak.neon phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "awk -i inplace '{print}' phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "vim -c '%s/8/0/|wq' phpstan.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "node -e \"require('fs').writeFileSync('phpstan.neon','')\"",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "python3 -c \"open('phpstan.neon','w').write('')\"",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "php -r \"file_put_contents('phpstan.neon','');\"",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "node -e \"const f='.cross-stack/standard.json';const fs=require('fs');const j=JSON.parse(fs.readFileSync(f));j.disabled=true;fs.writeFileSync(f,JSON.stringify(j))\"",
+      "entries": [
+        "opt-out-manifest-shell",
+        "write-to-protected-path"
+      ],
+      "optOut": true
+    },
+    {
+      "tool": "Bash",
+      "command": "find . -name phpstan.neon | xargs rm",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "ls phpstan.neon | xargs rm",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf $(find . -name phpstan-baseline.neon)",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "find . -name '*.neon' -delete",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf apps",
+      "entries": [
+        "delete-protected-path"
+      ],
+      "files": {
+        "apps/api/phpstan.neon": "parameters:\n  level: 8\n",
+        "apps/api/tests/Arch/LayerTest.php": "<?php\n",
+        "apps/web/eslint.config.mjs": "export default [];\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf apps/*",
+      "entries": [
+        "delete-protected-path"
+      ],
+      "files": {
+        "apps/api/phpstan.neon": "parameters:\n  level: 8\n",
+        "apps/api/tests/Arch/LayerTest.php": "<?php\n",
+        "apps/web/eslint.config.mjs": "export default [];\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "mv apps /tmp/apps",
+      "entries": [
+        "write-to-protected-path"
+      ],
+      "files": {
+        "apps/api/phpstan.neon": "parameters:\n  level: 8\n",
+        "apps/api/tests/Arch/LayerTest.php": "<?php\n",
+        "apps/web/eslint.config.mjs": "export default [];\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "git rm -r apps",
+      "entries": [
+        "delete-protected-path"
+      ],
+      "files": {
+        "apps/api/phpstan.neon": "parameters:\n  level: 8\n",
+        "apps/api/tests/Arch/LayerTest.php": "<?php\n",
+        "apps/web/eslint.config.mjs": "export default [];\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "find apps -delete",
+      "entries": [
+        "delete-protected-path"
+      ],
+      "files": {
+        "apps/api/phpstan.neon": "parameters:\n  level: 8\n",
+        "apps/api/tests/Arch/LayerTest.php": "<?php\n",
+        "apps/web/eslint.config.mjs": "export default [];\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "git clean -fdx",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf ..",
+      "entries": [
+        "delete-protected-path"
+      ],
+      "cwd": "api"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Copy-Item -Dest phpstan.neon -Path /tmp/weak.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Copy-Item -De phpstan.neon /tmp/weak.neon",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "gci .github | ri -r",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Get-ChildItem -Recurse -Filter phpstan* | Remove-Item",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "& ([scriptblock]::Create('Remove-Item pint.json'))",
+      "entries": [
+        "delete-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git update-index --assume-unchanged phpstan.neon",
+      "entries": [
+        "git-index-steering"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git update-index --skip-worktree src/app/page.tsx",
+      "entries": [
+        "git-index-steering"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git sparse-checkout set src",
+      "entries": [
+        "git-index-steering"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "git config --global core.excludesFile /tmp/everything",
+      "entries": [
+        "git-index-steering"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo 'src/' >> .git/info/exclude",
+      "entries": [
+        "write-to-protected-path"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -f \"$CLAUDE_PLUGIN_DATA\"/*.json",
+      "entries": [
+        "delete-protected-path",
+        "plugin-state"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "node -e \"import('./plugins/cross-stack-standard/scripts/lib/fingerprint.mjs')\"",
+      "entries": [
+        "plugin-state"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf ~/.claude/plugins/cache/cross-stack-standard",
+      "entries": [
+        "plugin-state"
+      ]
+    },
+    {
+      "tool": "Bash",
+      "command": "echo '*' > .gitignore",
+      "entries": [
+        "gitignore-everything-shell"
+      ]
+    },
+    {
+      "tool": "PowerShell",
+      "command": "git update-index --no-skip-worktree pint.json",
+      "entries": [
+        "git-index-steering"
+      ]
+    }
+  ],
+  "silent": [
+    {
+      "tool": "Bash",
+      "command": "npm test"
+    },
+    {
+      "tool": "Bash",
+      "command": "git status && git diff phpstan.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit -m 'Add login form'"
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit --amend --no-edit"
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit -m \"Refactor the baseline chart\""
+    },
+    {
+      "tool": "Bash",
+      "command": "git push origin feature"
+    },
+    {
+      "tool": "Bash",
+      "command": "git push -u origin feature-fix"
+    },
+    {
+      "tool": "Bash",
+      "command": "cat phpstan.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "grep -n level phpstan.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "cat phpstan.neon > /tmp/phpstan-copy.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "cp phpstan.neon /tmp/phpstan-backup.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "cp phpstan.neon $TMPDIR/phpstan.neon",
+      "env": {
+        "TMPDIR": "/tmp"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "awk '$1 > 5' phpstan-baseline.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "grep \">\" phpstan.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf node_modules"
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf dist build .next"
+    },
+    {
+      "tool": "Bash",
+      "command": "rm src/lib/util.ts"
+    },
+    {
+      "tool": "Bash",
+      "command": "rm src/components/BaselineChart.tsx"
+    },
+    {
+      "tool": "Bash",
+      "command": "mv src/lib/util.ts src/lib/helpers.ts"
+    },
+    {
+      "tool": "Bash",
+      "command": "mv docs/notes.md docs/archive/"
+    },
+    {
+      "tool": "Bash",
+      "command": "cp /tmp/logo.svg ."
+    },
+    {
+      "tool": "Bash",
+      "command": "sed -i 's/one/two/' src/app/page.tsx"
+    },
+    {
+      "tool": "Bash",
+      "command": "sed -i 's/one/two/' src/lib/*.ts"
+    },
+    {
+      "tool": "Bash",
+      "command": "echo \"## Notes\" >> CLAUDE.md"
+    },
+    {
+      "tool": "Bash",
+      "command": "grep -n \"cross-stack-standard: declined\" CLAUDE.md"
+    },
+    {
+      "tool": "Bash",
+      "command": "npm run phpstan:baseline:update"
+    },
+    {
+      "tool": "Bash",
+      "command": "composer run-script eslint:baseline:update"
+    },
+    {
+      "tool": "Bash",
+      "command": "pnpm depcruise:baseline:update"
+    },
+    {
+      "tool": "Bash",
+      "command": "npx eslint src --max-warnings=0"
+    },
+    {
+      "tool": "Bash",
+      "command": "vendor/bin/phpstan analyse -c phpstan.neon 2>&1"
+    },
+    {
+      "tool": "Bash",
+      "command": "vendor/bin/phpstan analyse --memory-limit=1G > /tmp/phpstan.txt 2>&1"
+    },
+    {
+      "tool": "Bash",
+      "command": "npm audit --audit-level=high"
+    },
+    {
+      "tool": "Bash",
+      "command": "COMPOSER_NO_INTERACTION=1 composer install"
+    },
+    {
+      "tool": "Bash",
+      "command": "lefthook run pre-commit"
+    },
+    {
+      "tool": "Bash",
+      "command": "echo $CROSS_STACK_STANDARD_DISABLE"
+    },
+    {
+      "tool": "Bash",
+      "command": "npm install -D eslint"
+    },
+    {
+      "tool": "Bash",
+      "command": "composer require laravel/sanctum"
+    },
+    {
+      "tool": "Bash",
+      "command": "git log --oneline -- .cross-stack/standard.json"
+    },
+    {
+      "tool": "Bash",
+      "command": "ls -la .github/workflows"
+    },
+    {
+      "tool": "Bash",
+      "command": "echo done > /dev/null"
+    },
+    {
+      "tool": "Bash",
+      "command": "git log --grep \"sed -i\" -- phpstan.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit -m \"copy the tee output\" -- pint.json"
+    },
+    {
+      "tool": "Bash",
+      "command": "find . -name '*.log' -delete"
+    },
+    {
+      "tool": "Bash",
+      "command": "find src -name '*.bak' -exec rm {} +"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Get-Content pint.json"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Get-Content phpstan.neon | Select-String level"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Copy-Item pint.json \"$env:TEMP\\pint.json\"",
+      "env": {
+        "TEMP": "/tmp"
+      }
+    },
+    {
+      "tool": "PowerShell",
+      "command": "npm run phpstan:baseline:update"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "git commit -m 'Add login form'; git push"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Remove-Item -Recurse node_modules"
+    },
+    {
+      "tool": "Bash",
+      "command": "git commit -am \"fix: rm -rf apps docs and sed -i phpstan.neon\""
+    },
+    {
+      "tool": "Bash",
+      "command": "git checkout ."
+    },
+    {
+      "tool": "Bash",
+      "command": "git checkout -- phpstan.neon"
+    },
+    {
+      "tool": "Bash",
+      "command": "git checkout -b feature origin/main"
+    },
+    {
+      "tool": "Bash",
+      "command": "git restore ."
+    },
+    {
+      "tool": "Bash",
+      "command": "git ci -m 'Add login form'",
+      "files": {
+        ".git/config": "[core]\n\tbare = false\n[alias]\n\tci = commit\n\tsave = commit --no-verify\n\tpf = push --force\n\twipe = !rm pint.json\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "npm install --no-audit --no-fund"
+    },
+    {
+      "tool": "Bash",
+      "command": "node -p \"require('./package.json').version\""
+    },
+    {
+      "tool": "Bash",
+      "command": "node -e \"console.log(require('fs').readFileSync('phpstan.neon','utf8'))\""
+    },
+    {
+      "tool": "Bash",
+      "command": "grep -rl oldName src | xargs sed -i 's/oldName/newName/g'"
+    },
+    {
+      "tool": "Bash",
+      "command": "echo \"Use the cross-stack-standard skill\" >> CLAUDE.md"
+    },
+    {
+      "tool": "Bash",
+      "command": "cp docs/notes.md CLAUDE.local.md"
+    },
+    {
+      "tool": "Bash",
+      "command": "cat > notes.md <<'EOF'\nphpstan.neon\nrm -rf apps\nEOF"
+    },
+    {
+      "tool": "Bash",
+      "command": "cat > src/copy.ts <<'EOF'\nconst a = [1, 2].map((x) => x * 2); // {a,b} [c] ? *\nexport const glob = \"src/**/*.{ts,tsx}\";\nEOF"
+    },
+    {
+      "tool": "Bash",
+      "command": "mkdir -p src/{a,b,c}/{d,e}"
+    },
+    {
+      "tool": "Bash",
+      "command": "cp -r src/lib src/lib2"
+    },
+    {
+      "tool": "Bash",
+      "command": "rm -rf apps/web/node_modules",
+      "files": {
+        "apps/api/phpstan.neon": "parameters:\n  level: 8\n",
+        "apps/api/tests/Arch/LayerTest.php": "<?php\n",
+        "apps/web/eslint.config.mjs": "export default [];\n"
+      }
+    },
+    {
+      "tool": "Bash",
+      "command": "CROSS_STACK_STANDARD_DEBUG=1 npm test"
+    },
+    {
+      "tool": "Bash",
+      "command": "git config user.email dev@example.com"
+    },
+    {
+      "tool": "Bash",
+      "command": "ls phpstan.neon | xargs cat"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Get-ChildItem -Recurse -Filter *.log | Remove-Item"
+    },
+    {
+      "tool": "PowerShell",
+      "command": "Copy-Item -Path pint.json -Destination /tmp/pint.json"
+    },
+    {
+      "tool": "Bash",
+      "command": "git config --get core.excludesFile"
+    },
+    {
+      "tool": "Bash",
+      "command": "echo 'node_modules/*' >> .gitignore"
+    },
+    {
+      "tool": "Bash",
+      "command": "git update-index --refresh"
+    }
+  ]
+}

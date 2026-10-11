@@ -1,0 +1,16 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000003",
+  "transcript_path": "{{transcriptPath}}",
+  "cwd": "{{cwd}}",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "NotebookEdit",
+  "tool_input": {
+    "notebook_path": "{{cwd}}/notebooks/report.ipynb",
+    "cell_id": "cell-1",
+    "new_source": "print(1)",
+    "cell_type": "code",
+    "edit_mode": "replace"
+  },
+  "tool_use_id": "toolu_hooktest_pre_notebook"
+}

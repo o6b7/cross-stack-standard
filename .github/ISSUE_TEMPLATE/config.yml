@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/o6b7/cross-stack-standard/security/policy
+    about: Please report security problems privately, as the security policy describes. Never in a public issue.
+  - name: Documentation
+    url: https://github.com/o6b7/cross-stack-standard#readme
+    about: Installing, adopting, upgrading, the rule catalog and the FAQ.

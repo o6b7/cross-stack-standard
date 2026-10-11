@@ -1,0 +1,4 @@
+MANIFEST-EXPECT CI-906 modules.demo.strict true
+MANIFEST-EXPECT CI-906 modules.demo.level 1
+MANIFEST-EXPECT CI-906 version "0.0.0"
+MANIFEST-EXPECT CI-906 tracks ["shared"]

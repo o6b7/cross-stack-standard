@@ -1,0 +1,1 @@
+{"session_id":"00000000-0000-4000-8000-000000000075","permission_mode":"default","hook_event_name":"PreToolUse","tool_name":"mcp__plugin_figma_figma__use_figma","tool_input":{"code":"figma.currentPage.name = \"x\""},"tool_use_id":"toolu_fixture_sec_075"}

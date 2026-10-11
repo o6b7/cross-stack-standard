@@ -1,0 +1,36 @@
+{
+  "description": "A Laravel API next to a web workspace. Prettier and ESLint are hoisted to the root; the flat ESLint config lives in apps/web (the track root); Pint lives in api/vendor.",
+  "files": {
+    "package.json": {
+      "name": "monorepo",
+      "private": true,
+      "workspaces": [
+        "apps/*"
+      ],
+      "devDependencies": {
+        "eslint": "9.39.5",
+        "prettier": "3.9.9"
+      }
+    },
+    ".prettierrc": "{}\n",
+    "apps/web/package.json": {
+      "name": "web",
+      "private": true
+    },
+    "apps/web/eslint.config.mjs": "export default [];\n",
+    "apps/web/src/app/page.tsx": "export default function Page() {\n  return null;\n}\n// lint-error react-hooks/rules-of-hooks React Hook \"useState\" is called conditionally.\n",
+    "api/composer.json": {
+      "name": "example/api",
+      "type": "project",
+      "require": {
+        "php": "^8.4",
+        "laravel/framework": "^13.0"
+      },
+      "require-dev": {
+        "laravel/pint": "^1.32",
+        "larastan/larastan": "^3.12"
+      }
+    },
+    "api/app/Models/Invoice.php": "<?php\n\ndeclare(strict_types=1);\n\nnamespace App\\Models;\n\nfinal class Invoice\n{\n    /** @var list<string> */\n    public array $lines = array();   \n}\n"
+  }
+}

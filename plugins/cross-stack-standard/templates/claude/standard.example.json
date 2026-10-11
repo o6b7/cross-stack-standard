@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/standard.schema.json",
+  "version": "0.0.0",
+  "tracks": ["laravel", "web", "mobile"],
+  "profile": "next",
+  "tier": 2,
+  "modules": {
+    "api-contract": true,
+    "i18n": true,
+    "bff-auth": true,
+    "tenancy": false,
+    "design": false,
+    "browser-check": { "enabled": false },
+    "observability": false
+  },
+  "locales": ["en", "ar"],
+  "disabled": false,
+  "hooks": {
+    "sessionStart": {
+      "detect": true
+    },
+    "postToolUse": {
+      "phpstan": false,
+      "budgetSeconds": 20
+    },
+    "stop": {
+      "enabled": true,
+      "budgetSeconds": 90,
+      "command": "check:fast"
+    },
+    "preToolUse": {
+      "protect": ["deploy/quality/**"],
+      "protectCommands": ["\\bmake\\s+baseline\\b"]
+    }
+  },
+  "allowlistsDir": ".cross-stack/allowlists",
+  "allowlistMaxDays": 365,
+  "stack": {
+    "competingGroups": [
+      {
+        "concern": "charts",
+        "packages": ["recharts", "chart.js"]
+      }
+    ],
+    "dates": {
+      "deprecated": ["moment"]
+    }
+  }
+}

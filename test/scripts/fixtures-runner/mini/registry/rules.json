@@ -1,0 +1,400 @@
+{
+  "rules": [
+    {
+      "id": "CI-901",
+      "title": "Violation prints the rule id",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Violation prints the rule id"
+    },
+    {
+      "id": "CI-902",
+      "title": "Underscore form of the id counts",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "GUARDED",
+      "targetEnforcement": "GUARDED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": ["test double"],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Underscore form of the id counts"
+    },
+    {
+      "id": "CI-903",
+      "title": "Violation fails without printing the id",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Violation fails without printing the id"
+    },
+    {
+      "id": "CI-904",
+      "title": "Violation prints an undeclared sibling id",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Violation prints an undeclared sibling id"
+    },
+    {
+      "id": "CI-905",
+      "title": "Violation prints a sibling id declared in alsoFires",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Violation prints a sibling id declared in alsoFires"
+    },
+    {
+      "id": "CI-906",
+      "title": "Manifest overlays are merged into the project config",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": "manifest"
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Manifest overlays are merged into the project config"
+    },
+    {
+      "id": "CI-907",
+      "title": "Commit range checked between base and head",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Commit range checked between base and head"
+    },
+    {
+      "id": "CI-908",
+      "title": "Violation run hangs until the timeout",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Violation run hangs until the timeout"
+    },
+    {
+      "id": "CI-909",
+      "title": "Targets enforcement, no fixture yet",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "REVIEW",
+      "targetEnforcement": "GUARDED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": ["test double"],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Targets enforcement, no fixture yet"
+    },
+    {
+      "id": "CI-910",
+      "title": "Review-only rule",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "REVIEW",
+      "targetEnforcement": "REVIEW",
+      "gate": null,
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Review-only rule"
+    },
+    {
+      "id": "CI-911",
+      "title": "Enforced rule without a fixture",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Enforced rule without a fixture"
+    },
+    {
+      "id": "CI-912",
+      "title": "Hard-linked dependency directory",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "GUARDED",
+      "targetEnforcement": "GUARDED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": ["test double"],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Hard-linked dependency directory"
+    },
+    {
+      "id": "CI-913",
+      "title": "Violation fixture that the gate does not catch",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Violation fixture that the gate does not catch"
+    },
+    {
+      "id": "CI-914",
+      "title": "Clean state that fails",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Clean state that fails"
+    },
+    {
+      "id": "CI-915",
+      "title": "Custom id pattern",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Custom id pattern"
+    },
+    {
+      "id": "CI-916",
+      "title": "Composed host",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Composed host"
+    },
+    {
+      "id": "CI-917",
+      "title": "Gate kind the host does not map",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "eslint",
+        "id": "fixture/no-op",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Gate kind the host does not map"
+    },
+    {
+      "id": "CI-918",
+      "title": "Invalid fixture definition",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Invalid fixture definition"
+    },
+    {
+      "id": "CI-919",
+      "title": "Fixture names a missing host",
+      "track": "shared",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Fixture names a missing host"
+    },
+    {
+      "id": "WEB-901",
+      "title": "Web track rule",
+      "track": "web",
+      "tier": 1,
+      "module": null,
+      "enforcement": "FORCED",
+      "targetEnforcement": "FORCED",
+      "gate": {
+        "kind": "script",
+        "id": "fixture-gate",
+        "discriminator": null
+      },
+      "evasions": [],
+      "decision": "0037",
+      "defaultEnabled": true,
+      "since": "1.0.0",
+      "configurable": [],
+      "summary": "Web track rule"
+    }
+  ]
+}

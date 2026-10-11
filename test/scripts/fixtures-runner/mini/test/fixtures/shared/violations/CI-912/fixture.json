@@ -1,0 +1,4 @@
+{
+  "hosts": ["plain"],
+  "remove": ["node_modules/dep/index.js"]
+}

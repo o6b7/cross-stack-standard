@@ -1,0 +1,126 @@
+# Publishes the GitHub Release for a vX.Y.Z tag. The maintainer creates and pushes the tag by
+# hand after the release pull request is merged into main (docs/maintainers/release.md); this
+# workflow never creates tags. Tag filters ignore branches, so the first job proves the tagged
+# commit is on main before anything is published.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  verify:
+    name: verify tag
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      TAG: ${{ github.ref_name }}
+      CROSS_STACK_STANDARD_BRAND_KEY: ${{ secrets.CROSS_STACK_STANDARD_BRAND_KEY }}
+    outputs:
+      notes: ${{ steps.notes.outputs.notes }}
+      prerelease: ${{ steps.tag.outputs.prerelease }}
+    steps:
+      - name: Check out (full history, all branches)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+
+      - name: Tag format and VERSION
+        id: tag
+        run: |
+          semver='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$'
+          if ! [[ "$TAG" =~ $semver ]]; then
+            echo "::error title=Tag format::$TAG is not vX.Y.Z"
+            exit 1
+          fi
+          version="$(tr -d '[:space:]' < VERSION)"
+          if [ "v$version" != "$TAG" ]; then
+            echo "::error title=VERSION mismatch::VERSION says $version but the tag is $TAG; stamp the release branch before tagging"
+            exit 1
+          fi
+          if [[ "$TAG" == *-* ]]; then echo "prerelease=true"; else echo "prerelease=false"; fi >> "$GITHUB_OUTPUT"
+
+      - name: Tagged commit is on main
+        run: |
+          commit="$(git rev-parse "refs/tags/$TAG^{commit}")"
+          if ! git merge-base --is-ancestor "$commit" origin/main; then
+            echo "::error title=Not on main::$TAG points at $commit, which is not an ancestor of origin/main"
+            exit 1
+          fi
+          echo "$TAG -> $commit is on main"
+
+      - name: Version drift
+        run: node scripts/check-version-drift.mjs
+
+      - name: Generated plugin data matches the tagged sources
+        run: node scripts/build-plugin-data.mjs --check
+
+      - name: Release identity (author metadata and community files)
+        run: node scripts/check-identity.mjs --release
+
+      - name: Brand-guard key
+        run: |
+          if [ -z "$CROSS_STACK_STANDARD_BRAND_KEY" ]; then
+            echo "::error title=Brand-guard key missing::A release is never published without the full-history brand guard."
+            exit 1
+          fi
+
+      - name: Brand guard (full history, file names and commit messages)
+        run: node scripts/check-brand-leak.mjs --all-history
+
+      - name: Narrative lint (tracked files)
+        run: node scripts/check-narrative.mjs --tree
+
+      - name: Narrative lint (every commit message on main)
+        run: node scripts/check-narrative.mjs --commits origin/main
+
+      - name: Release notes from CHANGELOG.md
+        id: notes
+        run: |
+          notes="$RUNNER_TEMP/release-notes.md"
+          node scripts/release-notes.mjs --tag "$TAG" --out "$notes"
+          node scripts/check-brand-leak.mjs --stdin --label "release notes" < "$notes"
+          node scripts/check-narrative.mjs --stdin --label "release notes" < "$notes"
+          cat "$notes" >> "$GITHUB_STEP_SUMMARY"
+          # Base64 keeps the multi-line notes intact through a job output.
+          echo "notes=$(base64 -w0 < "$notes")" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: publish release
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    # The only job with write access; it runs no repository code.
+    permissions:
+      contents: write
+    steps:
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+          NOTES_B64: ${{ needs.verify.outputs.notes }}
+          PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+        run: |
+          notes="$RUNNER_TEMP/release-notes.md"
+          printf '%s' "$NOTES_B64" | base64 -d > "$notes"
+          flags=(--title "$TAG" --notes-file "$notes" --verify-tag)
+          if [ "$PRERELEASE" = "true" ]; then flags+=(--prerelease); fi
+          gh release create "$TAG" "${flags[@]}"

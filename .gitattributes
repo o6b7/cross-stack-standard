@@ -1,0 +1,20 @@
+# Store and check out every text file with LF endings on every OS. Windows runners default to
+# core.autocrlf=true, which would turn LF into CRLF in the work tree and break the byte-exact
+# checks (Prettier, generated plugin data, template hashes, fixtures and hook tests).
+* text=auto eol=lf
+
+# Binary assets: never normalised or diffed as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.zip binary
+*.gz binary
+*.phar binary

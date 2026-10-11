@@ -1,0 +1,4 @@
+REQUIRE-FILE app/node_modules/dep/index.js CI-916
+REQUIRE-FILE app/package.json CI-916
+REQUIRE-FILE app/prepared.txt CI-916
+REQUIRE-FILE combo-marker.txt CI-916

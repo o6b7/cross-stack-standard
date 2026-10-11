@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/allowlist.schema.json",
+  "title": "Cross-Stack Standard allowlist",
+  "description": "A dated allowlist for one rule, stored as .cross-stack/allowlists/<RULE-ID>.json. Every entry needs a reason, an owner and an expiry date; expired entries fail the check.",
+  "type": "object",
+  "required": ["rule", "entries"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "URL of this schema, for editor completion."
+    },
+    "rule": {
+      "description": "The ID of the rule the entries apply to (a track prefix and three digits); it must match the file name.",
+      "type": "string",
+      "pattern": "^(?:BE|WEB|MOB|SEC|I18N|UI|PROC|CI)-[0-9]{3}$"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["match", "reason", "expires", "owner"],
+      "additionalProperties": false,
+      "properties": {
+        "match": {
+          "description": "What the entry allows, in the form the rule's gate documents (for example a project-relative path or glob).",
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "description": "Why the exception is needed.",
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "expires": {
+          "description": "The last day (UTC, YYYY-MM-DD) on which the entry is valid.",
+          "type": "string",
+          "format": "date",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "owner": {
+          "description": "Who removes the entry: a GitHub handle, team or email address.",
+          "type": "string",
+          "pattern": "\\S"
+        }
+      }
+    }
+  }
+}

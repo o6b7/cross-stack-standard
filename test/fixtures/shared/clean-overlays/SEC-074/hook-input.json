@@ -1,0 +1,1 @@
+{"session_id":"00000000-0000-4000-8000-000000000074","permission_mode":"default","hook_event_name":"PreToolUse","tool_name":"mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page","tool_input":{"url":"http://localhost:3000/settings"},"tool_use_id":"toolu_fixture_sec_074"}

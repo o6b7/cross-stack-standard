@@ -1,0 +1,6 @@
+{
+  "hosts": ["plain"],
+  "expect": {
+    "idPattern": "fixture-gate/custom-message"
+  }
+}

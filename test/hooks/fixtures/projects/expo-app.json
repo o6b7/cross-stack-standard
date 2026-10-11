@@ -1,0 +1,17 @@
+{
+  "description": "An Expo app: it depends on react as well, but is reported as mobile only.",
+  "files": {
+    "package.json": {
+      "name": "mobile-app",
+      "private": true,
+      "main": "expo-router/entry",
+      "dependencies": {
+        "expo": "~57.0.0",
+        "expo-router": "~7.0.0",
+        "react": "19.2.0",
+        "react-native": "0.88.0"
+      }
+    },
+    "src/app/index.tsx": "export default function Index() {\n  return null;\n}\n"
+  }
+}

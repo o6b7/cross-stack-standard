@@ -1,0 +1,5 @@
+{
+  "$schema": "../../../../schemas/fixture.schema.json",
+  "description": "An adopted project with a schema-valid manifest that declares the web track; the hook fixtures add their hook input and project files in clean-overlays/<RULE-ID>/.",
+  "hosts": ["hook", "node"]
+}

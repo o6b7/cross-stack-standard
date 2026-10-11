@@ -1,0 +1,2 @@
+PRINT fixture-gate/custom-message: found a problem
+EXIT 1

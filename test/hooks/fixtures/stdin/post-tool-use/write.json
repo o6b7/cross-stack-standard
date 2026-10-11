@@ -1,0 +1,17 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000002",
+  "transcript_path": "{{transcriptPath}}",
+  "cwd": "{{cwd}}",
+  "permission_mode": "default",
+  "hook_event_name": "PostToolUse",
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "{{cwd}}/app/Models/Invoice.php",
+    "content": "<?php\n\ndeclare(strict_types=1);\n\nnamespace App\\Models;\n\nfinal class Invoice {}\n"
+  },
+  "tool_response": {
+    "filePath": "{{cwd}}/app/Models/Invoice.php",
+    "success": true
+  },
+  "tool_use_id": "toolu_hooktest_post_write"
+}

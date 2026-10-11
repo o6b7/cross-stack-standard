@@ -1,0 +1,8 @@
+{
+  "name": "stop-gate-fixture",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check:fast": "node --check src/app.mjs"
+  }
+}

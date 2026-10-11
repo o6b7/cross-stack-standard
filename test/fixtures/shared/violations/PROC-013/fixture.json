@@ -1,0 +1,5 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "An agent edits the ESLint configuration, a gate file: the PreToolUse hook answers ask and names the rule.",
+  "hosts": ["hook"]
+}

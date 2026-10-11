@@ -1,0 +1,13 @@
+{
+  "description": "An adopted Laravel project whose Composer check:fast script sits in the project directory.",
+  "files": {
+    ".cross-stack/standard.json": { "version": "1.0.0", "tracks": ["laravel"] },
+    "composer.json": {
+      "name": "acme/stop-api",
+      "type": "project",
+      "scripts": { "check:fast": ["@php check.php"] }
+    },
+    "check.php": { "$fixture": "gate/check.php" },
+    "src/App.php": "<?php\n\nreturn 1;\n"
+  }
+}

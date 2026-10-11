@@ -1,0 +1,39 @@
+{
+  "description": "An adopted Laravel + web project with the usual gate files, used by every PreToolUse case. Cases add or override files.",
+  "files": {
+    ".cross-stack/standard.json": {
+      "version": "1.0.0",
+      "tracks": ["laravel", "web"],
+      "profile": "next",
+      "tier": 2
+    },
+    ".cross-stack/allowlists/PROC-014.json": { "entries": [] },
+    "CLAUDE.md": "# Project notes\n\nUse the cross-stack-standard skill before modifying application code.\n",
+    "apps/web/CLAUDE.md": "# Web app\n\nThe web app lives here.\n",
+    "phpstan.neon": "includes:\n  - phpstan-baseline.neon\nparameters:\n  level: 8\n  paths:\n    - app\n",
+    "phpstan-baseline.neon": "parameters:\n  ignoreErrors: []\n",
+    "api/phpstan.neon": "parameters:\n  level: 8\n",
+    "api/composer.json": { "name": "example/api", "require": { "php": "^8.4" } },
+    "composer.json": {
+      "name": "example/app",
+      "require": { "php": "^8.4", "laravel/framework": "^13.0" },
+      "scripts": { "check:fast": ["@php vendor/bin/phpstan analyse --no-progress"] },
+      "config": { "audit": { "abandoned": "fail" }, "sort-packages": true }
+    },
+    "package.json": {
+      "name": "example-web",
+      "private": true,
+      "scripts": { "lint": "eslint . --max-warnings=0", "check:fast": "npm run lint" },
+      "dependencies": { "next": "16.3.6", "react": "19.2.0" }
+    },
+    "eslint.config.mjs": "export default [];\n",
+    "pint.json": "{\n  \"preset\": \"laravel\"\n}\n",
+    ".github/workflows/ci.yml": "name: CI\non: [push]\n",
+    "tests/Unit/ArchTest.php": "<?php\n\narch()->preset()->laravel();\n",
+    "src/app/page.tsx": "export default function Page() {\n  return null;\n}\n",
+    "src/lib/util.ts": "export const one = 1;\n",
+    "docs/notes.md": "# Notes\n",
+    "docs/phpstan.md": "# How PHPStan runs\n",
+    ".git/hooks/pre-commit": "#!/bin/sh\nexec npx lefthook run pre-commit\n"
+  }
+}

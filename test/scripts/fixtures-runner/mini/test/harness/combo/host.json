@@ -1,0 +1,18 @@
+{
+  "name": "combo",
+  "description": "Test host: includes the plain host under app/.",
+  "include": [
+    {
+      "host": "plain",
+      "into": "app"
+    }
+  ],
+  "vars": {
+    "gateBin": "{repoRoot}/gate.mjs"
+  },
+  "gates": {
+    "script": {
+      "argv": ["{node}", "{gateBin}", "{gateId}"]
+    }
+  }
+}

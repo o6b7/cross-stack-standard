@@ -1,0 +1,17 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000030",
+  "permission_mode": "default",
+  "hook_event_name": "PostToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "src/app.js",
+    "old_string": "export const value = 0;",
+    "new_string": "export const value = 1;",
+    "replace_all": false
+  },
+  "tool_response": {
+    "filePath": "src/app.js",
+    "success": true
+  },
+  "tool_use_id": "toolu_fixture_proc_030"
+}

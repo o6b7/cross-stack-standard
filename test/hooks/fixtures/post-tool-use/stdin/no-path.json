@@ -1,0 +1,16 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000012",
+  "transcript_path": "{{transcriptPath}}",
+  "cwd": "{{cwd}}",
+  "permission_mode": "default",
+  "hook_event_name": "PostToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "old_string": "a",
+    "new_string": "b"
+  },
+  "tool_response": {
+    "success": true
+  },
+  "tool_use_id": "toolu_hooktest_post_tool_use_no_path"
+}

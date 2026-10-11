@@ -1,0 +1,80 @@
+name: False positive
+description: A gate or hook fails on code that follows the rule.
+title: "false positive: "
+labels: ["false-positive"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A gate that fails on correct code is a bug. Until it is fixed, record a dated allowlist entry with a reason in `.cross-stack/allowlists/<RULE-ID>.json`, or a described disable comment where the rule allows one. Never weaken the gate.
+
+        Remove secrets, tokens and private code from everything you paste.
+  - type: input
+    id: rule
+    attributes:
+      label: Rule ID
+      description: The ID in the gate's output or in the rule catalog, for example WEB-012.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Cross-Stack Standard version
+      description: The `version` in `.cross-stack/standard.json`.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: gate
+    attributes:
+      label: Where it failed
+      options:
+        - ESLint
+        - dependency-cruiser
+        - Vitest
+        - Jest
+        - Pest
+        - PHPStan
+        - Project tool or a script check
+        - CI step
+        - A Claude Code hook
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Code
+      description: The smallest code that triggers the finding, with file paths.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Gate output
+      description: The exact output, including the rule ID.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why this code follows the rule
+      description: Explain why the code complies with the rule as documented, and link the rule's entry in the catalog.
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround in use
+      description: For example an allowlist entry or a described disable comment, if you added one.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: I searched the existing issues and this is not a duplicate.
+          required: true
+        - label: I removed secrets, tokens and private code from this report.
+          required: true

@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../../../schemas/fixture.schema.json",
+  "description": "The edited src/app.js now has a lint error: the PostToolUse hook exits 2 and reports it to the agent as a file:line rule message line.",
+  "hosts": ["hook"],
+  "expect": {
+    "idPattern": "^hook PostToolUse:Edit violation: "
+  }
+}

@@ -1,0 +1,549 @@
+# Continuous integration for pull requests to, and pushes on, dev and main.
+#
+# "ci-ok" is the single required status check. It passes only when every job it needs succeeded,
+# or was skipped because the "changes" job found nothing that job covers. Workflows with required
+# jobs never use `paths:` filters (a filtered workflow leaves its checks pending forever); jobs
+# are skipped with job-level `if:` instead, and every job runs on pushes to dev and main.
+#
+# Security: read-only token by default, credentials are not persisted after checkout, every
+# action is pinned to a full commit SHA, and untrusted pull request text (title, body, branch)
+# reaches scripts through `env:` only, never through expressions inside `run:`.
+name: CI
+
+on:
+  pull_request:
+    # "edited" re-runs every job when the title or body changes. A partial run is not safe:
+    # its ci-ok would replace the check of the full run on the same commit.
+    types: [opened, edited, synchronize, reopened]
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+# Pull requests share a group per number, so a new push cancels the outdated run. Pushes to dev
+# and main get a group per commit: GitHub replaces a pending run in the same group with the newest
+# one even without cancel-in-progress, which would leave a pushed range unscanned.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  changes:
+    name: changes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      plugin: ${{ steps.classify.outputs.plugin }}
+      hooks: ${{ steps.classify.outputs.hooks }}
+      fixtures: ${{ steps.classify.outputs.fixtures }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # The pull request merge commit plus its parents (base tip and head).
+          fetch-depth: 2
+
+      - name: Classify changed paths
+        id: classify
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            echo "Push to a protected branch: every job runs."
+            { echo "plugin=true"; echo "hooks=true"; echo "fixtures=true"; } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed="$RUNNER_TEMP/changed-files.txt"
+          # actions/checkout checks out the merge commit; its first parent is the base tip.
+          git diff --name-only --no-renames HEAD^1 HEAD > "$changed"
+          echo "Changed files:"
+          sed 's/^/  /' "$changed"
+          touches() { grep -Eq "$1" "$changed"; }
+          # Workflow and dependency changes can affect every job.
+          everything=false
+          if touches '^(\.github/workflows/|package(-lock)?\.json$)'; then everything=true; fi
+          plugin=$everything
+          hooks=$everything
+          fixtures=$everything
+          if touches '^(\.claude-plugin/|plugins/)'; then plugin=true; fi
+          # Hook inputs: the hook code and data (protected paths), its sources, and the line-ending
+          # rules the Windows job exists to test.
+          if touches '^(plugins/[^/]+/(hooks|scripts|data)/|schemas/protected-paths\.json$|test/hooks/|\.gitattributes$)'; then
+            hooks=true
+          fi
+          if touches '^(registry/|schemas/|packages/|plugins/|scripts/|test/(fixtures|harness)/)'; then
+            fixtures=true
+          fi
+          { echo "plugin=$plugin"; echo "hooks=$hooks"; echo "fixtures=$fixtures"; } >> "$GITHUB_OUTPUT"
+          echo "plugin=$plugin hooks=$hooks fixtures=$fixtures"
+
+  lint:
+    name: lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install repository tooling
+        run: npm ci --ignore-scripts
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Prettier
+        run: npm run format:check
+
+      - name: markdownlint
+        run: npm run lint:md
+
+      - name: Install actionlint and shellcheck (pinned, checksum-verified)
+        run: node scripts/install-tool.mjs actionlint shellcheck --dest "$RUNNER_TEMP/tools" --github-path
+
+      - name: actionlint (runs shellcheck on every run block)
+        run: actionlint -color
+
+      - name: shellcheck (tracked shell scripts)
+        run: |
+          shellcheck --version
+          mapfile -d '' files < <(git ls-files -z -- '*.sh' '*.bash')
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No shell scripts are tracked."
+            exit 0
+          fi
+          shellcheck -- "${files[@]}"
+
+  test:
+    name: test (node ${{ matrix.node }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # Current CI version and the supported floor (package.json "engines").
+        node: ["24", "22.13.0"]
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install repository tooling
+        run: npm ci --ignore-scripts
+
+      - name: Tests
+        run: npm test
+
+  hooks-os:
+    name: hooks (${{ matrix.os }})
+    needs: changes
+    if: needs.changes.outputs.hooks == 'true'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # Linux runs the same hook tests in the test job (npm test on Node 24 and 22.13.0).
+        os: [macos-latest, windows-latest]
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      # The PostToolUse tests that run the repository's own ESLint and Prettier need them
+      # installed; without node_modules those tests skip.
+      - name: Install repository tooling
+        run: npm ci --ignore-scripts
+
+      - name: Hook tests
+        # A quoted glob, expanded by Node the same way on every OS. A bare directory argument
+        # (node --test test/hooks) is loaded as a module instead of searched, and fails.
+        run: node --test "test/hooks/**/*.test.mjs"
+
+  registry:
+    name: registry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install repository tooling
+        run: npm ci --ignore-scripts
+
+      - name: Registry integrity
+        run: node scripts/check-registry.mjs
+
+      - name: Generated rule docs are current
+        run: node scripts/generate-rule-docs.mjs --check
+
+      - name: Generated plugin data is current
+        run: node scripts/build-plugin-data.mjs --check
+
+      - name: Version drift
+        run: node scripts/check-version-drift.mjs
+
+      - name: Identity and author metadata
+        run: node scripts/check-identity.mjs
+
+  plugin-validate:
+    name: plugin validate
+    needs: changes
+    if: needs.changes.outputs.plugin == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CLAUDE_CODE_VERSION: "2.1.282"
+      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install the pinned Claude Code CLI
+        run: |
+          npm_major="$(npm --version | cut -d. -f1)"
+          # npm 12 blocks the CLI's install script (it links the native binary) unless it is
+          # allowed by name; npm 10 and 11, which ship with Node 22 and 24, run it by default.
+          if [ "$npm_major" -ge 12 ]; then
+            npm install -g --allow-scripts=@anthropic-ai/claude-code "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+          else
+            npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+          fi
+          # A throwaway configuration directory: no user settings, no credentials.
+          mkdir -p "$RUNNER_TEMP/claude-config"
+          echo "CLAUDE_CONFIG_DIR=$RUNNER_TEMP/claude-config" >> "$GITHUB_ENV"
+
+      - name: Assert the CLI version
+        run: |
+          actual="$(claude --version)"
+          echo "$actual"
+          case "$actual" in
+            "$CLAUDE_CODE_VERSION"*) ;;
+            *)
+              echo "::error title=Claude Code version::expected $CLAUDE_CODE_VERSION, got: $actual"
+              exit 1
+              ;;
+          esac
+
+      - name: Validate the marketplace (strict)
+        run: claude plugin validate . --strict
+
+      - name: Validate the plugin (strict)
+        run: claude plugin validate plugins/cross-stack-standard --strict
+
+      - name: Isolated copy of the plugin folder
+        run: |
+          # An installed plugin is a copy of its folder only. Loading a copy outside the
+          # repository proves it needs nothing else (no root files, no repository node_modules).
+          copy="$RUNNER_TEMP/isolated-plugin/cross-stack-standard"
+          mkdir -p "$(dirname "$copy")"
+          cp -R plugins/cross-stack-standard "$copy"
+          echo "PLUGIN_COPY=$copy" >> "$GITHUB_ENV"
+
+      - name: Hook tests against the isolated copy
+        # The test helpers import every hook module and run every hook from the directory this
+        # variable names, so a file the hooks need from outside the plugin folder fails here.
+        run: CROSS_STACK_STANDARD_PLUGIN_ROOT="$PLUGIN_COPY" node --test "test/hooks/**/*.test.mjs"
+
+      - name: Load-time errors
+        run: |
+          list="$RUNNER_TEMP/plugin-list.json"
+          claude --plugin-dir "$PLUGIN_COPY" plugin list --json > "$list"
+          # "plugin list" exits 0 even when a plugin fails to load; read its errors instead.
+          node - "$list" <<'EOF'
+          const fs = require("node:fs");
+          const plugins = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+          const id = "cross-stack-standard@inline";
+          let failed = !plugins.some((plugin) => plugin.id === id);
+          if (failed) console.log(`::error::${id} is not listed by "claude plugin list"`);
+          for (const plugin of plugins) {
+            for (const error of plugin.errors ?? []) {
+              console.log(`::error::${plugin.id}: ${error}`);
+              failed = true;
+            }
+            if (plugin.enabled === false) {
+              console.log(`::error::${plugin.id} did not load (enabled: false)`);
+              failed = true;
+            }
+          }
+          console.log(failed ? "Load-time errors found." : `${plugins.length} plugin(s) loaded without errors.`);
+          process.exit(failed ? 1 : 0);
+          EOF
+
+      - name: Component inventory
+        run: claude --plugin-dir "$PLUGIN_COPY" plugin details cross-stack-standard
+
+  integrity:
+    name: integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CROSS_STACK_STANDARD_BRAND_KEY: ${{ secrets.CROSS_STACK_STANDARD_BRAND_KEY }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Full history: commit ranges, the base-ref comparisons and gitleaks need it.
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install repository tooling
+        run: npm ci --ignore-scripts
+
+      - name: Commit range
+        id: range
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            # Merge commit: first parent = base tip, second parent = pull request head.
+            base="$(git rev-parse HEAD^1)"
+            head="$(git rev-parse HEAD^2)"
+          else
+            head="$(git rev-parse HEAD)"
+            previous_release="$(git describe --tags --abbrev=0 --match 'v[0-9]*' HEAD^ 2>/dev/null || true)"
+            if [ "$REF_NAME" = "dev" ] && git rev-parse --verify --quiet refs/remotes/origin/main >/dev/null; then
+              # Every commit on dev that no release contains yet: a push whose own run never
+              # happened is covered by the next one.
+              base="$(git merge-base refs/remotes/origin/main HEAD)"
+            elif [ "$REF_NAME" = "main" ] && [ -n "$previous_release" ]; then
+              # Everything since the previous release.
+              base="$(git rev-parse "${previous_release}^{commit}")"
+            elif [ -n "$BEFORE" ] && ! [[ "$BEFORE" =~ ^0+$ ]] && git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+              base="$BEFORE"
+            else
+              # New branch or rewritten history: check the pushed tip only.
+              base="$(git rev-parse --verify --quiet HEAD^ || true)"
+            fi
+            if [ "$base" = "$head" ]; then base="$(git rev-parse --verify --quiet HEAD^ || true)"; fi
+          fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "head=$head" >> "$GITHUB_OUTPUT"
+          if [ -n "$base" ]; then range="$base..$head"; else range="$head"; fi
+          echo "range=$range" >> "$GITHUB_OUTPUT"
+          echo "Commits in range $range:"
+          git log --format='  %h %s' "$range"
+
+      - name: Repository integrity (private paths, .env and machine-local files)
+        run: node scripts/check-repo-integrity.mjs
+
+      - name: Changelog entry
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ steps.range.outputs.base }}
+          # The head branch tells a release back-merge (main) from a feature pull request.
+          HEAD_REF: ${{ github.head_ref }}
+        run: node scripts/check-changelog.mjs --base "$BASE" --head HEAD --head-ref "$HEAD_REF"
+
+      - name: Pull request title follows Conventional Commits
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s\n' "$PR_TITLE" | ./node_modules/.bin/commitlint --verbose
+
+      - name: Commit messages follow Conventional Commits
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ steps.range.outputs.base }}
+          HEAD_SHA: ${{ steps.range.outputs.head }}
+        run: ./node_modules/.bin/commitlint --from "$BASE" --to "$HEAD_SHA" --verbose
+
+      - name: Brand-guard key
+        id: brandkey
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_IS_FORK: ${{ github.event.pull_request.head.repo.fork }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          if [ -n "$CROSS_STACK_STANDARD_BRAND_KEY" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$EVENT_NAME" = "pull_request" ] && { [ "$HEAD_IS_FORK" = "true" ] || [ "$ACTOR" = "dependabot[bot]" ]; }; then
+            echo "::notice title=Brand guard skipped::Repository secrets are not available to this pull request (fork or bot). The guard runs on the push to dev after merge; maintainers run scripts/check-pr.mjs locally before merging."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "::error title=Brand-guard key missing::Add the CROSS_STACK_STANDARD_BRAND_KEY repository secret (see docs/maintainers/branch-protection.md)."
+          exit 1
+
+      - name: Brand guard (tracked files and file names)
+        if: steps.brandkey.outputs.available == 'true'
+        run: node scripts/check-brand-leak.mjs --tree
+
+      - name: Brand guard (pull request title, body and branch)
+        if: steps.brandkey.outputs.available == 'true' && github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: printf '%s\n\n%s\n\n%s\n' "$PR_BRANCH" "$PR_TITLE" "$PR_BODY" | node scripts/check-brand-leak.mjs --stdin --label "pull request"
+
+      - name: Brand guard (commit messages and added paths in range)
+        if: steps.brandkey.outputs.available == 'true'
+        env:
+          RANGE: ${{ steps.range.outputs.range }}
+        run: node scripts/check-brand-leak.mjs --commits "$RANGE"
+
+      - name: Narrative lint (tracked files)
+        run: node scripts/check-narrative.mjs --tree
+
+      - name: Narrative lint (pull request title, body and branch)
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: printf '%s\n\n%s\n\n%s\n' "$PR_BRANCH" "$PR_TITLE" "$PR_BODY" | node scripts/check-narrative.mjs --stdin --label "pull request"
+
+      - name: Narrative lint (commit messages in range)
+        env:
+          RANGE: ${{ steps.range.outputs.range }}
+        run: node scripts/check-narrative.mjs --commits "$RANGE"
+
+      - name: Denylist does not shrink
+        if: steps.range.outputs.base != ''
+        env:
+          BASE: ${{ steps.range.outputs.base }}
+        run: node scripts/check-denylist-shrink.mjs --base-ref "$BASE"
+
+      - name: Install gitleaks (pinned, checksum-verified)
+        run: node scripts/install-tool.mjs gitleaks --dest "$RUNNER_TEMP/tools" --github-path
+
+      - name: gitleaks (commits in range)
+        env:
+          RANGE: ${{ steps.range.outputs.range }}
+        run: |
+          if [[ "$RANGE" == *..* ]]; then log_opts="$RANGE"; else log_opts="-1 $RANGE"; fi
+          gitleaks git --log-opts="$log_opts" --redact --no-banner --verbose .
+
+  fixtures:
+    name: fixtures
+    needs: changes
+    if: needs.changes.outputs.fixtures == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: "8.4"
+          extensions: intl
+          coverage: pcov
+
+      - name: Install repository tooling
+        run: npm ci --ignore-scripts
+
+      - name: Fail-then-pass fixture matrix
+        run: node scripts/run-fixtures.mjs --report "$RUNNER_TEMP/fixture-report.json"
+
+      - name: Every FORCED or GUARDED rule passed its fixtures
+        run: node scripts/check-registry.mjs --fixture-report "$RUNNER_TEMP/fixture-report.json"
+
+  ci-ok:
+    name: ci-ok
+    if: always()
+    needs: [changes, lint, test, hooks-os, registry, plugin-validate, integrity, fixtures]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Every needed job passed or was legitimately skipped
+        env:
+          CHANGES: ${{ needs.changes.result }}
+          LINT: ${{ needs.lint.result }}
+          TEST: ${{ needs.test.result }}
+          REGISTRY: ${{ needs.registry.result }}
+          INTEGRITY: ${{ needs.integrity.result }}
+          HOOKS_OS: ${{ needs.hooks-os.result }}
+          PLUGIN_VALIDATE: ${{ needs.plugin-validate.result }}
+          FIXTURES: ${{ needs.fixtures.result }}
+          HOOKS_AFFECTED: ${{ needs.changes.outputs.hooks }}
+          PLUGIN_AFFECTED: ${{ needs.changes.outputs.plugin }}
+          FIXTURES_AFFECTED: ${{ needs.changes.outputs.fixtures }}
+        run: |
+          status=0
+          # verdict <job> <result> <affected>: "always" means the job must have succeeded.
+          verdict() {
+            if [ "$2" = "success" ]; then
+              echo "ok      $1"
+            elif [ "$2" = "skipped" ] && [ "$3" = "false" ]; then
+              echo "ok      $1 (skipped: not affected by this change)"
+            else
+              echo "::error title=ci-ok::$1 finished as '$2' (affected: $3)"
+              status=1
+            fi
+          }
+          verdict changes "$CHANGES" always
+          verdict lint "$LINT" always
+          verdict test "$TEST" always
+          verdict registry "$REGISTRY" always
+          verdict integrity "$INTEGRITY" always
+          verdict hooks-os "$HOOKS_OS" "$HOOKS_AFFECTED"
+          verdict plugin-validate "$PLUGIN_VALIDATE" "$PLUGIN_AFFECTED"
+          verdict fixtures "$FIXTURES" "$FIXTURES_AFFECTED"
+          exit "$status"

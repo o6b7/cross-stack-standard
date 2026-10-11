@@ -1,0 +1,58 @@
+{
+  "name": "cross-stack-standard-repo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Repository tooling for the Cross-Stack Standard (not published).",
+  "license": "MIT",
+  "author": "Qusai Abdullah <qusaii.abdullah@gmail.com> (https://github.com/o6b7)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "node --test --test-reporter=spec \"test/**/*.test.mjs\"",
+    "test:brand": "node --test \"test/scripts/brand/*.test.mjs\"",
+    "test:hooks": "node --test \"test/hooks/**/*.test.mjs\"",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:md": "markdownlint-cli2",
+    "check": "npm run lint && npm run format:check && npm run lint:md && npm run check:registry && npm run check:rule-docs && npm run check:plugin-data && npm run check:agent-skill && npm run check:version && npm run check:identity && npm run check:narrative && npm run check:integrity",
+    "check:registry": "node scripts/check-registry.mjs",
+    "check:rule-docs": "node scripts/generate-rule-docs.mjs --check",
+    "check:plugin-data": "node scripts/build-plugin-data.mjs --check",
+    "check:version": "node scripts/check-version-drift.mjs",
+    "check:identity": "node scripts/check-identity.mjs",
+    "check:identity:release": "node scripts/check-identity.mjs --release",
+    "check:integrity": "node scripts/check-repo-integrity.mjs",
+    "check:changelog": "node scripts/check-changelog.mjs --base origin/dev",
+    "check:brand": "node scripts/check-brand-leak.mjs --tree",
+    "check:narrative": "node scripts/check-narrative.mjs --tree",
+    "check:denylist-shrink": "node scripts/check-denylist-shrink.mjs --base-ref origin/dev",
+    "build:rule-docs": "node scripts/generate-rule-docs.mjs",
+    "build:agent-skill": "node scripts/build-agent-skill.mjs",
+    "build:plugin-data": "node scripts/build-plugin-data.mjs",
+    "check:agent-skill": "node scripts/build-agent-skill.mjs --check",
+    "version:stamp": "node scripts/stamp-version.mjs",
+    "fixtures": "node scripts/run-fixtures.mjs",
+    "fixtures:list": "node scripts/run-fixtures.mjs --list",
+    "validate:plugin": "claude plugin validate . --strict && claude plugin validate plugins/cross-stack-standard --strict",
+    "release:notes": "node scripts/release-notes.mjs",
+    "tools:install": "node scripts/install-tool.mjs actionlint shellcheck gitleaks",
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3",
+    "@eslint/js": "9.39.5",
+    "ajv": "8.20.0",
+    "eslint": "9.39.5",
+    "globals": "17.12.0",
+    "lefthook": "2.1.14",
+    "markdownlint-cli2": "0.23.3",
+    "prettier": "3.9.9"
+  }
+}

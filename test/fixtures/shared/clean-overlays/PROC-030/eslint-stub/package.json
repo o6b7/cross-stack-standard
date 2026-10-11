@@ -1,0 +1,10 @@
+{
+  "name": "eslint",
+  "version": "0.0.0-stub",
+  "private": true,
+  "description": "Fixture stub standing in for ESLint: the PostToolUse hook resolves it from node_modules/eslint like the real package.",
+  "type": "module",
+  "bin": {
+    "eslint": "./bin/eslint.mjs"
+  }
+}

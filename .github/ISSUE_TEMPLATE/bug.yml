@@ -1,0 +1,114 @@
+name: Bug report
+description: The plugin, a hook, a skill, the project tool or the documentation does not work as documented.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for the report. Two other forms may fit better:
+
+        - a **security problem**: do not use this form; follow the [security policy](https://github.com/o6b7/cross-stack-standard/security/policy);
+        - a **gate that fails on correct code**: use the false-positive form.
+
+        Remove secrets, tokens and private code from everything you paste.
+  - type: input
+    id: version
+    attributes:
+      label: Cross-Stack Standard version
+      description: Shown by `claude plugin details cross-stack-standard`; adopting projects also record it as `version` in `.cross-stack/standard.json`.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: claude-code-version
+    attributes:
+      label: Claude Code version
+      description: The output of `claude --version`.
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - SessionStart hook
+        - PostToolUse hook
+        - Stop hook
+        - PreToolUse hook
+        - Core skill (cross-stack-standard)
+        - adopt
+        - upgrade
+        - new-project
+        - audit
+        - doctor
+        - Project tool (.cross-stack/bin/cross-stack.mjs)
+        - Kit template
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      description: The output of `node --version`.
+  - type: checkboxes
+    id: tracks
+    attributes:
+      label: Tracks in the project
+      options:
+        - label: laravel
+        - label: web (Next.js)
+        - label: mobile (Expo)
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, and what the plugin did.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: What should have happened, with a link to the documentation that says so if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: The smallest project and the steps that show the problem.
+      placeholder: |
+        1. Create an empty Next.js 16 app.
+        2. Run /cross-stack-standard:adopt.
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output
+      description: Hook messages, command output or logs, with local paths and secrets removed.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: I searched the existing issues and this is not a duplicate.
+          required: true
+        - label: I removed secrets, tokens and private code from this report.
+          required: true

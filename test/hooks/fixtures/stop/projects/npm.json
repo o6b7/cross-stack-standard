@@ -1,0 +1,14 @@
+{
+  "description": "An adopted web project whose npm check:fast script sits in the project directory.",
+  "files": {
+    ".cross-stack/standard.json": { "version": "1.0.0", "tracks": ["web"] },
+    "package.json": {
+      "name": "stop-web",
+      "version": "1.0.0",
+      "private": true,
+      "scripts": { "check": "node check.mjs", "check:fast": "node check.mjs" }
+    },
+    "check.mjs": { "$fixture": "gate/check.mjs" },
+    "src/app.js": "export const value = 1;\n"
+  }
+}
