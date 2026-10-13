@@ -22,7 +22,7 @@ import {
 import { EVENT_FIXTURES, fixtureVars, runHook, stdinFixture } from "./helpers/run-hook.mjs";
 
 const { findOptOutLine, isOptedOut } = await importPlugin("scripts/lib/opt-out.mjs");
-const { searchDirsFor } = await importPlugin("scripts/lib/project.mjs");
+const { realPath, searchDirsFor } = await importPlugin("scripts/lib/project.mjs");
 
 const EVENTS = Object.keys(EVENT_FIXTURES);
 
@@ -446,12 +446,12 @@ describe("isOptedOut order (first match wins)", () => {
     );
     const byManifest = isOptedOut({ env: {}, searchDirs });
     assert.equal(byManifest.source, "manifest");
-    assert.equal(byManifest.file, project.path(".cross-stack/standard.json"));
+    assert.equal(byManifest.file, realPath(project.path(".cross-stack/standard.json")));
     project.write(".cross-stack/standard.json", { version: "1.0.0", tracks: ["web"] });
     const byMemory = isOptedOut({ env: {}, searchDirs });
     assert.deepEqual(
       { source: byMemory.source, file: byMemory.file, line: byMemory.line },
-      { source: "memory", file: project.path("CLAUDE.md"), line: 1 },
+      { source: "memory", file: realPath(project.path("CLAUDE.md")), line: 1 },
     );
     assert.deepEqual(byMemory.manifest?.tracks, ["web"], "the manifest read is returned");
   });
@@ -465,7 +465,7 @@ describe("isOptedOut order (first match wins)", () => {
       env: {},
       searchDirs: searchDirsFor(project.path("api"), project.root),
     });
-    assert.equal(result.file, project.path("api/CLAUDE.local.md"));
+    assert.equal(result.file, realPath(project.path("api/CLAUDE.local.md")));
   });
 
   test("nothing set: not opted out", (t) => {
