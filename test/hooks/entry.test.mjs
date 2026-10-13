@@ -40,6 +40,7 @@ const { HANDLERS } = await importPlugin("scripts/hook.mjs");
 const { maxWatchdogMs, watchdogMs } = await importPlugin("scripts/lib/budget.mjs");
 const { SCHEMA_FILE, VALIDATOR_FILE } = await importPlugin("scripts/lib/manifest.mjs");
 const { PROTECTED_PATHS_FILE } = await importPlugin("scripts/lib/formatters.mjs");
+const { realPath } = await importPlugin("scripts/lib/project.mjs");
 
 const HOOKS_JSON = path.join(PLUGIN_DIR, "hooks", "hooks.json");
 const hooksConfig = JSON.parse(fs.readFileSync(HOOKS_JSON, "utf8"));
@@ -759,10 +760,10 @@ describe("project paths: the manifest comes from the project, never from the wor
       ".cross-stack/standard.json": { version: "1.0.0", tracks: ["mobile"] },
     });
     const paths = await probe(t, { projectDir: project.root, cwd: elsewhere.root, plugin });
-    assert.equal(paths.manifest, project.path(".cross-stack/standard.json"));
-    assert.equal(paths.projectRoot, project.root);
+    assert.equal(realPath(paths.manifest), realPath(project.path(".cross-stack/standard.json")));
+    assert.equal(realPath(paths.projectRoot), realPath(project.root));
     assert.ok(
-      paths.searchDirs.every((dir) => isInside(project.root, dir)),
+      paths.searchDirs.every((dir) => isInside(realPath(project.root), realPath(dir))),
       `memory files are read inside the project only: ${paths.searchDirs.join(", ")}`,
     );
   });
@@ -779,13 +780,13 @@ describe("project paths: the manifest comes from the project, never from the wor
       cwd: project.path("third-party/tool/src"),
       plugin,
     });
-    assert.equal(paths.manifest, project.path(".cross-stack/standard.json"));
-    assert.equal(paths.projectRoot, project.root);
-    assert.deepEqual(paths.searchDirs, [
-      project.path("third-party/tool/src"),
-      project.path("third-party/tool"),
-      project.path("third-party"),
-      project.root,
+    assert.equal(realPath(paths.manifest), realPath(project.path(".cross-stack/standard.json")));
+    assert.equal(realPath(paths.projectRoot), realPath(project.root));
+    assert.deepEqual(paths.searchDirs.map(realPath), [
+      realPath(project.path("third-party/tool/src")),
+      realPath(project.path("third-party/tool")),
+      realPath(project.path("third-party")),
+      realPath(project.root),
     ]);
   });
 
@@ -797,11 +798,15 @@ describe("project paths: the manifest comes from the project, never from the wor
       "apps/web/package.json": { name: "web" },
     });
     const paths = await probe(t, { projectDir: repo.path("apps/web"), plugin });
-    assert.equal(paths.repositoryRoot, repo.root);
-    assert.equal(paths.manifest, repo.path(".cross-stack/standard.json"));
-    assert.equal(paths.projectRoot, repo.root);
-    assert.equal(paths.projectDir, repo.path("apps/web"));
-    assert.deepEqual(paths.searchDirs, [repo.path("apps/web")], "memory files: project only");
+    assert.equal(realPath(paths.repositoryRoot), realPath(repo.root));
+    assert.equal(realPath(paths.manifest), realPath(repo.path(".cross-stack/standard.json")));
+    assert.equal(realPath(paths.projectRoot), realPath(repo.root));
+    assert.equal(realPath(paths.projectDir), realPath(repo.path("apps/web")));
+    assert.deepEqual(
+      paths.searchDirs.map(realPath),
+      [realPath(repo.path("apps/web"))],
+      "memory files: project only",
+    );
   });
 
   test("a .git file (a worktree or a submodule) marks the repository root too", async (t) => {
@@ -812,8 +817,8 @@ describe("project paths: the manifest comes from the project, never from the wor
       "web/src/.keep": "",
     });
     const paths = await probe(t, { projectDir: repo.path("web"), plugin });
-    assert.equal(paths.repositoryRoot, repo.root);
-    assert.equal(paths.manifest, repo.path(".cross-stack/standard.json"));
+    assert.equal(realPath(paths.repositoryRoot), realPath(repo.root));
+    assert.equal(realPath(paths.manifest), realPath(repo.path(".cross-stack/standard.json")));
   });
 
   test("without an enclosing repository, the search stops at the project directory", async (t) => {
@@ -827,7 +832,7 @@ describe("project paths: the manifest comes from the project, never from the wor
     const paths = await probe(t, { projectDir: project.root, plugin });
     assert.equal(paths.repositoryRoot, null);
     assert.equal(paths.manifest, null);
-    assert.equal(paths.projectRoot, project.root);
+    assert.equal(realPath(paths.projectRoot), realPath(project.root));
   });
 
   test("the nearest repository root wins (a nested repository is its own root)", async (t) => {
@@ -839,7 +844,7 @@ describe("project paths: the manifest comes from the project, never from the wor
       "vendor-src/lib/pkg/.keep": "",
     });
     const paths = await probe(t, { projectDir: outer.path("vendor-src/lib/pkg"), plugin });
-    assert.equal(paths.repositoryRoot, outer.path("vendor-src/lib"));
+    assert.equal(realPath(paths.repositoryRoot), realPath(outer.path("vendor-src/lib")));
     assert.equal(paths.manifest, null, "the outer repository's manifest is not this project's");
   });
 
@@ -858,8 +863,11 @@ describe("project paths: the manifest comes from the project, never from the wor
         cwd: project.path("api/tools"),
         plugin,
       });
-      assert.equal(paths.manifest, project.path(".cross-stack/standard.json"));
-      assert.deepEqual(paths.searchDirs, [project.path("api"), project.root]);
+      assert.equal(realPath(paths.manifest), realPath(project.path(".cross-stack/standard.json")));
+      assert.deepEqual(paths.searchDirs.map(realPath), [
+        realPath(project.path("api")),
+        realPath(project.root),
+      ]);
     },
   );
 });
