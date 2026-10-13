@@ -55,11 +55,12 @@ version that Claude Code compares.
   a raised minimum version, a removed or renamed option). MINOR: new opt-in rules, modules, tracks,
   profiles, skills and documentation. PATCH: fixes, false-positive reductions and documentation
   fixes. When in doubt, the higher bump.
-- **Rule lifecycle.** A new rule lands opt-in in a MINOR and becomes default-on only in a MAJOR.
-  A rule whose profile or module ships after the current release records the planned version in
-  `since` and stays default-off until then. At a release, a default-on rule must already be at its
-  target level: a rule whose gate has not shipped is released default-off, because promoting a
-  default-on rule later would be a MAJOR change.
+- **Rule lifecycle.** A new rule lands opt-in in a MINOR. Existing default-on REVIEW rules may be
+  promoted in a 0.x MINOR, with their IDs and adopter impact named in the release notes. From
+  1.0.0 onward, default-on rules must ship at their target level because later promotion can newly
+  fail an adopter's build. A rule whose profile or module ships later records that planned version
+  in `since` and stays default-off until then. The pre-1.0 release check is clarified in
+  [ADR 0107](0107-pre-1-0-rule-promotion.md).
 - **Changelog.** `CHANGELOG.md` follows Keep a Changelog 1.1.0; every pull request that changes
   more than `docs/` or `test/` adds an entry under `## [Unreleased]`, and a release renames that
   section to the version and date.
@@ -78,8 +79,8 @@ version that Claude Code compares.
 ### Confirmation
 
 `check-version-drift` runs in CI. `node scripts/check-registry.mjs --release`, run before each
-release, fails when a default-on rule is below its target level or its `since` is later than
-`VERSION`. `claude plugin validate --strict` fails if a marketplace entry
+release, always fails when a default-on rule's `since` is later than `VERSION`, and from 1.0.0
+requires every default-on rule to be at its target level. `claude plugin validate --strict` fails if a marketplace entry
 ever declares a `version` that disagrees with `plugin.json`. `release.yml` fails unless the tag
 equals `v` plus `VERSION`. `node scripts/check-changelog.mjs` requires the Unreleased entry. The choice of bump is checked in
 review against the policy in [release.md](../maintainers/release.md#versioning-policy).

@@ -495,7 +495,7 @@ once the project declares Tier 2.
 | [SEC-071](laravel.md#sec-071) | Ship the mandated auth and authorization suites complete, with no todo, skipped or incomplete test | Laravel | 2 | core | REVIEW | GUARDED |
 | [SEC-072](web.md#sec-072) | Export no runtime segment config from proxy.ts | Web | 2 | core | REVIEW | FORCED |
 | [SEC-073](web.md#sec-073) | Run Chrome DevTools MCP only from the pinned companion plugin, unapproved in settings | Web | 2 | `browser-check` | REVIEW | GUARDED |
-| [SEC-074](shared.md#sec-074) | Ask before the browser companion opens a non-development site, runs a page script or uploads a file | Shared | 2 | core | GUARDED | GUARDED |
+| [SEC-074](shared.md#sec-074) | Ask before browser companions leave development hosts or run unsafe actions | Shared | 2 | core | GUARDED | GUARDED |
 | [SEC-075](shared.md#sec-075) | Ask before the Figma companion runs any tool that can change a Figma file | Shared | 2 | core | GUARDED | GUARDED |
 | [I18N-001](laravel.md#i18n-001) | Take user-visible server messages from translation keys, never literal sentences | Laravel | 1 | `i18n` | REVIEW | GUARDED |
 | [I18N-002](laravel.md#i18n-002) | Implement HasLocalePreference on every notifiable model | Laravel | 2 | `i18n` | REVIEW | FORCED |

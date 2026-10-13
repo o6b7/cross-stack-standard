@@ -67,7 +67,7 @@ Do this before writing or changing application code ([ADR 0018][0018], [ADR 0009
    - its profile, if it has one, matches (Next.js-only rules carry `profiles: ["next"]`);
    - it is on by default. A rule with `defaultEnabled: false` waits for its per-rule switch, which
      the 0.1.0 manifest does not offer yet; treat it as advice unless the user asks for it.
-7. **Companions.** Use a companion plugin (caveman, impeccable, Figma MCP, Chrome DevTools MCP)
+7. **Companions.** Use a companion plugin (caveman, impeccable, Figma MCP, Playwright MCP, Chrome DevTools MCP)
    only when the session-start status line, or
    `node "${CLAUDE_PLUGIN_ROOT}/scripts/companions.mjs" status --root . --data-dir "${CLAUDE_PLUGIN_DATA}"`,
    shows it `ready` or `unverified`, and only when the task needs it. Never claim a result from a
@@ -76,18 +76,18 @@ Do this before writing or changing application code ([ADR 0018][0018], [ADR 0009
 
 Read the references for what is in scope:
 
-| In scope                                                    | Read                                                              |
-| ----------------------------------------------------------- | ----------------------------------------------------------------- |
-| Laravel track                                               | [laravel.md](references/laravel.md)                               |
-| Web track (Next.js; the React SPA profile)                  | [web.md](references/web.md)                                       |
-| Mobile track (Expo / React Native)                          | [mobile.md](references/mobile.md)                                 |
-| `api-contract` module, or any client of the API             | [api-contract.md](references/api-contract.md)                     |
-| `tenancy` module                                            | [tenancy.md](references/tenancy.md)                               |
-| `i18n` module, locales, right-to-left layouts               | [i18n-rtl.md](references/i18n-rtl.md)                             |
-| `bff-auth` module, Next.js sessions                         | [bff-auth.md](references/bff-auth.md)                             |
-| Credentials, secrets, uploads, logging, supply chain        | [security.md](references/security.md)                             |
-| Companion plugins, `design` or `browser-check`, UI checks   | [companions.md](references/companions.md)                         |
-| Adoption, upgrades, the manifest, CI and workflow templates | [adopting-and-upgrading.md](references/adopting-and-upgrading.md) |
+| In scope                                                    | Read                                                                                                     |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Laravel track                                               | [laravel.md](references/laravel.md)                                                                      |
+| Web track (Next.js; the React SPA profile)                  | [web.md](references/web.md)                                                                              |
+| Mobile track (Expo / React Native)                          | [mobile.md](references/mobile.md)                                                                        |
+| `api-contract` module, or any client of the API             | [api-contract.md](references/api-contract.md)                                                            |
+| `tenancy` module                                            | [tenancy.md](references/tenancy.md)                                                                      |
+| `i18n` module, locales, right-to-left layouts               | [i18n-rtl.md](references/i18n-rtl.md)                                                                    |
+| `bff-auth` module, Next.js sessions                         | [bff-auth.md](references/bff-auth.md)                                                                    |
+| Credentials, secrets, uploads, logging, supply chain        | [security.md](references/security.md)                                                                    |
+| Companion plugins, `design` or `browser-check`, UI checks   | [companions.md](references/companions.md); `/cross-stack-standard:playwright` for routine browser checks |
+| Adoption, upgrades, the manifest, CI and workflow templates | [adopting-and-upgrading.md](references/adopting-and-upgrading.md)                                        |
 
 ## Step 1: stack-first
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/standard.schema.json",
+  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.1.0/plugins/cross-stack-standard/data/standard.schema.json",
   "title": "Cross-Stack Standard project manifest",
   "description": "The manifest at .cross-stack/standard.json: which version of the Standard a project adopted, its tracks, profile, tier and modules, and the settings of the Standard's hooks.",
   "type": "object",
@@ -95,6 +95,7 @@
         "caveman": { "type": "boolean" },
         "impeccable": { "type": "boolean" },
         "figma": { "type": "boolean" },
+        "playwright-mcp": { "type": "boolean" },
         "chrome-devtools-mcp": { "type": "boolean" }
       }
     },

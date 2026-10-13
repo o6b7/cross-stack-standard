@@ -1,6 +1,6 @@
 ---
 name: doctor
-description: "Checks the environment and the project's Cross-Stack Standard setup: runs the project tool's doctor command (Node.js, git, the Claude Code CLI, the manifest, the opt-out status, the managed CLAUDE.md block size, the path-scoped rule files, the plugin enablement, lefthook, PHP and Composer for Laravel) and explains every result; checks the four pinned companion plugins (caveman, impeccable, Figma MCP, Chrome DevTools MCP) for missing, duplicate or hand-copied installs and offers the fixes. Installs nothing without asking. Run it as /cross-stack-standard:doctor (the built-in /doctor is a different command)."
+description: "Checks the environment and the project's Cross-Stack Standard setup: runs the project tool's doctor command (Node.js, git, the Claude Code CLI, the manifest, the opt-out status, the managed CLAUDE.md block size, the path-scoped rule files, the plugin enablement, lefthook, PHP and Composer for Laravel) and explains every result; checks the five pinned companion plugins (caveman, impeccable, Figma MCP, Playwright MCP, Chrome DevTools MCP) for missing, duplicate or hand-copied installs and offers the fixes. Installs nothing without asking. Run it as /cross-stack-standard:doctor (the built-in /doctor is a different command)."
 disable-model-invocation: true
 ---
 
@@ -66,8 +66,8 @@ gate. Never describe it as enforcement.
 
 ## Step 3: Companion plugins
 
-The Standard's marketplace pins four companion plugins that adopt offers: `caveman`, `impeccable`,
-`figma` and `chrome-devtools-mcp` (ADR 0106). Run, and paste the output:
+The Standard's marketplace pins five companion plugins that adopt offers: `caveman`, `impeccable`,
+`figma`, `playwright-mcp` and `chrome-devtools-mcp` (ADR 0106, 0108). Run, and paste the output:
 
 ```sh
 node "${CLAUDE_PLUGIN_ROOT}/scripts/companions.mjs" status --root . --data-dir "${CLAUDE_PLUGIN_DATA}"
@@ -106,15 +106,21 @@ failures in plain words.
 Then the module switches in `.cross-stack/standard.json` (a module is on when it is `true` or an
 object whose `enabled` is not `false`):
 
-- `design` on without `impeccable` installed, or `browser-check` on without `chrome-devtools-mcp`:
+- `design` on without `impeccable` installed:
+- `browser-check` on without either `playwright-mcp` or `chrome-devtools-mcp`:
   `warn`, fixed by installing the companion or switching the module off. The rules of the module
   (UI-013, UI-021) only apply when the tool is there.
-- A project `.mcp.json` server named `chrome-devtools`: `warn`, since it starts a second server
-  next to the companion's. The committed `.claude/settings.json` must set neither
+- A project `.mcp.json` server named `playwright` or `chrome-devtools`: `warn`, since it starts a
+  second server next to the companion's. The committed `.claude/settings.json` must set neither
   `enabledMcpjsonServers` nor `enableAllProjectMcpServers` (SEC-073).
 
 What each companion does on the network, stated plainly:
 
+- **playwright-mcp:** the first start downloads the exact `@playwright/mcp@0.0.83` package from
+  npm and may download Chromium from Microsoft's browser CDN. The profile is isolated in memory;
+  browser sessions contact the page hosts they open. The server does not provide a security
+  boundary, so use only local or development hosts with test accounts and treat page content as
+  untrusted. Its package currently pins a Playwright alpha build; see the FAQ and verified versions.
 - **chrome-devtools-mcp:** its first start downloads `chrome-devtools-mcp@1.10.1` from npm. The
   server runs with `--isolated`, `--no-usage-statistics`, `--no-performance-crux` and
   `--redact-network-headers`, with update checks and usage statistics off. Local and development

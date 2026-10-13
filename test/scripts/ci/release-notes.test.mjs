@@ -265,7 +265,7 @@ describe("the repository changelog", () => {
     const categories = unreleased.lines
       .filter((l) => l.startsWith("### "))
       .map((l) => l.slice(4).trim());
-    assert.ok(categories.length > 0);
+    // An empty Unreleased section is valid immediately after cutting a release.
     for (const category of categories) assert.ok(CATEGORIES.includes(category), category);
     for (const section of sections.filter((s) => !s.unreleased)) {
       assert.ok(section.version && section.date, `released section ${section.title} is dated`);

@@ -215,7 +215,7 @@
           "pattern": "^\\d{4}$"
         },
         "defaultEnabled": {
-          "description": "Whether the rule is on when the project has not configured it; a module rule is on whenever its module is. A default-off rule names its switch (rules.<RULE-ID>.enabled or a module option) in configurable. At a release, a default-on rule must be at its target level (check-registry --release), because promoting a default-on rule later is a MAJOR change.",
+          "description": "Whether the rule is on when the project has not configured it; a module rule is on whenever its module is. A default-off rule names its switch (rules.<RULE-ID>.enabled or a module option) in configurable. Before 1.0, a default-on REVIEW rule may be promoted in a 0.x MINOR release and the release notes name that change; from 1.0 onward, a default-on rule must be at its target level (check-registry --release).",
           "type": "boolean"
         },
         "since": {

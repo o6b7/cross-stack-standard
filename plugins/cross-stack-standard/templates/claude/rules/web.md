@@ -5,7 +5,7 @@ paths:
 ---
 
 <!--
-cross-stack-standard v0.0.0
+cross-stack-standard v0.1.0
 SPDX-License-Identifier: MIT
 Copyright (c) 2026 Qusai Abdullah
 Copied to .claude/rules/web.md by /cross-stack-standard:adopt and replaced by

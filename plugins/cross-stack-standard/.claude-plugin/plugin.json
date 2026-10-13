@@ -1,7 +1,7 @@
 {
   "name": "cross-stack-standard",
   "displayName": "Cross-Stack Standard",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "One enforceable engineering standard for Laravel, Next.js/React and React Native (Expo) projects: architecture rules with honest enforcement labels, gated by linters, static analysis, architecture tests and CI as each gate ships, plus hooks and skills to adopt, audit, upgrade and scaffold projects. Use it when you build or review code in a project that follows the Standard.",
   "author": {
     "name": "Qusai Abdullah",

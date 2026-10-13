@@ -177,7 +177,7 @@ Every file in the application and database namespaces declares strict_types=1, c
 | Enabled by default | yes |
 | Configurable | `rules.BE-001.namespaces` (planned) |
 | Decision | [ADR 0089](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0089-formatter-config-and-strict-types.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-001/` |
 | Adoption | Allowlist: brownfield files get dated ->ignoring() entries that only shrink and the Pint fixer runs on changed files, never a mass rewrite, because strict types turn scalar coercion into type errors. |
 
@@ -198,7 +198,7 @@ A committed pint.json names the laravel preset plus individually justified rules
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0089](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0089-formatter-config-and-strict-types.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-002/` |
 | Adoption | Nothing needed: adopt runs Pint once over the project and commits the result before the check is enabled. |
 
@@ -219,7 +219,7 @@ phpstan analyse with the Larastan extension passes at the project's level (8 for
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0038](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0038-larastan-levels-shrink-only-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-003/` |
 | Adoption | Baseline: brownfield projects start at level 6 with existing errors recorded in phpstan-baseline.neon. |
 
@@ -240,7 +240,7 @@ The check reads the merged parameters and the composer analyse script, and fails
 | Enabled by default | yes |
 | Configurable | `rules.BE-004.minLevel` (planned) |
 | Decision | [ADR 0038](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0038-larastan-levels-shrink-only-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-004/` |
 | Adoption | Nothing needed: adopt writes the floor for the project type and keeps an existing configuration that is stricter. |
 
@@ -266,7 +266,7 @@ The check counts every baseline entry, failing on one without a count, every ign
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0038](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0038-larastan-levels-shrink-only-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-005/` |
 | Adoption | Baseline: adopt generates the baseline with --allow-empty-baseline, and only baseline:update rewrites it afterwards. |
 
@@ -292,7 +292,7 @@ The check compares the effective level with the base branch and fails on any dec
 | Enabled by default | yes |
 | Configurable | `rules.BE-006.nextLevelDue` (planned) |
 | Decision | [ADR 0038](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0038-larastan-levels-shrink-only-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-006/` |
 | Adoption | Nothing needed: adopt records the level at adoption as the starting point and a first due date one quarter ahead. |
 
@@ -318,7 +318,7 @@ The Pest php preset runs under an architecture test named with this rule's ID an
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0036](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0036-pest-replaces-phpunit-runner.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-007/` |
 | Adoption | Allowlist: the kit ships a dated ->ignoring() list for console commands and seeders that print output. |
 
@@ -344,7 +344,7 @@ A custom PHPStan rule checks every comment, case-insensitively, and fails on a m
 | Enabled by default | yes |
 | Configurable | `rules.BE-008.ticketPattern` (planned) |
 | Decision | [ADR 0093](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0093-todo-policy.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-008/` |
 | Adoption | Baseline: existing untracked markers go into the PHPStan baseline, which only shrinks. |
 
@@ -370,7 +370,7 @@ A heuristic custom PHPStan rule fails on comments whose body parses as PHP state
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0061](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0061-own-eslint-plugin-no-commented-code.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-009/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -396,7 +396,7 @@ The check walks config/ recursively, classifies each file as project or framewor
 | Enabled by default | yes |
 | Configurable | `rules.BE-010.frameworkConfigFiles` (planned) |
 | Decision | [ADR 0085](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0085-environment-files.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-010/` |
 | Adoption | Nothing needed: adopt classifies the existing config files and appends the missing keys to .env.example. |
 
@@ -422,7 +422,7 @@ A test asserts that the configuration is not cached when the suite runs, so a ca
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0090](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-011/` |
 | Adoption | Nothing needed: the kit's phpunit.xml and test bootstrap never cache configuration. |
 
@@ -443,7 +443,7 @@ A test parses phpunit.xml and fails unless each configured environment key (by d
 | Enabled by default | yes |
 | Configurable | `rules.BE-012.env` (planned) |
 | Decision | [ADR 0090](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-012/` |
 | Adoption | Nothing needed: adopt merges the pinned entries into the existing phpunit.xml. |
 
@@ -468,7 +468,7 @@ A local test:coverage script runs pest --coverage --min=&lt;floor> (PCOV in CI, 
 | Enabled by default | yes |
 | Configurable | `rules.BE-013.min` (planned) |
 | Decision | [ADR 0091](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0091-coverage-floors.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-013/` |
 | Adoption | Baseline: the floor starts at the coverage measured at adoption and ratchets up; doctor reports a missing coverage driver. |
 
@@ -494,7 +494,7 @@ jscpd runs over the PHP sources with the committed baseline and --fail-on-new-cl
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0092](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0092-dead-code-and-duplication-gates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-014/` |
 | Adoption | Baseline: existing clones go into the committed jscpd baseline, which only shrinks. |
 
@@ -567,7 +567,7 @@ A route-table test fails when an application route's action is a closure, with f
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0042](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0042-api-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-017/` |
 | Adoption | Nothing needed: adopt replaces the framework's stub closures (the welcome page and the user route added by the API installer) with controller actions. |
 
@@ -588,7 +588,7 @@ Reflection over the route table fails when a POST, PUT or PATCH action has no pa
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0044](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0044-form-request-validation.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-018/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -609,7 +609,7 @@ A type-aware custom PHPStan rule fails on validator(), the Validator facade, the
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0044](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0044-form-request-validation.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-019/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -630,7 +630,7 @@ A custom PHPStan rule checks the FormRequest parameter of store() and update() o
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0044](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0044-form-request-validation.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-020/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -656,7 +656,7 @@ A meta-test over the route table fails when an action with a non-trivial FormReq
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0043](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0043-single-authorization-site.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-021/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -682,7 +682,7 @@ A listener records every route matched while the feature suite runs, and a final
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0039](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0039-backend-testing-floor.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-022/` |
 | Adoption | Allowlist: untested routes at adoption go into a dated allowlist that only shrinks. |
 
@@ -707,7 +707,7 @@ A contract test sends an unknown account and a wrong password to the login route
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0053](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0053-rfc-9457-problem-details.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-023/` |
 | Adoption | Nothing needed: the kit's login response already answers both failures the same way. |
 
@@ -728,7 +728,7 @@ Reflection over public controller actions fails when the declared return type is
 | Enabled by default | yes |
 | Configurable | `rules.BE-024.allowedReturnTypes` (planned) |
 | Decision | [ADR 0045](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0045-resources-only-serialization.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-024/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -749,7 +749,7 @@ A type-aware custom PHPStan rule fails on the response() helper, the Response fa
 | Enabled by default | yes |
 | Configurable | `rules.BE-025.responseEmitter` (planned) |
 | Decision | [ADR 0052](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0052-api-success-shape.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-025/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -770,7 +770,7 @@ A listener checks every 2xx JSON body in the feature suite against the configure
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.shape` (planned) |
 | Decision | [ADR 0052](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0052-api-success-shape.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-026/` |
 | Adoption | Nothing needed: the shape defaults to resource, and a project that already answers with an envelope sets modules.api-contract.shape to envelope. |
 
@@ -795,7 +795,7 @@ A test raises each mapped exception (validation, authentication, authorization, 
 | Enabled by default | yes |
 | Configurable | `rules.BE-027.pathPrefix` (planned) |
 | Decision | [ADR 0053](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0053-rfc-9457-problem-details.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-027/` |
 | Adoption | Allowlist: an existing API scopes the renderer to a new version prefix (rules.BE-027.pathPrefix) or keeps legacy routes on their old error body through dated entries, because problem+json changes what shipped clients read. |
 
@@ -821,7 +821,7 @@ Reviewers check that abort() and exception status choices follow the vocabulary 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0048](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0048-http-status-vocabulary.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-029
@@ -841,7 +841,7 @@ An architecture test bans app(), resolve() and the App facade, container and app
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-029/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -866,7 +866,7 @@ Reviewers reject per-entity services, query classes and empty stub layers, keepi
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-031
@@ -886,7 +886,7 @@ Reviewers check each new service against the boundary: state machines, scoring a
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-032
@@ -906,7 +906,7 @@ An architecture test bans the configured speculative suffixes across App, framew
 | Enabled by default | yes |
 | Configurable | `rules.BE-032.suffixes` (planned) |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-032/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -931,7 +931,7 @@ An architecture test fails when a class in App\\Actions is not invokable, so mul
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0041](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0041-action-pattern.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-033/` |
 | Adoption | Fix first: an existing App\\Actions class without \_\_invoke gains one before the check is enabled. |
 
@@ -952,7 +952,7 @@ A type-aware custom PHPStan rule fails on DB facade calls, database connection m
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-034/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -973,7 +973,7 @@ An architecture test fails when a class in App\\Services extends a class or impl
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-035/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -994,7 +994,7 @@ A configurable namespace-to-kind map expands into architecture expectations in b
 | Enabled by default | yes |
 | Configurable | `rules.BE-036.placement` (planned) |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-036/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -1015,7 +1015,7 @@ The Pest laravel preset runs under an architecture test named with this rule's I
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0036](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0036-pest-replaces-phpunit-runner.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-037/` |
 | Adoption | Allowlist: the kit ships a dated ->ignoring() list, one rule ID per entry, for stock and kit code the preset rejects. |
 
@@ -1061,7 +1061,7 @@ An architecture test fails when a class in App\\Http\\Controllers, controller co
 | Enabled by default | yes |
 | Configurable | `rules.BE-039.maxLines` (planned) |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-039/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -1082,7 +1082,7 @@ An architecture test fails when a class in App\\Models uses the request, respons
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0040](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0040-backend-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-040/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -1145,7 +1145,7 @@ A test reads the migrated schema and fails when a column matching the configured
 | Enabled by default | yes |
 | Configurable | `rules.BE-043.columns` (planned) |
 | Decision | [ADR 0046](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0046-enums-on-the-wire.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-043/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -1170,7 +1170,7 @@ An architecture test fails when an enum in App\\Enums is not string-backed, and 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0046](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0046-enums-on-the-wire.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-044/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -1212,7 +1212,7 @@ A type-aware custom PHPStan rule fails when a where-style query argument or a st
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0046](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0046-enums-on-the-wire.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-046/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -1238,7 +1238,7 @@ An architecture test fails when an enum declares a method from the configured pr
 | Enabled by default | yes |
 | Configurable | `rules.BE-047.methods` (planned) |
 | Decision | [ADR 0046](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0046-enums-on-the-wire.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-047/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -1264,7 +1264,7 @@ A custom PHPStan rule fails on literal output keys ending in \_label in a Resour
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0046](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0046-enums-on-the-wire.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-048/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -1290,7 +1290,7 @@ A type-aware custom PHPStan rule fails on toArray(), toJson(), jsonSerialize(), 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0045](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0045-resources-only-serialization.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-049/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -1311,7 +1311,7 @@ Reviewers reject inline {id, name} relation maps and duplicate shapes, and compo
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0045](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0045-resources-only-serialization.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-051
@@ -1331,7 +1331,7 @@ Reviewers check that each policy and its visibility scope cross-reference each o
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0043](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0043-single-authorization-site.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-052
@@ -1351,7 +1351,7 @@ Reviewers check every code-generation path for race safety, because reading the 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0047](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0047-model-conventions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-053
@@ -1392,7 +1392,7 @@ A behavioural route-table test calls each GET index route as the configured acto
 | Enabled by default | yes |
 | Configurable | `rules.BE-054.actor` (planned) |
 | Decision | [ADR 0049](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0049-server-driven-collections.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-054/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -1418,7 +1418,7 @@ A behavioural test calls each paginated route with negative, non-numeric and ove
 | Enabled by default | yes |
 | Configurable | `rules.BE-055.defaultPerPage` (planned), `rules.BE-055.maxPerPage` (planned) |
 | Decision | [ADR 0049](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0049-server-driven-collections.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-055/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -1469,7 +1469,7 @@ Reviewers check that new list actions use the project's declared idiom: the inst
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0049](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0049-server-driven-collections.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-058
@@ -1489,7 +1489,7 @@ Reviewers check that owner, actor and other derived fields are pinned server-sid
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0044](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0044-form-request-validation.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-059
@@ -1509,7 +1509,7 @@ Reviewers reject aliasing in validated() output and Resources; an unavoidable al
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0044](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0044-form-request-validation.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-060
@@ -1529,7 +1529,7 @@ A reflection test instantiates each FormRequest and fails when a messages() key 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0044](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0044-form-request-validation.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-060/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -1554,7 +1554,7 @@ A test resolves the HTTP kernel, gathers the global and route middleware of ever
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-061/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1575,7 +1575,7 @@ A test over the resolved middleware stack of every api route fails when a route 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-062/` |
 | Adoption | Opt-in: part of the tenancy module; existing exceptions go into dated allowlist entries. |
 
@@ -1596,7 +1596,7 @@ Reflection over the configured user model fails unless tenant() and the tenancy 
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.userModel` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-063/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1617,7 +1617,7 @@ A schema test fails unless the tenants table exists with a non-null, defaulted f
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.column` (planned), `modules.tenancy.subTenantColumns` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-064/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1638,7 +1638,7 @@ A test runs the default seeder chain and fails unless an operator satisfies the 
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.defaultTenant` (planned), `modules.tenancy.operatorRole` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-065/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1663,7 +1663,7 @@ A token scan of the isolation test files fails on seeder calls, seed properties 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-066/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1688,7 +1688,7 @@ The check asserts that every mandated isolation test name exists and reads PHP t
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0039](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0039-backend-testing-floor.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-067/` |
 | Adoption | Opt-in: part of the tenancy module; the suites ship complete and run against the kit's plumbing. |
 
@@ -1714,7 +1714,7 @@ A dataset-driven isolation test calls the index route of every tenant model as a
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-068/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1739,7 +1739,7 @@ A dataset-driven isolation test fails when a sub-tenant-restricted user listing 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-069/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1765,7 +1765,7 @@ An architecture test confines the sub-tenant trait to App\\Models, and a token s
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-070/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1790,7 +1790,7 @@ A complete feature test disables a tenant and fails unless login and requests wi
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-071/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1815,7 +1815,7 @@ A complete feature test fails unless an operator bound to a tenant never bypasse
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.operatorRole` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-072/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1840,7 +1840,7 @@ Complete feature tests fail unless a non-bypassing user whose tenant is null or 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-073/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1866,7 +1866,7 @@ Reflection fails when a class other than the predicate trait declares a bypass m
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.operatorRole` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-074/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1891,7 +1891,7 @@ Reviewers check every tenant resolution path, and any other resolution strategy 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
 ## BE-076
@@ -1931,7 +1931,7 @@ A test fails unless the configured trait, scope and middleware classes resolve t
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.mechanismClasses` (planned) |
 | Decision | [ADR 0010](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0010-opt-in-modules.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-077/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1956,7 +1956,7 @@ A route-table test fails when a tenant-feature middleware argument does not pars
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-078/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -1981,7 +1981,7 @@ A custom PHPStan rule fails when a controller calls the tenant's feature check d
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-079/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2007,7 +2007,7 @@ A test collects the feature keys from route middleware and fails when a key is r
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-080/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2032,7 +2032,7 @@ An architecture test confines the Cache facade and the cache() helper to the ten
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-081/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2057,7 +2057,7 @@ Reviewers check that every push fan-out query is tenant-scoped.
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
 ## BE-083
@@ -2102,7 +2102,7 @@ An architecture test fails when a class extending Mailable or Notification does 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0055](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0055-background-jobs.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-084/` |
 | Adoption | Allowlist: existing violations get dated ->ignoring() entries that only shrink. |
 
@@ -2128,7 +2128,7 @@ Reflection over the constructors of queued classes fails on a parameter typed as
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0055](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0055-background-jobs.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-085/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -2154,7 +2154,7 @@ Reflection fails when a queued class in App\\Jobs or App\\Listeners does not its
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0055](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0055-background-jobs.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-086/` |
 | Adoption | Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink. |
 
@@ -2175,7 +2175,7 @@ Reviewers check each handle() against the retry-safety checklist: unique or non-
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0055](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0055-background-jobs.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-088
@@ -2195,7 +2195,7 @@ A test inspects the scheduler and fails when queued classes exist but queue:prun
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0055](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0055-background-jobs.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-088/` |
 | Adoption | Nothing needed: the kit's scheduler template schedules queue:prune-failed. |
 
@@ -2241,7 +2241,7 @@ A type-aware custom PHPStan rule fails when the message argument of a Log facade
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0088](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0088-structured-redacted-logging.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-090/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -2262,7 +2262,7 @@ A type-aware custom PHPStan rule fails when a log context value is a model, an E
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0088](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0088-structured-redacted-logging.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-091/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -2334,7 +2334,7 @@ A feature test calls the configured health route (the framework's /up by default
 | Enabled by default | yes |
 | Configurable | `rules.BE-094.route` (planned) |
 | Decision | [ADR 0051](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0051-health-endpoints.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-094/` |
 | Adoption | Nothing needed: the framework's /up route already passes. |
 
@@ -2359,7 +2359,7 @@ A test reads composer.json and fails when a broadcasting package, such as a webs
 | Enabled by default | yes |
 | Configurable | `decisions.<name>` (planned) |
 | Decision | [ADR 0056](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0056-polling-before-push.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-095/` |
 | Adoption | Nothing needed: adopt records a decision reference for an installed broadcasting package. |
 
@@ -2384,7 +2384,7 @@ Reviewers check that the stack table declares the audit-trail mechanism and that
 | Enabled by default | yes |
 | Configurable | `stack.audit-trail.use` (planned) |
 | Decision | [ADR 0007](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0007-one-mechanism-per-concern.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review; adopt pre-fills the audit-trail entry of the stack table from the installed packages. |
 
 ## BE-097
@@ -2404,7 +2404,7 @@ Reviewers check that scenario and regression tests are named after the invariant
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0039](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0039-backend-testing-floor.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## BE-098
@@ -2424,7 +2424,7 @@ The check fails when the effective configuration does not set reportIgnoresWitho
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0005](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-098/` |
 | Adoption | Baseline: existing undescribed ignores become baseline entries that only shrink. |
 
@@ -2445,7 +2445,7 @@ A local contract:export script, run as its own CI step, exports the document wit
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.exportCommand` (planned), `modules.api-contract.openapiPath` (planned) |
 | Decision | [ADR 0054](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0054-generated-api-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-099/` |
 | Adoption | Nothing needed: adopt publishes the Scramble config with the literal values the export needs. |
 
@@ -2471,7 +2471,7 @@ A complete test sends the configured server-owned fields (the tenant column and 
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.serverOwnedFields` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-100/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2497,7 +2497,7 @@ Complete tests fail unless a created record takes the acting user's tenant, fall
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-101/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2523,7 +2523,7 @@ Complete tests fail unless pinned reads are scoped, an unpinned background read 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0058](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0058-background-tenant-context.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-102/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2549,7 +2549,7 @@ A complete test authenticates a token for a tenant-scoped user model and fails i
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0058](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0058-background-tenant-context.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-103/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2574,7 +2574,7 @@ A complete test of the feature middleware fails unless a tenant admin is blocked
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-104/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2599,7 +2599,7 @@ A complete test pins one tenant, authenticates a user of another and fails unles
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0058](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0058-background-tenant-context.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-105/` |
 | Adoption | Opt-in: part of the tenancy module, installed with it as a complete unit. |
 
@@ -2624,7 +2624,7 @@ A test reads the migrated schema and fails when the users table or a business ta
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-106/` |
 | Adoption | Opt-in: part of the tenancy module; existing cascades need a migration or a dated allowlist entry. |
 
@@ -2645,7 +2645,7 @@ The check fails unless the root phpunit element sets failOnIncomplete="true" and
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0039](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0039-backend-testing-floor.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/BE-107/` |
 | Adoption | Nothing needed: adopt merges both attributes into phpunit.xml and the flag into the test script. |
 
@@ -2671,7 +2671,7 @@ The Pest security preset scans the application namespace for insecure functions 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0036](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0036-pest-replaces-phpunit-runner.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-001/` |
 | Adoption | Allowlist: ship the exact ->ignoring() list (rand() in factories, echo in seeders and commands), each entry with the rule ID and an expiry date; brownfield hits get dated entries. |
 
@@ -2698,7 +2698,7 @@ A route-table test maps every GET and HEAD route to an index, show or allowliste
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0042](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0042-api-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-002/` |
 | Adoption | Allowlist: ship the framework's GET email-verification route and any existing GET logout route as default entries with reasons, and check only application controller actions. |
 
@@ -2723,7 +2723,7 @@ A custom PHPStan rule fails a FormRequest that does not declare authorize(), whi
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0043](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0043-single-authorization-site.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-003/` |
 | Adoption | Baseline: existing hits go into the shrink-only PHPStan baseline; new requests cannot add one. |
 
@@ -2744,7 +2744,7 @@ A policy-ability meta-test extracts the ability and model of every non-public ro
 | Enabled by default | yes |
 | Configurable | `rules.SEC-005.publicRoutes` (planned) |
 | Decision | [ADR 0043](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0043-single-authorization-site.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-004/` |
 | Adoption | Allowlist: adopt generates a dated entry (reason plus expiry) for each existing route without a policy, shares the public-route list with SEC-005 and never offers a silent skip. |
 
@@ -2772,7 +2772,7 @@ A route-table test over the resolved middleware stack (global plus gathered rout
 | Enabled by default | yes |
 | Configurable | `rules.SEC-005.authMiddleware` (planned), `rules.SEC-005.publicRoutes` (planned) |
 | Decision | [ADR 0043](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0043-single-authorization-site.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-005/` |
 | Adoption | Allowlist: the shipped default list holds the framework's public routes (health, sanctum/csrf-cookie, broadcasting/auth) so a fresh install passes; brownfield public routes get dated entries. |
 
@@ -2793,7 +2793,7 @@ A route-table test over the resolved middleware stack requires a middleware deri
 | Enabled by default | yes |
 | Configurable | `rules.SEC-005.publicRoutes` (planned) |
 | Decision | [ADR 0050](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0050-rate-limiting.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-006/` |
 | Adoption | Allowlist: reads the same shipped public-route list as SEC-005, so the framework's own public routes do not fail a fresh install. |
 
@@ -2845,7 +2845,7 @@ A test resolves the named limiters on the configured credential routes and asser
 | Enabled by default | yes |
 | Configurable | `rules.SEC-008.credentialRoutes` (planned), `rules.SEC-008.maxAttemptsPerMinute` (planned) |
 | Decision | [ADR 0050](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0050-rate-limiting.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-008/` |
 | Adoption | Fix first: configure the credential routes at adoption and give any route on the generic API limiter a stricter named limiter. |
 
@@ -2934,7 +2934,7 @@ With debug off, a renderer test raises a generic exception through an API route 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0053](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0053-rfc-9457-problem-details.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-012/` |
 | Adoption | Nothing needed: the kit's central renderer satisfies it; a project renderer that copies exception messages switches to generic details first. |
 
@@ -2960,7 +2960,7 @@ A type-aware PHPStan rule fails raw request accessors (all, input, only, except,
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0047](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0047-model-conventions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-013/` |
 | Adoption | Baseline: existing hits go into the shrink-only PHPStan baseline; new write actions must use validated() or safe(). |
 
@@ -2986,7 +2986,7 @@ When the configured base model guards only its key, a test asserts that the serv
 | Enabled by default | yes |
 | Configurable | `rules.SEC-014.baseModel` (planned), `rules.SEC-014.serverOwnedFields` (planned) |
 | Decision | [ADR 0047](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0047-model-conventions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-014/` |
 | Adoption | Nothing needed: a project whose models list their fillable attributes passes, and one that guards only the key gets the strip middleware and the creating hook from the kit. |
 
@@ -3011,7 +3011,7 @@ A test walks the migrated schema, maps each table that carries the tenant column
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.column` (planned), `modules.tenancy.scopeTrait` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-015/` |
 | Adoption | Fix first: by design the tenancy module is adopted only once every tenant table's model carries the trait. |
 
@@ -3032,7 +3032,7 @@ An inverse schema test fails any migrated table, uploads and device tokens inclu
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.globalTables` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-016/` |
 | Adoption | Nothing needed: adopt lists the existing shared tables as declared global tables for review. |
 
@@ -3053,7 +3053,7 @@ A schema-reading test requires every model whose table carries a configured sub-
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.subTenantColumns` (planned), `modules.tenancy.subTenantTrait` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-017/` |
 | Adoption | Allowlist: unscoped sub-tenant models get dated entries that name their controller-level mechanism. |
 
@@ -3074,7 +3074,7 @@ Set equality between the tenant models found in the migrated schema, the tenant-
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.isolationTestGlobs` (planned) |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-018/` |
 | Adoption | Nothing needed: adopt seeds the dataset from the schema and reflection, so the suite starts complete. |
 
@@ -3099,7 +3099,7 @@ A reflection test evaluates each FormRequest's rules(), splits pipe strings, res
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-019/` |
 | Adoption | Allowlist: requests whose rules() cannot be evaluated get dated entries until they are refactored. |
 
@@ -3126,7 +3126,7 @@ Reflection over every concrete queued class (jobs, listeners, mailables, notific
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0058](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0058-background-tenant-context.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-020/` |
 | Adoption | Nothing needed: adopt adds the tenant-aware middleware to existing queued classes or a #\[CrossTenant\] attribute with a reason; scheduled closures become jobs or commands. |
 
@@ -3153,7 +3153,7 @@ A dataset-driven isolation test calls the show, update and delete routes of ever
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-021/` |
 | Adoption | Fix first: the global tenant scope yields 404 before authorization; routes that load records without it are fixed. |
 
@@ -3178,7 +3178,7 @@ Reflection over FormRequest rules() requires every file rule to carry max:, cont
 | Enabled by default | yes |
 | Configurable | `rules.SEC-022.maxKilobytes` (planned), `rules.SEC-022.allowedTypes` (planned) |
 | Decision | [ADR 0087](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0087-file-uploads.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-022/` |
 | Adoption | Allowlist: the reflection test has no native baseline, so adopt records existing upload requests as dated entries in .cross-stack/allowlists/SEC-022.json, which only shrink. |
 
@@ -3225,7 +3225,7 @@ Upload, download and delete abilities check that the caller owns the file or its
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0087](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0087-file-uploads.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review against the file abilities in existing policies. |
 
 ## SEC-025
@@ -3245,7 +3245,7 @@ A custom PHPStan rule disallows UploadedFile::store(), storePublicly() and Stora
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0087](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0087-file-uploads.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-025/` |
 | Adoption | Baseline: existing calls go into the shrink-only PHPStan baseline. |
 
@@ -3270,7 +3270,7 @@ The kit's log processor redacts the configured credential keys (authorization, t
 | Enabled by default | yes |
 | Configurable | `rules.SEC-027.redactKeys` (planned), `rules.SEC-027.personalDataKeys` (planned) |
 | Decision | [ADR 0088](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0088-structured-redacted-logging.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-027/` |
 | Adoption | Nothing needed: adopt adds the processor to every configured channel. |
 
@@ -3316,7 +3316,7 @@ The readiness route carries the operator ability and the public liveness route e
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0051](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0051-health-endpoints.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review against the readiness route's ability. |
 
 ## SEC-030
@@ -3336,7 +3336,7 @@ Once broadcasting is adopted by ADR, every channel is private with an authorizat
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0056](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0056-polling-before-push.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review against the channel authorization callbacks. |
 
 ## SEC-069
@@ -3356,7 +3356,7 @@ A shipped feature test has a non-platform user create a tenant-scoped record wit
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-069/` |
 | Adoption | Nothing needed: the behaviour ships with the tenant trait and the test ships complete. |
 
@@ -3382,7 +3382,7 @@ The check asserts that every mandated test of the authentication and authorizati
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0039](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0039-backend-testing-floor.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/SEC-071/` |
 | Adoption | Allowlist: a suite that cannot run yet needs a dated allowlist waiver; failOnSkipped stays off so environment skips elsewhere keep working. |
 
@@ -3408,7 +3408,7 @@ A custom PHPStan rule requires the message arguments of abort(), Response::deny(
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-001/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -3435,7 +3435,7 @@ A reflection test over app/ requires every class that uses the Notifiable trait 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-002/` |
 | Adoption | Allowlist: dated entries per model until its locale preference is stored. |
 
@@ -3456,7 +3456,7 @@ With two or more configured locales, a test resolves the HTTP kernel, gathers th
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-003/` |
 | Adoption | Nothing needed: the kit's bootstrap template prepends the locale middleware to the api group. |
 
@@ -3477,7 +3477,7 @@ A custom PHPStan rule reports setLocale() calls outside the locale middleware an
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-004/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -3503,7 +3503,7 @@ A test compares the backend's single supported-locales config list with the loca
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-005/` |
 | Adoption | Nothing needed: adopt writes the config list from the manifest. |
 
@@ -3524,7 +3524,7 @@ A test loads lang/&lt;locale>/\*.php and lang/&lt;locale>.json for every configu
 | Enabled by default | yes |
 | Configurable | `locales`, `modules.i18n.parityIgnore` (planned) |
 | Decision | [ADR 0080](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-006/` |
 | Adoption | Allowlist: dated entries for framework strings a brownfield locale still lacks. |
 
@@ -3545,7 +3545,7 @@ A custom PHPStan rule resolves literal keys passed to \_\_(), trans(), trans_cho
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0080](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-007/` |
 | Adoption | Baseline: existing findings go into the PHPStan baseline, which only shrinks. |
 
@@ -3571,7 +3571,7 @@ A reflection test reads each FormRequest's rules() and requires an attributes() 
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-008/` |
 | Adoption | Allowlist: dated entries per FormRequest until its attribute names are translated. |
 
@@ -3597,7 +3597,7 @@ When the i18n module is off, a test fails on a second locale directory under lan
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-009/` |
 | Adoption | Fix first: remove leftover locale fragments or switch the module on; a project that published only the default locale's lang files already passes. |
 
@@ -3643,7 +3643,7 @@ A feature test sends a request that fails validation with each configured Accept
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/I18N-043/` |
 | Adoption | Nothing needed: the kit ships the test against its own validation route. |
 
@@ -3669,7 +3669,7 @@ A CI-parity sub-check reads composer.json and requires the check script to run p
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0090](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/CI-001/` |
 | Adoption | Nothing needed: adopt writes check and check:fast into composer.json and keeps any stricter existing member; doctor reports a missing PCOV or Xdebug coverage driver. |
 
@@ -3695,7 +3695,7 @@ With the api-contract module on and no client track in the repository, a workflo
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.artifact` (planned) |
 | Decision | [ADR 0054](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0054-generated-api-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/laravel/violations/CI-017/` |
 | Adoption | Nothing needed: the reusable Laravel workflow ships the upload step after the export step. |
 

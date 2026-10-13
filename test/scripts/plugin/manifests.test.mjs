@@ -22,7 +22,7 @@ const AUTHOR = {
 };
 const REPOSITORY = "https://github.com/o6b7/cross-stack-standard";
 /** The companion plugins the marketplace pins and adopt offers, in catalog order. */
-const COMPANIONS = ["caveman", "impeccable", "figma", "chrome-devtools-mcp"];
+const COMPANIONS = ["caveman", "impeccable", "figma", "playwright-mcp", "chrome-devtools-mcp"];
 
 describe("marketplace.json", () => {
   test("names the marketplace and its owner", () => {
@@ -57,7 +57,7 @@ describe("marketplace.json", () => {
     assert.ok(fs.existsSync(target), `${entry.source} has a plugin manifest`);
   });
 
-  test("lists the four companion plugins after the Standard, each pinned to a full commit", () => {
+  test("lists the five companion plugins after the Standard, each pinned to a full commit", () => {
     const companions = marketplace.plugins.slice(1);
     assert.deepEqual(
       companions.map((entry) => entry.name),
@@ -99,6 +99,38 @@ describe("marketplace.json", () => {
       assert.equal(byName[name].source.source, "git-subdir", name);
       assert.equal(byName[name].hooks, undefined, name);
     }
+    const playwright = byName["playwright-mcp"];
+    assert.equal(playwright.source.source, "url");
+    assert.equal(playwright.source.url, "https://github.com/microsoft/playwright-mcp.git");
+    assert.equal(playwright.source.sha, "f183dad4a52965583e3cc1d59b88cdc279e2e57d");
+    assert.equal(playwright.version, "0.0.83");
+    assert.equal(playwright.hooks, undefined);
+    assert.equal(
+      playwright.skills,
+      undefined,
+      "the upstream repo does not provide a browser skill",
+    );
+    const playwrightServer = playwright.mcpServers.playwright;
+    assert.equal(playwrightServer.command, "npx");
+    assert.ok(playwrightServer.args.includes("@playwright/mcp@0.0.83"));
+    for (const flag of ["--isolated", "--headless", "--no-webmcp", "--console-level"]) {
+      assert.ok(playwrightServer.args.includes(flag), flag);
+    }
+    assert.equal(playwrightServer.args.at(-1), "error");
+    assert.ok(
+      !playwrightServer.args.includes("--caps"),
+      "leave optional high-volume capabilities off",
+    );
+    assert.equal(
+      playwright.metadata.crossStack.toolPrefix,
+      "mcp__plugin_playwright-mcp_playwright__",
+    );
+    assert.equal(playwright.metadata.crossStack.module, "browser-check");
+    assert.ok(
+      fs.existsSync(path.join(PLUGIN_DIR, "skills/playwright/SKILL.md")),
+      "the Standard supplies its own browser workflow skill",
+    );
+    assert.equal(playwright.license, "Apache-2.0");
     const chrome = byName["chrome-devtools-mcp"].mcpServers["chrome-devtools"];
     for (const flag of [
       "--isolated",

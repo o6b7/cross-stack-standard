@@ -19,11 +19,11 @@ gate packages share one version, stored in `VERSION` and written everywhere else
 Semantic Versioning answers one question for a standard: **can upgrading break an adopter's
 build?**
 
-| Bump      | When                                               | Examples                                                                                                                                                                                                                                                                                           |
-| --------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **MAJOR** | A change that can newly fail an adopter's build.   | A new `FORCED` or `GUARDED` rule that is on by default; promoting a default-on rule from `REVIEW` to `FORCED` or `GUARDED`; a stricter threshold (coverage, complexity, PHPStan level); a raised minimum version that an existing project may not meet; a removed or renamed configuration option. |
-| **MINOR** | New capability that adopters opt into.             | A new opt-in rule, module, track or profile; a new skill; a rule promoted inside an opt-in module; new documentation.                                                                                                                                                                              |
-| **PATCH** | Fixes that cannot fail a build that passed before. | Bug fixes, false-positive reductions, clearer messages, documentation fixes.                                                                                                                                                                                                                       |
+| Bump      | When                                                       | Examples                                                                                                                                                                                                                                                                                           |
+| --------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **MAJOR** | A change that can newly fail an adopter's build after 1.0. | A new `FORCED` or `GUARDED` rule that is on by default; promoting a default-on rule from `REVIEW` to `FORCED` or `GUARDED`; a stricter threshold (coverage, complexity, PHPStan level); a raised minimum version that an existing project may not meet; a removed or renamed configuration option. |
+| **MINOR** | New capability that adopters opt into.                     | A new opt-in rule, module, track or profile; a new skill; a rule promoted inside an opt-in module; new documentation. During 0.x only, an existing default-on `REVIEW` rule may also be promoted, with the affected IDs and adoption impact listed in the release notes.                           |
+| **PATCH** | Fixes that cannot fail a build that passed before.         | Bug fixes, false-positive reductions, clearer messages, documentation fixes.                                                                                                                                                                                                                       |
 
 Rules of thumb:
 
@@ -32,6 +32,10 @@ Rules of thumb:
 - When in doubt, take the higher bump.
 - Before `1.0.0`, the public API is not yet stable: a `0.x` MINOR release may contain changes that
   would be MAJOR after `1.0.0`, and the release notes say so.
+- A default-on rule must have shipped by the release's `since` version. Before `1.0.0`, the release
+  check allows default-on rules to remain REVIEW while their gates are built; from `1.0.0` onward,
+  every default-on rule must be at its target level. This matches the guidance-first 0.x rollout in
+  [ADR 0107](../decisions/0107-pre-1-0-rule-promotion.md).
 - `1.0.0` ships only when the release gate passes in full; otherwise the release is `0.x.y` with
   a written list of what blocks `1.0.0`.
 
@@ -69,6 +73,8 @@ git -C "$REPO_DIR" switch -c release/vX.Y.Z origin/dev
 
    ```sh
    node scripts/stamp-version.mjs
+   node scripts/generate-rule-docs.mjs
+   node scripts/build-agent-skill.mjs
    node scripts/build-plugin-data.mjs
    node scripts/check-version-drift.mjs
    node scripts/build-plugin-data.mjs --check
@@ -76,9 +82,11 @@ git -C "$REPO_DIR" switch -c release/vX.Y.Z origin/dev
    node scripts/check-registry.mjs --release
    ```
 
-   `check-registry --release` fails while a default-on rule is below its target level or planned
-   for a later version: ship its gate and fixtures, or set `defaultEnabled` to `false` so it
-   ships opt-in and turns default-on only in a later MAJOR.
+   `check-registry --release` always fails when a default-on rule is planned for a later version.
+   Before `1.0.0`, it permits default-on REVIEW guidance to remain below target; starting at
+   `1.0.0` (including release candidates), it also requires every default-on rule to be at target.
+   A pre-1.0 MINOR release that promotes a default-on rule must name its rule IDs and adoption
+   impact in the notes.
 
 2. Finalize `CHANGELOG.md`: rename `## [Unreleased]` to `## [X.Y.Z] - YYYY-MM-DD` (today's date),
    add a new empty `## [Unreleased]` section above it, and add or update the link definitions at
@@ -208,10 +216,11 @@ The listed version must be `X.Y.Z`.
   `VERSION`;
 - the tagged commit is an ancestor of `origin/main` (`git merge-base --is-ancestor`); tag filters
   ignore branches, so this is what stops a tag on another branch from being released;
-- `check-version-drift` passes, and the generated plugin data matches the tagged sources
-  (`build-plugin-data --check`);
-- `check-identity --release` passes: author metadata everywhere, plus the license, README,
-  security policy, code of conduct, CODEOWNERS and a manifest in every package directory;
+- `check-version-drift` and the release-specific registry gate pass, and generated plugin data
+  matches the tagged sources (`build-plugin-data --check`);
+- `check-identity --release` passes: author metadata everywhere, the root and distributable
+  licenses, README, security policy, code of conduct, CODEOWNERS, and a manifest and license in
+  every package directory that exists. Gate packages are optional until they ship;
 - the brand guard passes over the full history (every file name ever added, every commit message,
   ref names), and the narrative lint passes on the tree and on every commit message on `main`;
 - `CHANGELOG.md` has a dated, non-empty section for the version; the extracted notes pass the brand
@@ -226,14 +235,15 @@ What the plugin costs in an adopter's context window, measured before each relea
 values are character counts divided by four; `details` values come from Claude Code's own
 projection.
 
-| Component                    | When it loads                       | Measured with                                        | Tokens                                                                                                    | Date       |
-| ---------------------------- | ----------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------- |
-| SessionStart hook output     | Every session                       | Hook output, tokenized                               | ~90 (estimate: 346 characters for a Laravel + Next.js monorepo without a manifest)                        | 2026-09-26 |
-| Skill names and descriptions | Every session                       | `claude plugin details cross-stack-standard`         | ~880 upper bound (`details`, Claude Code 2.1.280); the core skill is ~220, the five user-only skills ~660 | 2026-09-26 |
-| Skills at runtime            | Every session                       | `/context` (Skills rows) in an authenticated session | not measured yet (needs an authenticated session); expected ~220, since user-only skills are left out     | —          |
-| `CLAUDE.md` managed block    | Every session in an adopted project | File size, tokenized                                 | ~910 (estimate: 60 lines, 3,655 characters)                                                               | 2026-09-26 |
-| Core skill body (`SKILL.md`) | When the skill runs                 | File size, tokenized                                 | ~4,000 (estimate: 16,056 characters; `details` on-invoke ~4k)                                             | 2026-09-26 |
-| Track references             | When a track is read                | File size, tokenized                                 | ~3,700–4,450 each (estimate: laravel 17,798, web 16,152, mobile 14,759 characters)                        | 2026-09-26 |
+| Component                    | When it loads                       | Measured with                                        | Tokens                                                                                   | Date       |
+| ---------------------------- | ----------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------- |
+| SessionStart hook output     | Every session                       | Hook output, tokenized                               | ~90 (estimate: 346 characters for a Laravel + Next.js monorepo without a manifest)       | 2026-10-12 |
+| Skill names and descriptions | Every session                       | `claude plugin details cross-stack-standard`         | ~927 upper bound (`details`, Claude Code 2.1.296); core ~220, five user-only skills ~710 | 2026-10-12 |
+| Skills at runtime            | Every session                       | `/context` (Skills rows) in an authenticated session | not measured yet; needs an authenticated session                                         | —          |
+| `CLAUDE.md` managed block    | Every session in an adopted project | File size, tokenized                                 | ~910 (estimate: 60 lines, 3,655 characters)                                              | 2026-10-12 |
+| Core skill body (`SKILL.md`) | When the skill runs                 | File size, tokenized                                 | ~4,100 (`details` on-invoke; 245 lines, 17,408 characters)                               | 2026-10-12 |
+| Portable Agent Skill body    | When the skill runs                 | File size, tokenized                                 | ~1,180 (estimate: 68 lines, 4,715 characters)                                            | 2026-10-12 |
+| Track references             | When a track is read                | File size, tokenized                                 | ~3,700–4,450 each (estimate: Laravel 17,798, web 16,124, mobile 14,759 characters)       | 2026-10-12 |
 
 `claude plugin details` counts skills that the runtime omits (for example user-only skills), so
 the table reports both the `details` figure and the runtime `/context` rows.

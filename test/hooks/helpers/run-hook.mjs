@@ -26,6 +26,8 @@ const SPY_PRELOAD_FILE = new URL("./spy-preload.mjs", import.meta.url);
 const DROPPED_PREFIXES = ["CLAUDE", "CROSS_STACK_STANDARD_"];
 const DROPPED_NAMES = new Set([
   "AI_AGENT",
+  "FORCE_COLOR",
+  "NO_COLOR",
   "NODE_OPTIONS",
   "NODE_TEST_CONTEXT",
   "HOOK_TEST_SPY_LOG",

@@ -42,6 +42,9 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Install release-check dependencies
+        run: npm ci --ignore-scripts
+
       - name: Tag format and VERSION
         id: tag
         run: |
@@ -71,6 +74,9 @@ jobs:
 
       - name: Generated plugin data matches the tagged sources
         run: node scripts/build-plugin-data.mjs --check
+
+      - name: Release registry policy
+        run: node scripts/check-registry.mjs --release
 
       - name: Release identity (author metadata and community files)
         run: node scripts/check-identity.mjs --release

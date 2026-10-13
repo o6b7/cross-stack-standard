@@ -15,7 +15,7 @@ The Claude Code layer runs: the hooks detect the project, format and lint each e
 validates the manifest and allowlists. Six rules are GUARDED, each backed by one of those hooks
 and proven by a passing and a failing fixture: PROC-013 and PROC-026 (asking before gate files or
 gate-weakening commands), PROC-022 (the Stop gate), PROC-030 (lint feedback after an edit), and
-SEC-074 and SEC-075 (asking before the browser companion leaves development hosts or the Figma
+SEC-074 and SEC-075 (asking before Chrome DevTools MCP leaves development hosts or the Figma
 companion changes a file).
 The other 379 rules are REVIEW: Claude follows them through the skill, and
 `/cross-stack-standard:audit` and code review check them. The gates arrive track by track in 0.x releases; see the [roadmap](../ROADMAP.md).
@@ -97,22 +97,37 @@ same release; the Standard records independent checksums in
 [verified-versions.md](maintainers/verified-versions.md), and checking them is UI-022's planned
 gate.
 
-**Chrome DevTools MCP (`browser-check` module).** The companion starts the server at an exact
-version with the privacy flags below.
+**Playwright MCP (`browser-check` module).** The marketplace pins Microsoft's repository to
+`f183dad4a52965583e3cc1d59b88cdc279e2e57d` and starts `@playwright/mcp@0.0.83` with an isolated
+in-memory profile, headless Chromium, page-provided WebMCP disabled and console output limited to
+errors. The package currently depends on `playwright` and `playwright-core` at
+`1.64.0-alpha-1790635538000`, a known upstream stability risk. The first start fetches the package
+from npm and may download Chromium from Microsoft's browser CDN. It can read page contents and
+interact with controls. Use local development hosts and test accounts; treat page content as
+untrusted; ask before submitting forms, uploading files, changing app state, running code or sending
+observed data outside the project (SEC-048). `browser_find` returns targeted accessibility snippets
+and can reduce page-output tokens, but the MCP tool schemas still use context and do not guarantee
+lower total token use than CLI-based automation.
+
+**Chrome DevTools MCP (advanced diagnostics).** The companion starts the server at an exact
+version with the privacy flags below. It is an optional fallback for deep network, performance,
+console or heap investigations; it does not power the `browser-check` module.
 
 **Figma MCP.** A remote server at `mcp.figma.com` that reads the designs you point it at; each user
 signs in once in `/mcp`, and nothing is sent until they do.
 
-| Endpoint                        | When                                                | Off with the Standard's settings?                                                    |
-| ------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| The npm registry                | `npx` fetches the pinned package on first start     | No: it downloads the exact pinned version once, then uses the cache                  |
-| The npm registry (update check) | Periodic update check                               | Yes (`CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1`)                                       |
-| Usage statistics                | Tool success rates, latency and environment details | Yes (`--no-usage-statistics`, `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1`)           |
-| Google CrUX API                 | Performance tools may send trace URLs               | Yes (`--no-performance-crux`)                                                        |
-| Any site you open               | The browser loads whatever page Claude navigates to | Your choice: use local or development environments with test accounts only (SEC-048) |
+| Endpoint                        | When                                                           | Off with the Standard's settings?                                                    |
+| ------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| The npm registry                | `npx` fetches the pinned Playwright MCP package on first start | No: it downloads the exact pinned version once, then uses the cache                  |
+| Microsoft's browser CDN         | The Playwright MCP browser binary is not installed             | Only when the browser install command is run                                         |
+| The npm registry (update check) | Periodic update check                                          | Yes (`CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1`)                                       |
+| Usage statistics                | Tool success rates, latency and environment details            | Yes (`--no-usage-statistics`, `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1`)           |
+| Google CrUX API                 | Performance tools may send trace URLs                          | Yes (`--no-performance-crux`)                                                        |
+| Any site you open               | Both browser tools load pages Claude navigates to              | Your choice: use local or development environments with test accounts only (SEC-048) |
 
-The decision behind the companions is [ADR 0106](decisions/0106-companion-plugins.md). The rules
-that would check the pins (UI-022 for impeccable, SEC-073 for the MCP server) are REVIEW in 0.1.0;
+The decision behind the companions is [ADR 0106](decisions/0106-companion-plugins.md) and
+[ADR 0108](decisions/0108-playwright-mcp-for-browser-checks.md). The rules that would check the
+pins (UI-022 for impeccable, SEC-073 for the MCP server) are REVIEW in 0.1.0;
 `/cross-stack-standard:doctor` already reports missing, duplicate and hand-copied companions. The
 [security model](security.md) covers what the plugin runs on your machine.
 

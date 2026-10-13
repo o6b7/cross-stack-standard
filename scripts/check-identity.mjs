@@ -15,8 +15,8 @@
  * - the contact email in `SECURITY.md` and `CODE_OF_CONDUCT.md`;
  * - the catch-all owner line `* @o6b7` in `.github/CODEOWNERS`.
  *
- * With `--release` every one of those files must exist, every `packages/<name>/` must hold a
- * manifest and a LICENSE, and at least one `composer.json` must be present.
+ * With `--release` every one of those files must exist and every existing `packages/<name>/`
+ * must hold a manifest and a LICENSE. Package registries are optional until a package ships.
  *
  * Usage: node scripts/check-identity.mjs [--release] [--json] [--root <dir>]
  *
@@ -67,6 +67,7 @@ export const IDENTITY_FILES = Object.freeze({
   rootPackage: PATHS.rootPackage,
   license: "LICENSE",
   pluginLicense: `${PATHS.pluginDir}/LICENSE`,
+  agentSkillLicense: "skills/cross-stack-standard/LICENSE",
   readme: "README.md",
   security: "SECURITY.md",
   codeOfConduct: "CODE_OF_CONDUCT.md",
@@ -497,16 +498,18 @@ function checkLicenseText(ctx, rel, text) {
 }
 
 /**
- * The plugin's LICENSE travels with every installed copy of the plugin and must be a verbatim
- * copy of the root LICENSE (line endings aside); its holder is checked through the root file.
- * Without a root LICENSE the copy's own copyright line is checked.
+ * A distributable copy of LICENSE must match the root notice (line endings aside). Without a
+ * root LICENSE the copy's own copyright line is checked.
+ * @param {Context} ctx
+ * @param {string} rel
+ * @param {string} generator
  */
-function checkPluginLicense(ctx) {
-  const copy = readText(ctx, IDENTITY_FILES.pluginLicense, true);
+function checkCopiedLicense(ctx, rel, generator) {
+  const copy = readText(ctx, rel, true);
   if (copy === null) return;
   const rootAbs = resolveRel(ctx.root, IDENTITY_FILES.license);
   if (!isFile(rootAbs)) {
-    checkLicenseText(ctx, IDENTITY_FILES.pluginLicense, copy);
+    checkLicenseText(ctx, rel, copy);
     return;
   }
   const lf = (text) => text.replace(/^\uFEFF/, "").replace(/\r\n/g, "\n");
@@ -514,11 +517,21 @@ function checkPluginLicense(ctx) {
     report(
       ctx,
       "IDENTITY-LICENSE",
-      IDENTITY_FILES.pluginLicense,
+      rel,
       0,
-      `differs from ${IDENTITY_FILES.license}; run node scripts/build-plugin-data.mjs`,
+      `differs from ${IDENTITY_FILES.license}; run ${generator}`,
     );
   }
+}
+
+/** The plugin license travels in every installed plugin copy. */
+function checkPluginLicense(ctx) {
+  checkCopiedLicense(ctx, IDENTITY_FILES.pluginLicense, "node scripts/build-plugin-data.mjs");
+}
+
+/** The portable skill is installed by copying its directory, so its license travels with it. */
+function checkAgentSkillLicense(ctx) {
+  checkCopiedLicense(ctx, IDENTITY_FILES.agentSkillLicense, "node scripts/build-agent-skill.mjs");
 }
 
 /**
@@ -617,9 +630,9 @@ export function checkIdentity(root, options = {}) {
   checkComposerJson(ctx, PATHS.rootComposer);
   checkLicense(ctx, IDENTITY_FILES.license, true);
   checkPluginLicense(ctx);
+  checkAgentSkillLicense(ctx);
 
   const packageDirs = listDirectories(root, PATHS.packages);
-  let composerCount = isFile(resolveRel(root, PATHS.rootComposer)) ? 1 : 0;
   for (const name of packageDirs) {
     const dir = `${PATHS.packages}/${name}`;
     const hasPackage = isFile(resolveRel(root, `${dir}/package.json`));
@@ -627,26 +640,12 @@ export function checkIdentity(root, options = {}) {
     if (hasPackage) checkPackageJson(ctx, `${dir}/package.json`, false, true);
     if (hasComposer) {
       checkComposerJson(ctx, `${dir}/composer.json`);
-      composerCount++;
     }
     if (!hasPackage && !hasComposer && ctx.release) {
       report(ctx, "IDENTITY-MISSING", dir, 0, "has no package.json or composer.json");
     }
     checkLicense(ctx, `${dir}/LICENSE`, true);
   }
-  if (ctx.release && packageDirs.length === 0) {
-    report(ctx, "IDENTITY-MISSING", PATHS.packages, 0, "no gate packages found");
-  }
-  if (ctx.release && composerCount === 0) {
-    report(
-      ctx,
-      "IDENTITY-MISSING",
-      `${PATHS.packages}/*/composer.json`,
-      0,
-      "no composer.json found; the Composer package must declare its authors",
-    );
-  }
-
   checkKitNotices(ctx);
   checkReadme(ctx);
   checkContact(ctx, IDENTITY_FILES.security);

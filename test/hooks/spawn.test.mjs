@@ -460,7 +460,8 @@ describe("tools do not outlive the hook", () => {
       ".cross-stack/standard.json": {
         version: "0.0.0",
         tracks: ["web"],
-        hooks: { stop: { budgetSeconds: 1 } },
+        // Leave time for the tool and grandchild to start before the hook watchdog fires.
+        hooks: { stop: { budgetSeconds: 5 } },
       },
     });
     const result = await runHook({

@@ -7,10 +7,10 @@
  *   Claude: the failure, and the companion's fallback, which Claude offers the user instead of
  *   claiming a result. An interrupted call (`is_interrupt`) records nothing.
  *
- * For the browser companion, the session's current page follows each call (lib/companions.mjs
- * `pageAfter`): the opened URL after a successful navigation, unknown after back, forward, a page
- * switch, a closed page or any failed navigation, so the PreToolUse gate never works from a page
- * it cannot vouch for.
+ * For each browser companion, the session's current page follows each call (lib/companions.mjs
+ * `pageAfter`): the opened URL after a successful navigation, unknown after back, a page switch,
+ * a closed page or a failed call, so the PreToolUse gate never works from a page it cannot vouch
+ * for. Each browser server has its own page record.
  *
  * Each change of status is written to the companion log. Without `CLAUDE_PLUGIN_DATA` nothing is
  * recorded, and the failure note is still returned.
@@ -48,11 +48,12 @@ function companionOf(ctx) {
 export function recordCompanionSuccess(ctx) {
   const companion = companionOf(ctx);
   if (companion === null) return { exitCode: 0 };
-  if (companion.name === "chrome-devtools-mcp") {
+  if (["chrome-devtools-mcp", "playwright-mcp"].includes(companion.name)) {
     const tool = ctx.input.tool_name.slice(companion.toolPrefix.length);
-    const current = readCurrentPage(ctx.dataDir, ctx.input.session_id);
+    const current = readCurrentPage(ctx.dataDir, ctx.input.session_id, companion.name);
     const next = pageAfter(tool, ctx.input.tool_input ?? {}, current);
-    if (next !== current) writeCurrentPage(ctx.dataDir, ctx.input.session_id, next);
+    if (next !== current)
+      writeCurrentPage(ctx.dataDir, ctx.input.session_id, next, new Date(), companion.name);
   }
   const previous = writeHealth(ctx.dataDir, companion.name, "ok", null);
   if (previous !== "ok") {
@@ -73,12 +74,9 @@ export function recordCompanionSuccess(ctx) {
 export default function postToolUseFailure(ctx) {
   const companion = companionOf(ctx);
   if (companion === null) return { exitCode: 0 };
-  if (companion.name === "chrome-devtools-mcp") {
+  if (["chrome-devtools-mcp", "playwright-mcp"].includes(companion.name)) {
     // A navigation that failed may have left the browser anywhere.
-    const tool = ctx.input.tool_name.slice(companion.toolPrefix.length);
-    if (["navigate_page", "new_page", "select_page", "close_page"].includes(tool)) {
-      writeCurrentPage(ctx.dataDir, ctx.input.session_id, null);
-    }
+    writeCurrentPage(ctx.dataDir, ctx.input.session_id, null, new Date(), companion.name);
   }
   if (ctx.input.is_interrupt === true) return { exitCode: 0 };
   const detail =

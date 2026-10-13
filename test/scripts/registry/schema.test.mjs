@@ -11,6 +11,7 @@ import { describe, it } from "node:test";
 import { schemaFindings } from "../../../scripts/check-registry.mjs";
 import {
   INVARIANTS,
+  compareSemver,
   countRules,
   effectiveTarget,
   findRuleIdCitations,
@@ -50,6 +51,7 @@ function messages(document) {
  * @returns {object}
  */
 const doc = (rules) => ({ $schema: "./rules.schema.json", version: 1, rules });
+const version = fs.readFileSync(path.join(REPO_ROOT, "VERSION"), "utf8").trim();
 
 describe("registry schema", () => {
   it("accepts the committed registry", () => {
@@ -413,11 +415,10 @@ describe("committed registry content", () => {
   });
 
   it("keeps a rule planned for a later version off by default", () => {
-    for (const rule of registry.rules) {
-      if (rule.since !== "1.0.0") {
-        assert.equal(rule.defaultEnabled, false, `${rule.id} is planned for ${rule.since}`);
-      }
-    }
+    const planned = registry.rules.filter((rule) => compareSemver(rule.since, version) > 0);
+    assert.ok(planned.length > 0, "the registry contains rules planned after VERSION");
+    for (const rule of planned)
+      assert.equal(rule.defaultEnabled, false, `${rule.id} is planned for ${rule.since}`);
   });
 
   it("cites only registry rule IDs in adoption notes", () => {

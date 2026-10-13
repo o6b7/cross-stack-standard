@@ -18,7 +18,7 @@
       "evasions": [],
       "decision": "0089",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-001.namespaces"],
       "summary": "Every file in the application and database namespaces declares strict_types=1, checked by a Pest architecture test, and Pint's declare_strict_types fixer adds the declaration to route and config files as well.",
       "adoption": "Allowlist: brownfield files get dated ->ignoring() entries that only shrink and the Pint fixer runs on changed files, never a mass rewrite, because strict types turn scalar coercion into type errors."
@@ -40,7 +40,7 @@
       "evasions": [],
       "decision": "0089",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A committed pint.json names the laravel preset plus individually justified rules, pint --test runs as its own check step, and the edit hook and pre-commit format changed files automatically.",
       "adoption": "Nothing needed: adopt runs Pint once over the project and commits the result before the check is enabled."
@@ -62,7 +62,7 @@
       "evasions": [],
       "decision": "0038",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "phpstan analyse with the Larastan extension passes at the project's level (8 for greenfield projects, at least 6 for brownfield ones), so a missing type fails the run and existing errors live only in the shrink-only baseline.",
       "adoption": "Baseline: brownfield projects start at level 6 with existing errors recorded in phpstan-baseline.neon."
@@ -87,7 +87,7 @@
       ],
       "decision": "0038",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-004.minLevel"],
       "summary": "The check reads the merged parameters and the composer analyse script, and fails when the level is below the floor for the project type, app, database, routes or tests is not analysed, an exclusion has no dated allowlist entry, reportUnmatchedIgnoredErrors is off, or the script passes --level, -l, -c, --configuration or narrowed paths.",
       "adoption": "Nothing needed: adopt writes the floor for the project type and keeps an existing configuration that is stricter."
@@ -112,7 +112,7 @@
       ],
       "decision": "0038",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The check counts every baseline entry, failing on one without a count, every ignoreErrors entry in the effective configuration and every inline ignore, and fails when the total exceeds the base branch's in pull-request CI; the sanctioned baseline:update script regenerates the baseline and fails if the total grew.",
       "adoption": "Baseline: adopt generates the baseline with --allow-empty-baseline, and only baseline:update rewrites it afterwards."
@@ -136,7 +136,7 @@
       ],
       "decision": "0038",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-006.nextLevelDue"],
       "summary": "The check compares the effective level with the base branch and fails on any decrease, and once the recorded next-raise date has passed it fails unless the level went up or a dated allowlist entry with a reason moved the date; it also reports how many errors the next level would add.",
       "adoption": "Nothing needed: adopt records the level at adoption as the starting point and a first due date one quarter ahead."
@@ -159,7 +159,7 @@
       ],
       "decision": "0036",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The Pest php preset runs under an architecture test named with this rule's ID and fails on any name-resolved use of the debug, diagnostic and output functions it lists, across every non-test namespace including factories and seeders.",
       "adoption": "Allowlist: the kit ships a dated ->ignoring() list for console commands and seeders that print output."
@@ -182,7 +182,7 @@
       ],
       "decision": "0093",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-008.ticketPattern"],
       "summary": "A custom PHPStan rule checks every comment, case-insensitively, and fails on a marker that does not match the configured ticket pattern, for example TODO(ABC-123):, while existing markers start in the baseline.",
       "adoption": "Baseline: existing untracked markers go into the PHPStan baseline, which only shrinks."
@@ -205,7 +205,7 @@
       ],
       "decision": "0061",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A heuristic custom PHPStan rule fails on comments whose body parses as PHP statements, docblock prose excluded, and existing findings start in the baseline.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -229,7 +229,7 @@
       ],
       "decision": "0085",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-010.frameworkConfigFiles"],
       "summary": "The check walks config/ recursively, classifies each file as project or framework-known, and fails when a literal env() or Env::get() key read by a project file is missing from .env.example, where a commented key counts as documented.",
       "adoption": "Nothing needed: adopt classifies the existing config files and appends the missing keys to .env.example."
@@ -249,7 +249,7 @@
       "evasions": [],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A test asserts that the configuration is not cached when the suite runs, so a cached config file can never override the values pinned in phpunit.xml, however the runner is invoked.",
       "adoption": "Nothing needed: the kit's phpunit.xml and test bootstrap never cache configuration."
@@ -271,7 +271,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-012.env"],
       "summary": "A test parses phpunit.xml and fails unless each configured environment key (by default an in-memory SQLite database, array cache, session and mail drivers and the sync queue) has its configured value and force=\"true\".",
       "adoption": "Nothing needed: adopt merges the pinned entries into the existing phpunit.xml."
@@ -296,7 +296,7 @@
       ],
       "decision": "0091",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-013.min"],
       "summary": "A local test:coverage script runs pest --coverage --min=<floor> (PCOV in CI, Xdebug documented) as its own CI step, with the floor measured at adoption and only ever raised.",
       "adoption": "Baseline: the floor starts at the coverage measured at adoption and ratchets up; doctor reports a missing coverage driver."
@@ -320,7 +320,7 @@
       ],
       "decision": "0092",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "jscpd runs over the PHP sources with the committed baseline and --fail-on-new-clones instead of a global percentage threshold, so a new clone fails even when nobody regenerates the baseline; PROC-034 keeps the baseline itself shrink-only.",
       "adoption": "Baseline: existing clones go into the committed jscpd baseline, which only shrinks."
@@ -383,7 +383,7 @@
       "evasions": [],
       "decision": "0042",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A route-table test fails when an application route's action is a closure, with framework-registered routes such as the health route excluded by their source.",
       "adoption": "Nothing needed: adopt replaces the framework's stub closures (the welcome page and the user route added by the API installer) with controller actions."
@@ -403,7 +403,7 @@
       "evasions": [],
       "decision": "0044",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reflection over the route table fails when a POST, PUT or PATCH action has no parameter typed as a FormRequest subclass, and a body-less write needs a dated allowlist entry.",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -423,7 +423,7 @@
       "evasions": [],
       "decision": "0044",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A type-aware custom PHPStan rule fails on validator(), the Validator facade, the validation factory's make() and the request's validate() methods anywhere in App\\Http outside FormRequest classes.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -446,7 +446,7 @@
       ],
       "decision": "0044",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A custom PHPStan rule checks the FormRequest parameter of store() and update() on resource controllers against the model name derived from the controller name.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -469,7 +469,7 @@
       ],
       "decision": "0043",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A meta-test over the route table fails when an action with a non-trivial FormRequest authorize() also authorizes in the controller, or when an endpoint references more than one ability.",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -489,7 +489,7 @@
       "evasions": ["a trivial request that asserts nothing still counts as coverage"],
       "decision": "0039",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A listener records every route matched while the feature suite runs, and a final assertion fails for any registered API route that was never matched.",
       "adoption": "Allowlist: untested routes at adoption go into a dated allowlist that only shrinks."
@@ -509,7 +509,7 @@
       "evasions": [],
       "decision": "0053",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A contract test sends an unknown account and a wrong password to the login route and fails unless both return the same status and the same body, problem details when the api-contract module is on, so responses never reveal which accounts exist.",
       "adoption": "Nothing needed: the kit's login response already answers both failures the same way."
@@ -529,7 +529,7 @@
       "evasions": [],
       "decision": "0045",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-024.allowedReturnTypes"],
       "summary": "Reflection over public controller actions fails when the declared return type is missing or outside the configured set of Resources, resource collections and response classes, and Larastan then proves each return matches it.",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -550,7 +550,7 @@
       "evasions": [],
       "decision": "0052",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-025.responseEmitter"],
       "summary": "A type-aware custom PHPStan rule fails on the response() helper, the Response facade, the response factory and direct JsonResponse construction outside the configured response emitter and the exception renderer.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -571,7 +571,7 @@
       "evasions": ["responses that no feature test exercises"],
       "decision": "0052",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.api-contract.shape"],
       "summary": "A listener checks every 2xx JSON body in the feature suite against the configured shape (resource or envelope), including links and meta on paginated bodies, no data.data nesting and deletes per shape, with binary responses exempt.",
       "adoption": "Nothing needed: the shape defaults to resource, and a project that already answers with an envelope sets modules.api-contract.shape to envelope."
@@ -595,7 +595,7 @@
       ],
       "decision": "0053",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-027.pathPrefix"],
       "summary": "A test raises each mapped exception (validation, authentication, authorization, not found, method, throttle, HTTP and generic) through a route the renderer's API predicate covers and asserts application/problem+json with type, title and status, the right status code, and the field-to-messages map in errors on 422.",
       "adoption": "Allowlist: an existing API scopes the renderer to a new version prefix (rules.BE-027.pathPrefix) or keeps legacy routes on their old error body through dated entries, because problem+json changes what shipped clients read."
@@ -612,7 +612,7 @@
       "evasions": [],
       "decision": "0048",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check that abort() and exception status choices follow the vocabulary (409 for conflicts, 422 for validation, 400 for unknown filter or sort keys, 429 for rate limits), each mapped to a problem type.",
       "adoption": "Nothing needed: checked in review."
@@ -634,7 +634,7 @@
       ],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test bans app(), resolve() and the App facade, container and application classes everywhere in App except App\\Providers, resolved by name from the AST.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -651,7 +651,7 @@
       "evasions": [],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers reject per-entity services, query classes and empty stub layers, keeping single-step reads and writes inline in thin controllers.",
       "adoption": "Nothing needed: checked in review."
@@ -668,7 +668,7 @@
       "evasions": [],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check each new service against the boundary: state machines, scoring and external rendering are services, multi-step writes reused across entry points are Actions, and a one-caller abstraction is inlined.",
       "adoption": "Nothing needed: checked in review."
@@ -690,7 +690,7 @@
       ],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-032.suffixes"],
       "summary": "An architecture test bans the configured speculative suffixes across App, framework-shaped classes excepted, and fails when an App\\Repositories namespace exists.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -710,7 +710,7 @@
       "evasions": [],
       "decision": "0041",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test fails when a class in App\\Actions is not invokable, so multi-step writes shared by controllers, jobs and commands use one Action shape that takes validated arrays or DTOs.",
       "adoption": "Fix first: an existing App\\Actions class without __invoke gains one before the check is enabled."
@@ -730,7 +730,7 @@
       "evasions": [],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A type-aware custom PHPStan rule fails on DB facade calls, database connection methods (transactions included) and raw query-builder methods anywhere in App\\Http, so raw SQL lives in model scopes and transactions in services or Actions.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -750,7 +750,7 @@
       "evasions": [],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test fails when a class in App\\Services extends a class or implements an interface.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -770,7 +770,7 @@
       "evasions": [],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-036.placement"],
       "summary": "A configurable namespace-to-kind map expands into architecture expectations in both directions, for example traits in Concerns, Scope implementations in App\\Models\\Scopes and ShouldQueue only in jobs, listeners, mail and notifications.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -792,7 +792,7 @@
       ],
       "decision": "0036",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The Pest laravel preset runs under an architecture test named with this rule's ID, keeps enums in App\\Enums, class suffixes and base classes, resourceful-only controller methods and queued mailables and jobs, and bans env() outside config; the debug functions it also bans are BE-007's property.",
       "adoption": "Allowlist: the kit ships a dated ->ignoring() list, one rule ID per entry, for stock and kit code the preset rejects."
@@ -832,7 +832,7 @@
       "evasions": [],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-039.maxLines"],
       "summary": "An architecture test fails when a class in App\\Http\\Controllers, controller concerns included, reaches the configured line count.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -852,7 +852,7 @@
       "evasions": [],
       "decision": "0040",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test fails when a class in App\\Models uses the request, response, validator, auth or session helpers or their facades and classes.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -912,7 +912,7 @@
       "evasions": ["status-like columns named outside the configured list, such as kind or phase"],
       "decision": "0046",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-043.columns"],
       "summary": "A test reads the migrated schema and fails when a column matching the configured names is not cast to a backed enum in its model's casts().",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -932,7 +932,7 @@
       "evasions": [],
       "decision": "0046",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test fails when an enum in App\\Enums is not string-backed, and the laravel preset keeps every enum in that namespace.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -975,7 +975,7 @@
       ],
       "decision": "0046",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A type-aware custom PHPStan rule fails when a where-style query argument or a strict comparison on an attribute that the model casts to a backed enum is a string literal.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -998,7 +998,7 @@
       ],
       "decision": "0046",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-047.methods"],
       "summary": "An architecture test fails when an enum declares a method from the configured presentation list (color() by default), so clients map state to design tokens.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -1021,7 +1021,7 @@
       ],
       "decision": "0046",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A custom PHPStan rule fails on literal output keys ending in _label in a Resource's toArray(), because clients render labels from their own message files.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -1041,7 +1041,7 @@
       "evasions": [],
       "decision": "0045",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A type-aware custom PHPStan rule fails on toArray(), toJson(), jsonSerialize(), attribute dumps, json_encode() and array casts of models or Eloquent collections anywhere in App\\Http outside App\\Http\\Resources.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -1058,7 +1058,7 @@
       "evasions": [],
       "decision": "0045",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers reject inline {id, name} relation maps and duplicate shapes, and composite payloads get their own Resource.",
       "adoption": "Nothing needed: checked in review."
@@ -1075,7 +1075,7 @@
       "evasions": [],
       "decision": "0043",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check that each policy and its visibility scope cross-reference each other and that policies do no list filtering.",
       "adoption": "Nothing needed: checked in review."
@@ -1092,7 +1092,7 @@
       "evasions": [],
       "decision": "0047",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check every code-generation path for race safety, because reading the current maximum and adding one issues duplicates under concurrency.",
       "adoption": "Nothing needed: checked in review."
@@ -1135,7 +1135,7 @@
       ],
       "decision": "0049",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-054.actor"],
       "summary": "A behavioural route-table test calls each GET index route as the configured actor and fails unless the body has the paginator shape with a server total.",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -1155,7 +1155,7 @@
       "evasions": ["paginated routes the test dataset cannot call"],
       "decision": "0049",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-055.defaultPerPage", "rules.BE-055.maxPerPage"],
       "summary": "A behavioural test calls each paginated route with negative, non-numeric and oversized per_page values and fails unless it answers 200 with a page size within the cap.",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -1195,7 +1195,7 @@
       "evasions": [],
       "decision": "0049",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check that new list actions use the project's declared idiom: the installed query-builder package, or otherwise the when() chain.",
       "adoption": "Nothing needed: checked in review."
@@ -1212,7 +1212,7 @@
       "evasions": [],
       "decision": "0044",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check that owner, actor and other derived fields are pinned server-side in the FormRequest rather than accepted from the request body.",
       "adoption": "Nothing needed: checked in review."
@@ -1229,7 +1229,7 @@
       "evasions": [],
       "decision": "0044",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers reject aliasing in validated() output and Resources; an unavoidable alias is applied in both the Store and Update requests and emitted from a real source.",
       "adoption": "Nothing needed: checked in review."
@@ -1249,7 +1249,7 @@
       "evasions": ["rules() that depend on route parameters or request state cannot be evaluated"],
       "decision": "0044",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A reflection test instantiates each FormRequest and fails when a messages() key (attribute.rule) has no matching rule in rules().",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -1270,7 +1270,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A test resolves the HTTP kernel, gathers the global and route middleware of every api route (asserting the route set is not empty) and fails unless the strip middleware is present and runs before route-model binding.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1291,7 +1291,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A test over the resolved middleware stack of every api route fails when a route that gathers an auth guard does not also gather the active-tenant middleware, with exceptions only as dated allowlist entries.",
       "adoption": "Opt-in: part of the tenancy module; existing exceptions go into dated allowlist entries."
@@ -1311,7 +1311,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.userModel"],
       "summary": "Reflection over the configured user model fails unless tenant() and the tenancy predicates exist and are declared by the shipped scope and predicate traits.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1331,7 +1331,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.column", "modules.tenancy.subTenantColumns"],
       "summary": "A schema test fails unless the tenants table exists with a non-null, defaulted feature column and the user table carries the configured tenant, sub-tenant and operator columns, because otherwise every schema-driven tenancy gate passes vacuously.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1351,7 +1351,7 @@
       "evasions": ["rows created outside the default seeder chain"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.defaultTenant", "modules.tenancy.operatorRole"],
       "summary": "A test runs the default seeder chain and fails unless an operator satisfies the bypass predicate, the configured default tenant exists and no tenant table holds a row without a tenant, operators excepted.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1371,7 +1371,7 @@
       "evasions": ["seeding through a shared base test case or helper outside the scanned files"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A token scan of the isolation test files fails on seeder calls, seed properties and reads of the default-tenant configuration.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1396,7 +1396,7 @@
       ],
       "decision": "0039",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The check asserts that every mandated isolation test name exists and reads PHP tokens, ignoring comments and strings, to fail on ->todo(, ->skip(, markTestIncomplete( and markTestSkipped( in those suites, with waivers only as dated allowlist entries.",
       "adoption": "Opt-in: part of the tenancy module; the suites ship complete and run against the kit's plumbing."
@@ -1419,7 +1419,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A dataset-driven isolation test calls the index route of every tenant model as a user of another tenant and fails unless it answers 200 with no foreign rows and a total that counts only the caller's rows.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1442,7 +1442,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A dataset-driven isolation test fails when a sub-tenant-restricted user listing a sub-tenant model sees rows of another sub-tenant.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1462,7 +1462,7 @@
       "evasions": ["a controller helper method that wraps the sub-tenant filter"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test confines the sub-tenant trait to App\\Models, and a token scan fails on hand-written sub-tenant where() clauses in controllers.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1484,7 +1484,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A complete feature test disables a tenant and fails unless login and requests with existing tokens answer 403 with the shared message key and re-enabling restores both, and a token scan confirms the login flow calls the shared predicate.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1506,7 +1506,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.operatorRole"],
       "summary": "A complete feature test fails unless an operator bound to a tenant never bypasses, the operator flag is cast to boolean, and a tenantless operator lists rows of two tenants and keeps access when a tenant is disabled.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1529,7 +1529,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Complete feature tests fail unless a non-bypassing user whose tenant is null or missing sees zero rows (never a whereNull match), fails the scoped exists rule, cannot create and gets 403, and an unassigned sub-tenant user sees an empty list.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1549,7 +1549,7 @@
       "evasions": ["a role check hidden behind a helper function"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.operatorRole"],
       "summary": "Reflection fails when a class other than the predicate trait declares a bypass method, and a token scan bans the operator role literal and operator flag column outside the predicate and seeders.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1567,7 +1567,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check every tenant resolution path, and any other resolution strategy needs its own decision record.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1604,7 +1604,7 @@
       "evasions": ["a look-alike mechanism under a different class name"],
       "decision": "0010",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.mechanismClasses"],
       "summary": "A test fails unless the configured trait, scope and middleware classes resolve to the package namespace and no application class redeclares a mechanism class name, and template copies are verified against version-stamped hashes.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1624,7 +1624,7 @@
       "evasions": ["a route that should be feature-gated but omits the middleware"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A route-table test fails when a tenant-feature middleware argument does not parse to a case of the feature enum.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1647,7 +1647,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A custom PHPStan rule fails when a controller calls the tenant's feature check directly instead of relying on the feature middleware.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1667,7 +1667,7 @@
       "evasions": ["a test that names the feature key without asserting a 403"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A test collects the feature keys from route middleware and fails when a key is referenced by no feature test.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1687,7 +1687,7 @@
       "evasions": ["a cache repository or store injected by type"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test confines the Cache facade and the cache() helper to the tenant-aware cache helper.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1704,7 +1704,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check that every push fan-out query is tenant-scoped.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -1747,7 +1747,7 @@
       ],
       "decision": "0055",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "An architecture test fails when a class extending Mailable or Notification does not implement ShouldQueue, keeping slow and failure-prone delivery out of the request cycle.",
       "adoption": "Allowlist: existing violations get dated ->ignoring() entries that only shrink."
@@ -1770,7 +1770,7 @@
       ],
       "decision": "0055",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reflection over the constructors of queued classes fails on a parameter typed as an authenticatable, a request or a closure.",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -1790,7 +1790,7 @@
       "evasions": [],
       "decision": "0055",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reflection fails when a queued class in App\\Jobs or App\\Listeners does not itself declare a tries property or retryUntil(), a backoff property or method, and a timeout property.",
       "adoption": "Allowlist: existing violations get dated entries in the rule's allowlist file, which only shrink."
@@ -1807,7 +1807,7 @@
       "evasions": [],
       "decision": "0055",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check each handle() against the retry-safety checklist: unique or non-overlapping execution where needed, idempotency keys for side effects and fail() for permanent errors.",
       "adoption": "Nothing needed: checked in review."
@@ -1827,7 +1827,7 @@
       "evasions": [],
       "decision": "0055",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A test inspects the scheduler and fails when queued classes exist but queue:prune-failed is not scheduled, while triaging failed jobs as a dead-letter queue stays a review item.",
       "adoption": "Nothing needed: the kit's scheduler template schedules queue:prune-failed."
@@ -1867,7 +1867,7 @@
       "evasions": [],
       "decision": "0088",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A type-aware custom PHPStan rule fails when the message argument of a Log facade call, logger() or a logger-interface method is not a constant string, so interpolation, concatenation and sprintf() are rejected.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -1887,7 +1887,7 @@
       "evasions": ["a model encoded with json_encode() before it is logged"],
       "decision": "0088",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A type-aware custom PHPStan rule fails when a log context value is a model, an Eloquent collection or a toArray() result.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -1950,7 +1950,7 @@
       "evasions": ["a custom liveness route that touches the database without printing any detail"],
       "decision": "0051",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.BE-094.route"],
       "summary": "A feature test calls the configured health route (the framework's /up by default) without credentials and fails unless it answers 200 with no version or infrastructure strings.",
       "adoption": "Nothing needed: the framework's /up route already passes."
@@ -1972,7 +1972,7 @@
       ],
       "decision": "0056",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["decisions.<name>"],
       "summary": "A test reads composer.json and fails when a broadcasting package, such as a websocket server or a push-service SDK, is required without an entry under decisions in .cross-stack/standard.json that references an existing project decision record.",
       "adoption": "Nothing needed: adopt records a decision reference for an installed broadcasting package."
@@ -1989,7 +1989,7 @@
       "evasions": [],
       "decision": "0007",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["stack.audit-trail.use"],
       "summary": "Reviewers check that the stack table declares the audit-trail mechanism and that each new feature writes its audit events through it rather than through a second, ad-hoc log.",
       "adoption": "Nothing needed: checked in review; adopt pre-fills the audit-trail entry of the stack table from the installed packages."
@@ -2006,7 +2006,7 @@
       "evasions": [],
       "decision": "0039",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check that scenario and regression tests are named after the invariant they protect and carry a docblock describing the failure they guard against.",
       "adoption": "Nothing needed: checked in review."
@@ -2028,7 +2028,7 @@
       "evasions": [],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The check fails when the effective configuration does not set reportIgnoresWithoutComments: true, so PHPStan rejects an ignore without a reason, and when a @phpstan-ignore-line or @phpstan-ignore-next-line comment without an identifier appears.",
       "adoption": "Baseline: existing undescribed ignores become baseline entries that only shrink."
@@ -2053,7 +2053,7 @@
       ],
       "decision": "0054",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.api-contract.exportCommand", "modules.api-contract.openapiPath"],
       "summary": "A local contract:export script, run as its own CI step, exports the document with literal servers, info.version and ui.title in the published Scramble config and fails on unknown types.",
       "adoption": "Nothing needed: adopt publishes the Scramble config with the literal values the export needs."
@@ -2077,7 +2077,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.serverOwnedFields"],
       "summary": "A complete test sends the configured server-owned fields (the tenant column and the operator flag by default) at the top level and nested in form, query and JSON input through an API route and fails if any of them reaches the controller.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -2101,7 +2101,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Complete tests fail unless a created record takes the acting user's tenant, falls back to the pinned tenant context when no user is authenticated, and throws in a background context that has no pin.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -2125,7 +2125,7 @@
       ],
       "decision": "0058",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Complete tests fail unless pinned reads are scoped, an unpinned background read returns nothing, a worker that processes tenant A then tenant B does not carry the pin over, a job dispatched under a pin inherits it, and run() and crossTenant() restore the previous value after a throw.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -2147,7 +2147,7 @@
       ],
       "decision": "0058",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A complete test authenticates a token for a tenant-scoped user model and fails if the lookup recurses or skips the scope, because the scope reads the already-resolved user and lets only the token-to-user lookup through.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -2169,7 +2169,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A complete test of the feature middleware fails unless a tenant admin is blocked from a disabled feature, a user whose tenant is missing is blocked, and only a tenantless operator passes.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -2191,7 +2191,7 @@
       ],
       "decision": "0058",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A complete test pins one tenant, authenticates a user of another and fails unless reads and creates follow the user's tenant.",
       "adoption": "Opt-in: part of the tenancy module, installed with it as a complete unit."
@@ -2211,7 +2211,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A test reads the migrated schema and fails when the users table or a business table references tenants with null-on-delete or cascade (cascade only through a dated allowlist entry), or when a business table's tenant column is nullable, so deleting a tenant is an explicit offboarding step.",
       "adoption": "Opt-in: part of the tenancy module; existing cascades need a migration or a dated allowlist entry."
@@ -2236,7 +2236,7 @@
       ],
       "decision": "0039",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The check fails unless the root phpunit element sets failOnIncomplete=\"true\" and failOnRisky=\"true\" and the test script passes --fail-on-incomplete, and it fails on --do-not-fail-on-incomplete or --do-not-fail-on-risky in the composer scripts and shipped workflows, while failOnSkipped stays off for legitimate environment skips.",
       "adoption": "Nothing needed: adopt merges both attributes into phpunit.xml and the flag into the test script."
@@ -2256,7 +2256,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-001.exempt"],
       "summary": "Every file and directory name under the web source root is kebab-case, with framework route syntax ([param], (group), @slot, _private) and the profile's special files exempt, so paths and imports stay predictable on every operating system.",
       "adoption": "Allowlist: existing non-kebab names get dated entries in .cross-stack/allowlists/WEB-001.json that may only shrink; greenfield projects start clean."
@@ -2276,7 +2276,7 @@
       "evasions": [],
       "decision": "0068",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-002.testPatterns"],
       "summary": "Every *.test.* and *.spec.* file has a same-stem source file in the same directory, which also rejects __tests__ and similar aggregate folders, so a test moves and disappears together with the code it covers.",
       "adoption": "Allowlist: existing aggregate test folders get dated entries in .cross-stack/allowlists/WEB-002.json that may only shrink."
@@ -2296,7 +2296,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-003.featuresPath", "rules.WEB-003.allowedSubfolders"],
       "summary": "Each feature folder contains only the hooks/, components/ and lib/ subfolders, hooks/ is always present, and every non-test file in hooks/ is named use-<name>, so every feature exposes the same predictable surface.",
       "adoption": "Allowlist: existing non-conforming feature folders get dated entries in .cross-stack/allowlists/WEB-003.json that may only shrink."
@@ -2316,7 +2316,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-003.featuresPath"],
       "summary": "Files under the features path never re-export, whether through export * from, export { x } from or a re-exported imported binding, because the folder path is the public surface and barrels hide cross-feature dependencies from the boundary rules.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2336,7 +2336,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-003.featuresPath", "rules.WEB-005.publicSurface"],
       "summary": "On the resolved import graph a feature reaches another feature only through that feature's hooks/ and lib/, and a feature's own hooks/ and lib/ never import its components/, which closes the re-export route around the rule.",
       "adoption": "Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines."
@@ -2356,7 +2356,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-006.libPath", "rules.WEB-006.exemptPaths"],
       "summary": "No module under the shared lib folder reaches the features folder through any chain of resolved imports, so shared code stays generic and a feature can be removed without breaking it.",
       "adoption": "Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines."
@@ -2376,7 +2376,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The resolved import graph of the web source root, type-only imports included, contains no cycle, so modules load in a defined order and can be split or removed independently.",
       "adoption": "Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines."
@@ -2396,7 +2396,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-008.appRoot"],
       "summary": "Features, UI primitives, shared lib and shared hooks never resolve an import into the app route folder, so dependencies point from routes downward and never back up.",
       "adoption": "Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines."
@@ -2416,7 +2416,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-003.featuresPath", "rules.WEB-009.frameworkModules"],
       "summary": "Modules in a feature's lib/ folder never import React, the web framework or the server-state library, dynamic imports included, so feature logic stays pure and testable without rendering.",
       "adoption": "Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines."
@@ -2436,7 +2436,7 @@
       "evasions": [],
       "decision": "0085",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [
         "rules.WEB-011.envModules",
         "rules.WEB-010.exampleFile",
@@ -2465,7 +2465,7 @@
       ],
       "decision": "0069",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-011.envModules"],
       "summary": "The cross-stack/env-module-only rule reports process.env and globalThis.process access, destructuring of process or its env, imports of process and node:process and declarations that alias process outside the env modules and root config files on web and mobile, and each env module validates at load with the installed schema library.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2489,7 +2489,7 @@
       ],
       "decision": "0049",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-012.clientHelpers"],
       "summary": "A custom lint rule flags configured client paginator helpers and a table library's client-side pagination model on web and mobile, because paginating one server page on the client silently hides records; the only escape is a described disable comment for data provably complete in memory.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2506,7 +2506,7 @@
       "evasions": [],
       "decision": "0049",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Web and mobile list screens send page, filters and sort to the API and drive their UI from the server's total, and never filter or sort a server page on the client unless the data is provably complete in memory.",
       "adoption": "Nothing needed: checked in review."
@@ -2523,7 +2523,7 @@
       "evasions": [],
       "decision": "0063",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Data fetched from the API is held only in the installed server-state library's cache, never copied into a client store or long-lived component state, so one copy exists and invalidation keeps it fresh.",
       "adoption": "Nothing needed: checked in review."
@@ -2540,7 +2540,7 @@
       "evasions": [],
       "decision": "0063",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "List filters, sort and page live in the URL through one URL-state idiom (nuqs when installed, otherwise the router's search-params API), other UI state stays in components, and a global store is added only when a real cross-tree consumer exists.",
       "adoption": "Nothing needed: checked in review."
@@ -2557,7 +2557,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Files in the route layer assemble feature components and layout and hold no business logic, data transformation or API calls of their own, so features stay reusable and routes stay thin.",
       "adoption": "Nothing needed: checked in review."
@@ -2580,7 +2580,7 @@
       ],
       "decision": "0046",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A global no-restricted-syntax selector on TSEnumDeclaration bans enums, const and declare enums included, because closed value sets come from the generated contract's string-literal unions or plain const objects, which also keep the code erasable-syntax-only.",
       "adoption": "Baseline: existing enums go into ESLint bulk suppressions, shrink-only, and are replaced by generated unions."
@@ -2606,7 +2606,7 @@
       ],
       "decision": "0054",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.api-contract.openapiPath", "modules.api-contract.webTypesPath"],
       "summary": "With the api-contract module, web code takes request, response and enum types from the committed generated contract, and a check flags type aliases, interfaces and string-literal unions whose name or member set duplicates a generated schema or enum.",
       "adoption": "Allowlist: existing hand-written mirrors get dated entries in .cross-stack/allowlists/WEB-018.json until they are replaced by generated types."
@@ -2623,7 +2623,7 @@
       "evasions": [],
       "decision": "0054",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Components render generated contract types as they arrive, and where a view-model is needed it only adds derived display fields and keeps the raw API row for anything editable, so edits never round-trip through a lossy mapping.",
       "adoption": "Nothing needed: checked in review."
@@ -2644,7 +2644,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-020.componentMap"],
       "summary": "A config check resolves the ESLint configuration for a sample component file and fails unless every jsx-a11y recommended rule is at error, reusing the plugin instance the framework config registers, so accessibility defects fail the build.",
       "adoption": "Baseline: existing accessibility errors go into ESLint bulk suppressions, shrink-only; the config check itself needs none."
@@ -2665,7 +2665,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "@typescript-eslint/no-explicit-any from the strict type-checked config fails every explicit any on web and mobile, form edit state and view-model bridges included, while the no-unsafe rules cover implicit any flows.",
       "adoption": "Baseline: existing occurrences go into ESLint bulk suppressions (eslint --suppress-all), shrink-only under check-baselines."
@@ -2687,7 +2687,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A config check resolves the ESLint configuration for a sample source file on each JavaScript track and fails unless marker rules from the framework preset (next or expo), strictTypeChecked and stylisticTypeChecked are at error with the project service enabled.",
       "adoption": "Baseline: promote warnings to errors, then record existing errors with ESLint bulk suppressions (eslint --suppress-all), shrink-only under check-baselines."
@@ -2708,7 +2708,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-023.defaultExportGlobs"],
       "summary": "The core no-restricted-exports rule with every restrictDefaultExports option on bans default exports on web and mobile, and it is turned off only for the files the framework requires to default-export, such as pages, layouts, route files and config files.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2733,7 +2733,7 @@
       ],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A sub-check reads package.json and requires the check script of each JavaScript track to run a format:check member that runs Prettier, or the declared formatter, in check mode over the whole project, rejecting a swallowed exit such as || true and a narrowed path or glob, with the lint rules the formatter owns turned off.",
       "adoption": "Fix first: format the codebase once in a dedicated commit before the member is added."
@@ -2753,7 +2753,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-025.maxLines"],
       "summary": "Core max-lines, counting code lines only with blank lines and comments skipped, fails files above the configured limit, by default 300 lines on web and 250 on mobile.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2773,7 +2773,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-026.max"],
       "summary": "Core complexity fails any function above the configured cyclomatic complexity on web and mobile, as its own rule with its own gate and fixture, separate from nesting depth and function length.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2797,7 +2797,7 @@
       ],
       "decision": "0061",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The Standard's own MIT rule cross-stack/no-commented-code parses comment bodies and fails comments that hold code on web and mobile, because version control already keeps old code and commented copies rot.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2823,7 +2823,7 @@
       ],
       "decision": "0092",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "knip builds the module graph from the framework's entry points and fails on unused files, exports and dependencies, with existing findings held in an allowlist-backed baseline that may only shrink.",
       "adoption": "Allowlist: current knip findings are recorded as dated entries in .cross-stack/allowlists/WEB-028.json that may only shrink."
@@ -2848,7 +2848,7 @@
       ],
       "decision": "0092",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-029.minLines", "rules.WEB-029.minTokens"],
       "summary": "jscpd runs over the TypeScript sources with a committed baseline and --fail-on-new-clones, so any new clone fails while existing ones are paid down, instead of a global duplication percentage that lets new copies hide; PROC-034 keeps the baseline shrink-only.",
       "adoption": "Baseline: the jscpd baseline is recorded at adoption, shrink-only under check-baselines."
@@ -2873,7 +2873,7 @@
       ],
       "decision": "0091",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-030.thresholds"],
       "summary": "The web test:coverage run uses Vitest v8 coverage with an explicit include list and fails below the configured thresholds, which are measured at adoption and only move up.",
       "adoption": "Baseline: floors start at the coverage measured at adoption and ratchet upward only."
@@ -2947,7 +2947,7 @@
       ],
       "decision": "0064",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-033.allowedPaths"],
       "summary": "A custom lint rule flags array literals passed as queryKey or as the key argument of query-client invalidate, set, get, refetch and cancel calls outside the allowed directories, which default to features/*/hooks on web and the domain hooks folder on mobile.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -2964,7 +2964,7 @@
       "evasions": [],
       "decision": "0064",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Every mutation invalidates the affected resource's root key from its query-key factory, and cross-feature invalidation imports the target feature's factory rather than a bare key.",
       "adoption": "Nothing needed: checked in review."
@@ -2981,7 +2981,7 @@
       "evasions": [],
       "decision": "0007",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Success and error notifications for mutations are raised in one place, the central mutation cache, and a mutation suppresses them only through the silent meta flag, so no screen shows duplicate or missing feedback.",
       "adoption": "Nothing needed: checked in review."
@@ -2998,7 +2998,7 @@
       "evasions": [],
       "decision": "0063",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Autosaving editors keep the edited value in local state that leads the server copy, save in the background and invalidate their query keys on unmount and navigation, so a stale cache never overwrites newer input.",
       "adoption": "Nothing needed: checked in review."
@@ -3022,7 +3022,7 @@
       ],
       "decision": "0007",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-037.library", "rules.WEB-037.allowedPaths"],
       "summary": "A cross-stack/confine-api entry lets only the configured client module import the declared HTTP library and only the shared fetcher and the BFF forwarder call the global fetch, so every request goes through one client with the same headers, interceptors and error handling.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -3046,7 +3046,7 @@
       ],
       "decision": "0042",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-038.versionPattern"],
       "summary": "A global no-restricted-syntax selector flags string and template literals whose request path starts with a version segment matching the configured pattern, such as /v1/ or /api/v1/, so the API version changes in one base URL.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -3070,7 +3070,7 @@
       ],
       "decision": "0056",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["decisions.<name>", "rules.WEB-039.libraries"],
       "summary": "Live surfaces on web and mobile poll through the server-state cache, and a module-boundary lint rule reports static and dynamic imports of realtime client libraries unless the manifest's decisions section references an existing ADR.",
       "adoption": "Fix first: an existing realtime client needs an ADR referenced from the manifest's decisions section."
@@ -3090,7 +3090,7 @@
       "evasions": ["console reached through a globalThis or window member access"],
       "decision": "0088",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-040.loggerModule"],
       "summary": "Core no-console plus no-restricted-globals on console, which also catches aliasing through a local binding, fail direct console use on web and mobile everywhere except the logger module.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -3127,7 +3127,7 @@
       "evasions": [],
       "decision": "0067",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-042.fieldThreshold"],
       "summary": "Forms with more fields than the configured threshold, about five by default, validate each field on the client with the installed form and validation libraries as a UX aid, while the server stays the authority on validity.",
       "adoption": "Nothing needed: checked in review."
@@ -3144,7 +3144,7 @@
       "evasions": [],
       "decision": "0067",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The errors member of a 422 problem response is mapped onto the matching form fields, each invalid field sets aria-invalid and references its message through aria-describedby, and the summary message is only the fallback.",
       "adoption": "Nothing needed: checked in review."
@@ -3168,7 +3168,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-044.routesModule", "rules.WEB-044.publicGroups"],
       "profiles": ["next"],
       "summary": "A web architecture test imports the routes module, walks every route group under the app root and fails when the first URL segment of a non-public page is missing from the exported protected-segments list that drives the proxy's UX redirect.",
@@ -3192,7 +3192,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "The proxy compares the presence-only session hint cookie with the httpOnly token cookie on every navigation and corrects a drifted hint, so the client never believes it is signed in without a token, or signed out while holding one.",
@@ -3213,7 +3213,7 @@
       "evasions": ["a second HTTP client without the unauthorized handler"],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "The client's unauthorized handler treats a 401 from any endpoint except login as an expired session: it clears the persisted profile cache and navigates to the login page of the active locale, while a failed login shows its error in place.",
@@ -3239,7 +3239,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.authPaths"],
       "profiles": ["next"],
       "summary": "Code that recognises auth endpoints compares against the declared auth-path constants exactly, and a global no-restricted-syntax selector flags includes, startsWith and endsWith calls on configured auth path literals, because substring matches misfire on similar paths.",
@@ -3260,7 +3260,7 @@
       "evasions": ["a hand-built error response in a handler the tests do not exercise"],
       "decision": "0053",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "Every error response the BFF creates locally, such as an unreachable upstream, a rejected path, a refused origin or a failed login or logout, is application/problem+json with type, title and status, matching the API's error format so clients parse one shape.",
@@ -3284,7 +3284,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.maxBodyKey"],
       "profiles": ["next"],
       "summary": "The BFF reads the upload limit from the env key the backend upload rules also read and answers a larger body with 413 before buffering it or calling upstream, so an oversized upload cannot exhaust BFF memory.",
@@ -3305,7 +3305,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-050.max"],
       "summary": "Core max-depth fails blocks nested deeper than the configured depth on web and mobile, with a lenient default so existing code mostly passes and the rest starts in bulk suppressions.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -3325,7 +3325,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-051.max"],
       "summary": "Core max-lines-per-function fails functions longer than the configured number of code lines on web and mobile, with a lenient default so existing code mostly passes and the rest starts in bulk suppressions.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -3372,7 +3372,7 @@
       ],
       "decision": "0093",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-053.ticketPattern"],
       "summary": "The Standard's own cross-stack/no-untracked-todo rule reads every comment on web and mobile, case-insensitively, and fails on a marker without a ticket reference matching the configured pattern, for example TODO(ABC-123):, because core no-warning-comments cannot admit a referenced marker.",
       "adoption": "Baseline: existing untracked markers go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -3393,7 +3393,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-001.sourceRoot", "rules.MOB-001.folders", "rules.MOB-001.ignore"],
       "summary": "Every directory directly under the mobile source root is on the configured folder list, and platform or tooling directories are excluded only through a configurable ignore list, so the app layout cannot drift.",
       "adoption": "Allowlist: the source root and folder list come from config and tsconfig, so both the src/app layout and the older root layout pass; extra folders get dated allowlist entries."
@@ -3413,7 +3413,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-002.routesDir", "rules.MOB-002.exempt"],
       "summary": "Each file under the routes directory has a default export, because the file-based router renders only that export; API routes and native-intent files are exempt through a configurable file-name pattern.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3434,7 +3434,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-003.contextsDir"],
       "summary": "createContext is reachable only from files in the configured contexts folder, whether it is imported by name or reached through the default React import, a namespace import or require, so every shared context has one home.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3455,7 +3455,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-004.folders"],
       "summary": "A structure check fails on a .tsx file under the configured utils, constants and types folders, and because TypeScript rejects JSX syntax in .ts files, no JSX can live there.",
       "adoption": "Allowlist: existing .tsx files in those folders get dated allowlist entries until they move."
@@ -3478,7 +3478,7 @@
       ],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-005.allowedDirs"],
       "summary": "A cross-stack/confine-api entry reports functions and variables named like a hook (use followed by a capital letter) declared outside the configured hooks and contexts folders, and the framework preset's rules-of-hooks check rejects hook calls inside functions not named like hooks.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3498,7 +3498,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-006.typesDir"],
       "summary": "The cross-stack/type-only-module rule, applied through a files override to the configured types folder and used by no other registry rule, reports top-level or exported variables, functions, classes, non-ambient enums and namespaces, default exports and expression statements there, so the folder holds only type-level declarations.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3542,7 +3542,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-002.routesDir", "rules.MOB-008.serverStateLibrary"],
       "summary": "Modules under the routes directory never import the server-state library, so data reaches routes only through screen hooks and route files stay thin.",
       "adoption": "Baseline: dependency-cruiser known-violations, shrink-only under check-baselines:depcruise."
@@ -3566,7 +3566,7 @@
       ],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-003.contextsDir"],
       "summary": "useContext is reachable only from the configured contexts folder, so consumers call each context's exported hook, and that hook throws when used outside its provider instead of returning a silent default.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3587,7 +3587,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Every path git tracks matches its on-disk entry case-sensitively, and the check fails closed in CI when git is unavailable, so a case-only rename cannot break imports on case-sensitive build machines.",
       "adoption": "Fix first: a git mv of each reported file fixes every finding at adoption."
@@ -3607,7 +3607,7 @@
       "evasions": [],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-011.pathAlias"],
       "summary": "Static, dynamic and require imports whose relative path climbs out of the importing file's directory are reported, so cross-folder imports use the root alias read from tsconfig paths.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only; the alias comes from tsconfig paths, so both @/* to ./src/* and the older root layout work."
@@ -3624,7 +3624,7 @@
       "evasions": [],
       "decision": "0063",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A list screen keeps its page, filters and sort in navigation params, the mobile counterpart of URL state, and sends them to the API so the server's paging and totals drive the UI.",
       "adoption": "Nothing needed: checked in review."
@@ -3648,7 +3648,7 @@
       ],
       "decision": "0063",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [
         "rules.MOB-013.clientModule",
         "rules.MOB-013.httpLibrary",
@@ -3673,7 +3673,7 @@
       "evasions": [],
       "decision": "0063",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-014.providerModule"],
       "summary": "The server-state library's QueryClient constructor is reachable only from the configured query provider module and test utilities, so the app has a single cache with one set of defaults.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3724,7 +3724,7 @@
       ],
       "decision": "0048",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-016.errorModule"],
       "summary": "A cross-stack/confine-api entry reports member chains that read .response.status or .response.data, with or without optional chaining, outside the configured error-normalizer module, so screens handle typed error kinds instead of raw responses.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3747,7 +3747,7 @@
       ],
       "decision": "0048",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-017.errorFormat", "rules.MOB-017.statusVocabulary"],
       "summary": "A table-driven contract test shipped with the error normalizer asserts that a response for each status in the configured vocabulary, 409 and 429 included, maps to its own kind, and that a 422 errors member maps to field errors.",
       "adoption": "Nothing needed: the kit ships the normalizer with its test; a project keeping its own normalizer adapts it to the test table."
@@ -3771,7 +3771,7 @@
       ],
       "decision": "0052",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.api-contract.shape", "rules.MOB-013.clientModule"],
       "summary": "A cross-stack/confine-api entry reports member chains reading .data.data, in dot or computed-literal form, outside the API client module, so one typed unwrap function owns the success shape and callers never unwrap twice.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3797,7 +3797,7 @@
       ],
       "decision": "0054",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.api-contract.openapiPath", "modules.api-contract.mobileTypesPath"],
       "summary": "A check flags type aliases, interfaces and string-literal unions whose name or member set matches a schema or enum in the generated contract, so the app uses generated types instead of hand-written mirrors that drift from the backend.",
       "adoption": "Allowlist: existing hand-written mirrors get dated entries in .cross-stack/allowlists/MOB-019.json until they are replaced by generated types."
@@ -3864,7 +3864,7 @@
       ],
       "decision": "0069",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Computed process.env reads are reported, because the bundler inlines only static process.env.EXPO_PUBLIC_NAME accesses and a computed read is undefined in the built app.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3887,7 +3887,7 @@
       ],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-002.routesDir", "rules.MOB-023.entryRoute"],
       "summary": "The router's Redirect component is reachable only from _layout files and the configured entry route, so declarative guards and boot routing live in one place per route group.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3904,7 +3904,7 @@
       "evasions": [],
       "decision": "0067",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-042.fieldThreshold"],
       "summary": "Forms with more than the configured number of fields validate each field on the client, and the server's 422 errors member is mapped onto the matching fields, with the summary message only as a last resort.",
       "adoption": "Nothing needed: checked in review."
@@ -3930,7 +3930,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.column"],
       "summary": "A global no-restricted-syntax selector reports identifiers, member properties and object or destructuring keys equal to the configured tenant key in mobile source, because the backend derives the tenant from the authenticated user and the client never supplies it.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -3955,7 +3955,7 @@
       ],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The resolved compiler options of each web and mobile tsconfig, extends chain included, set strict to true and switch off none of its member flags, the sub-check fails when the typecheck script runs tsc with -p or --project pointing at an unchecked tsconfig, and tsconfig files are gate-protected.",
       "adoption": "Fix first: the Expo and Next.js templates already set strict: true; a project without it fixes the reported tsc errors before the check is enabled."
@@ -3976,7 +3976,7 @@
       "evasions": [],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "@ts-ignore and @ts-nocheck are reported and @ts-expect-error is allowed only with a description, so every silenced type error is visible, explained and flagged once it no longer applies.",
       "adoption": "Baseline: existing @ts-ignore comments become described @ts-expect-error comments or go into ESLint bulk suppressions, shrink-only."
@@ -4001,7 +4001,7 @@
       ],
       "decision": "0087",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A global no-restricted-syntax selector reports an object property keyed Content-Type, in any letter case, whose literal value starts with multipart/, because a hand-set header drops the boundary the HTTP client generates for a FormData body.",
       "adoption": "Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions."
@@ -4018,7 +4018,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "When the user switches the active tenant, the app registers its push token again for the new tenant, so notifications follow the current tenant and stop for the previous one.",
       "adoption": "Nothing needed: checked in review."
@@ -4064,7 +4064,7 @@
       ],
       "decision": "0091",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-031.thresholds"],
       "summary": "The mobile test:coverage run uses jest --coverage with collectCoverageFrom, so untested files count, and coverageThreshold floors that are measured at adoption and only move up.",
       "adoption": "Baseline: floors start at the coverage measured at adoption and ratchet upward only."
@@ -4089,7 +4089,7 @@
       ],
       "decision": "0092",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "knip builds the module graph from the Expo entry points and fails on unused files, exports and dependencies, with existing findings held as dated allowlist entries that may only shrink.",
       "adoption": "Allowlist: current knip findings are recorded as dated entries in .cross-stack/allowlists/MOB-032.json that may only shrink."
@@ -4113,7 +4113,7 @@
       ],
       "decision": "0092",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-033.minLines", "rules.MOB-033.minTokens"],
       "summary": "jscpd runs over the mobile TypeScript sources with the committed baseline and --fail-on-new-clones, so any new clone fails while existing ones are paid down; PROC-034 keeps the baseline shrink-only.",
       "adoption": "Baseline: the jscpd baseline is recorded at adoption and kept shrink-only by PROC-034."
@@ -4138,7 +4138,7 @@
       ],
       "decision": "0036",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The Pest security preset scans the application namespace for insecure functions such as eval, exec, shell_exec, system, md5, sha1, uniqid, rand, mt_rand, unserialize, extract and assert, with exceptions only through dated ->ignoring() allowlist entries.",
       "adoption": "Allowlist: ship the exact ->ignoring() list (rand() in factories, echo in seeders and commands), each entry with the rule ID and an expiry date; brownfield hits get dated entries."
@@ -4159,7 +4159,7 @@
       "evasions": ["a write performed inside an index or show action"],
       "decision": "0042",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A route-table test maps every GET and HEAD route to an index, show or allowlisted read-only action, because RFC 9110 defines both methods as safe and browsers, caches and crawlers send them without the user's intent, so a state-changing GET invites request forgery.",
       "adoption": "Allowlist: ship the framework's GET email-verification route and any existing GET logout route as default entries with reasons, and check only application controller actions."
@@ -4180,7 +4180,7 @@
       "evasions": [],
       "decision": "0043",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A custom PHPStan rule fails a FormRequest that does not declare authorize(), which Laravel treats as authorized, and one whose inferred return type is the constant true (return true, return !false, return (bool) 1); a helper returning bool passes, so SEC-004's policy-ability meta-test does the real authorization check.",
       "adoption": "Baseline: existing hits go into the shrink-only PHPStan baseline; new requests cannot add one."
@@ -4206,7 +4206,7 @@
       ],
       "decision": "0043",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-005.publicRoutes"],
       "summary": "A policy-ability meta-test extracts the ability and model of every non-public route from its FormRequest, controller Gate calls, can middleware or attribute, and asserts that the model's policy defines that method; public routes come from a dated allowlist.",
       "adoption": "Allowlist: adopt generates a dated entry (reason plus expiry) for each existing route without a policy, shares the public-route list with SEC-005 and never offers a silent skip."
@@ -4227,7 +4227,7 @@
       "evasions": [],
       "decision": "0043",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-005.authMiddleware", "rules.SEC-005.publicRoutes"],
       "summary": "A route-table test over the resolved middleware stack (global plus gathered route middleware, groups expanded, a non-empty route set asserted) requires the configured authentication middleware on every API route outside the public allowlist, and an unauthenticated request gets 401.",
       "adoption": "Allowlist: the shipped default list holds the framework's public routes (health, sanctum/csrf-cookie, broadcasting/auth) so a fresh install passes; brownfield public routes get dated entries."
@@ -4251,7 +4251,7 @@
       ],
       "decision": "0050",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-005.publicRoutes"],
       "summary": "A route-table test over the resolved middleware stack requires a middleware derived from the framework's ThrottleRequests on every API route without authentication, resolves each named limiter through the RateLimiter and fails on Limit::none() or no limit, with exceptions only through dated allowlist entries.",
       "adoption": "Allowlist: reads the same shipped public-route list as SEC-005, so the framework's own public routes do not fail a fresh install."
@@ -4297,7 +4297,7 @@
       ],
       "decision": "0050",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-008.credentialRoutes", "rules.SEC-008.maxAttemptsPerMinute"],
       "summary": "A test resolves the named limiters on the configured credential routes and asserts that their maximum attempts per minute are at or below the configured cap.",
       "adoption": "Fix first: configure the credential routes at adoption and give any route on the generic API limiter a stricter named limiter."
@@ -4383,7 +4383,7 @@
       ],
       "decision": "0053",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "With debug off, a renderer test raises a generic exception through an API route and asserts a generic body with no exception message, class name or stack trace, in any response format, and with the api-contract module on also a problem-details response.",
       "adoption": "Nothing needed: the kit's central renderer satisfies it; a project renderer that copies exception messages switches to generic details first."
@@ -4407,7 +4407,7 @@
       ],
       "decision": "0047",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A type-aware PHPStan rule fails raw request accessors (all, input, only, except, post, json, collect and magic properties) inside controller write actions, so only validated() or safe() data reaches models.",
       "adoption": "Baseline: existing hits go into the shrink-only PHPStan baseline; new write actions must use validated() or safe()."
@@ -4428,7 +4428,7 @@
       "evasions": ["a model that extends Model directly instead of the base model"],
       "decision": "0047",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-014.baseModel", "rules.SEC-014.serverOwnedFields"],
       "summary": "When the configured base model guards only its key, a test asserts that the server-owned-field strip middleware is in the resolved API group, a creating hook stamps the configured server-owned fields from the authenticated context and the raw-input rule (SEC-013) is enabled, and with the tenancy module also that the hook refuses a foreign tenant id.",
       "adoption": "Nothing needed: a project whose models list their fillable attributes passes, and one that guards only the key gets the strip middleware and the creating hook from the kit."
@@ -4449,7 +4449,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.column", "modules.tenancy.scopeTrait"],
       "summary": "A test walks the migrated schema, maps each table that carries the tenant column to its model and fails when that model lacks the configured tenant-scope trait; by design no allowlist or baseline can excuse a miss.",
       "adoption": "Fix first: by design the tenancy module is adopted only once every tenant table's model carries the trait."
@@ -4470,7 +4470,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.globalTables"],
       "summary": "An inverse schema test fails any migrated table, uploads and device tokens included, that lacks the tenant column and is not in the declared global-table list.",
       "adoption": "Nothing needed: adopt lists the existing shared tables as declared global tables for review."
@@ -4491,7 +4491,7 @@
       "evasions": [],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.subTenantColumns", "modules.tenancy.subTenantTrait"],
       "summary": "A schema-reading test requires every model whose table carries a configured sub-tenant column to use the sub-tenant trait or to appear in the allowlist with a reason and an expiry date.",
       "adoption": "Allowlist: unscoped sub-tenant models get dated entries that name their controller-level mechanism."
@@ -4512,7 +4512,7 @@
       "evasions": ["a dataset entry whose test asserts nothing meaningful"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.tenancy.isolationTestGlobs"],
       "summary": "Set equality between the tenant models found in the migrated schema, the tenant-aware queued classes found by reflection and the datasets of the HTTP and background isolation suites fails when a subject is missing, and incomplete tests fail the run.",
       "adoption": "Nothing needed: adopt seeds the dataset from the schema and reflection, so the suite starts complete."
@@ -4537,7 +4537,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A reflection test evaluates each FormRequest's rules(), splits pipe strings, resolves Rule::exists and class-string forms and fails on a plain exists against a tenant table, while the package suite proves the scoped rule returns 422 for a foreign id.",
       "adoption": "Allowlist: requests whose rules() cannot be evaluated get dated entries until they are refactored."
@@ -4562,7 +4562,7 @@
       ],
       "decision": "0058",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reflection over every concrete queued class (jobs, listeners, mailables, notifications), console command, scheduled event and controller behind an unauthenticated route requires the tenant-aware middleware or trait backed by TenantContext, or #[CrossTenant(reason: '...')]; a blank reason or a comment-only declaration fails.",
       "adoption": "Nothing needed: adopt adds the tenant-aware middleware to existing queued classes or a #[CrossTenant] attribute with a reason; scheduled closures become jobs or commands."
@@ -4583,7 +4583,7 @@
       "evasions": ["a route whose parameters the dataset cannot build"],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A dataset-driven isolation test calls the show, update and delete routes of every tenant model with another tenant's id and asserts 404, so a foreign record's existence is never confirmed.",
       "adoption": "Fix first: the global tenant scope yields 404 before authorization; routes that load records without it are fixed."
@@ -4606,7 +4606,7 @@
       ],
       "decision": "0087",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-022.maxKilobytes", "rules.SEC-022.allowedTypes"],
       "summary": "Reflection over FormRequest rules() requires every file rule to carry max:, content-derived types (mimes or File::types) and extensions:, and rejects svg, image:allow_svg, html and xml.",
       "adoption": "Allowlist: the reflection test has no native baseline, so adopt records existing upload requests as dated entries in .cross-stack/allowlists/SEC-022.json, which only shrink."
@@ -4643,7 +4643,7 @@
       "evasions": [],
       "decision": "0087",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Upload, download and delete abilities check that the caller owns the file or its parent record, which reviewers confirm in the file policies.",
       "adoption": "Nothing needed: checked in review against the file abilities in existing policies."
@@ -4665,7 +4665,7 @@
       ],
       "decision": "0087",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A custom PHPStan rule disallows UploadedFile::store(), storePublicly() and Storage::putFile() on uploads in favour of storeAs() with the validated extension, because a name derived from the sniffed type can turn an upload into an executable file.",
       "adoption": "Baseline: existing calls go into the shrink-only PHPStan baseline."
@@ -4682,7 +4682,7 @@
       "evasions": [],
       "decision": "0087",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Columns, requests and responses carry attachment ids, and private files are reached only through signed URLs generated at read time with a short lifetime, which reviewers confirm.",
       "adoption": "Nothing needed: checked in review; stored URLs are migrated to ids when the owning feature is next changed."
@@ -4702,7 +4702,7 @@
       "evasions": ["personal data under a key missing from the redaction list"],
       "decision": "0088",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-027.redactKeys", "rules.SEC-027.personalDataKeys"],
       "summary": "The kit's log processor redacts the configured credential keys (authorization, token, password, cookie) and personal-data keys, and a test asserts that every configured log channel carries it.",
       "adoption": "Nothing needed: adopt adds the processor to every configured channel."
@@ -4739,7 +4739,7 @@
       "evasions": [],
       "decision": "0051",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The readiness route carries the operator ability and the public liveness route exposes no dependency or infrastructure detail, which reviewers confirm.",
       "adoption": "Nothing needed: checked in review against the readiness route's ability."
@@ -4756,7 +4756,7 @@
       "evasions": [],
       "decision": "0056",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Once broadcasting is adopted by ADR, every channel is private with an authorization callback, and with the tenancy module each callback checks the tenant, which reviewers confirm in the channel definitions.",
       "adoption": "Nothing needed: checked in review against the channel authorization callbacks."
@@ -4776,7 +4776,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-031.serverPaths"],
       "profiles": ["next"],
       "summary": "A web architecture test parses every module under the configured server paths and requires an import of server-only, so the framework build fails when client code reaches one.",
@@ -4800,7 +4800,7 @@
       ],
       "decision": "0069",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.WEB-011.envModules", "modules.bff-auth.apiUrlKey"],
       "profiles": ["next"],
       "summary": "A test imports the typed env module and asserts that the API base URL key exists only in the server schema and that no public-prefixed key matching the API pattern exists in the schema or the example env file.",
@@ -4818,7 +4818,7 @@
       "evasions": [],
       "decision": "0070",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "The Next.js proxy only redirects signed-out visitors by cookie presence, while session validation and authorization happen in Route Handlers, Server Actions and the backend, which reviewers confirm.",
@@ -4845,7 +4845,7 @@
       ],
       "decision": "0070",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-034.sessionHelper", "rules.SEC-034.wrappers"],
       "profiles": ["next"],
       "summary": "The cross-stack/route-handler-session rule flags every exported HTTP method handler in a route file and every exported or inline Server Action that neither calls the configured session helper nor is wrapped by a configured wrapper, and the backend makes the authorization decision.",
@@ -4867,7 +4867,7 @@
       "evasions": [],
       "decision": "0074",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.allowedOrigins"],
       "profiles": ["next"],
       "summary": "Unit tests of the shipped assertSameOrigin helper pass only Sec-Fetch-Site same-origin or an exact Origin match and expect 403 before any work for same-site, cross-site, sibling-subdomain, missing and null origins.",
@@ -4892,7 +4892,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.cookieSlug"],
       "profiles": ["next"],
       "summary": "A table-driven test over the session module's set, clear and hint writers asserts every Set-Cookie attribute, including an explicit SameSite of Lax or Strict rather than the browser default, clears written as Max-Age=0 with the same attributes and a hint that holds a constant marker.",
@@ -4913,7 +4913,7 @@
       "evasions": ["a cookie name assembled at runtime from unrelated fragments"],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.sessionModule"],
       "profiles": ["next"],
       "summary": "The cross-stack/session-cookie-single-writer rule flags cookie set and delete calls that name a session cookie, and imports of the session cookie-name constants, outside the session module and its tests.",
@@ -4935,7 +4935,7 @@
       "evasions": ["a new auth handler that relays the upstream body verbatim"],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.tokenPath"],
       "profiles": ["next"],
       "summary": "A login route test with a mocked upstream asserts that the response JSON holds no token at any path and that Set-Cookie carries it HttpOnly.",
@@ -4956,7 +4956,7 @@
       "evasions": ["a second logout path that bypasses the shared clearing helper"],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "Route tests with a mocked upstream assert Max-Age=0 for every token cookie and the hint after a logout that succeeds, gets a 500 or hits a network error, and after the catch-all relays a 401.",
@@ -4977,7 +4977,7 @@
       "evasions": ["a new presence check written outside the shared predicates"],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "One table of cookie states runs against every presence predicate, request-side and server-headers-side, which must return the same answer and treat an empty token cookie as signed out.",
@@ -5001,7 +5001,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [
         "modules.bff-auth.requestHeaders",
         "modules.bff-auth.responseHeaders",
@@ -5029,7 +5029,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.apiBasePath"],
       "profiles": ["next"],
       "summary": "The proxy builds the upstream URL from the decoded segment array, rejects empty, dot, dot-dot and slash, backslash or control-character segments, re-encodes each one and asserts origin and base-path prefix; tests for traversal, double encoding and query or fragment injection expect 400 before any fetch.",
@@ -5050,7 +5050,7 @@
       "evasions": [],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "A web architecture test lists every route file in the app directory and fails any that is not the catch-all proxy, an auth route or a dated allowlist entry; Server Actions are browser-invokable too and are held by SEC-034, not by this list.",
@@ -5074,7 +5074,7 @@
       ],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-031.serverPaths"],
       "profiles": ["next"],
       "summary": "The cross-stack/no-direct-api-origin rule flags absolute http(s) URL literals passed to fetch, HTTP-client factories, EventSource and WebSocket outside the configured server paths.",
@@ -5097,7 +5097,7 @@
       "evasions": [],
       "decision": "0071",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "The kit's floor check reads the next version resolved in the lockfile and fails below the minimum patched version kept in one data file that docs and templates also read, because audit tools can lag the framework's own advisories.",
@@ -5124,7 +5124,7 @@
       ],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-046.storageModule"],
       "summary": "The scope-aware cross-stack/no-web-storage rule flags the localStorage and sessionStorage globals and member access to them outside the storage module, and sessionStorage everywhere; the module's keys are typed, never hold credentials and are cleared at session end.",
       "adoption": "Allowlist: no ESLint bulk suppressions for this rule; each existing use needs a dated allowlist entry linked to a migration ADR."
@@ -5149,7 +5149,7 @@
       ],
       "decision": "0086",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The cross-stack/no-raw-html rule flags the dangerouslySetInnerHTML key in JSX attributes, spread objects and createElement props, innerHTML and outerHTML assignments and insertAdjacentHTML and document.write calls; rich text renders only through one ADR-approved sanitizing wrapper.",
       "adoption": "Allowlist: existing sinks get dated entries until they move behind the sanitizing wrapper."
@@ -5164,12 +5164,12 @@
       "targetEnforcement": "REVIEW",
       "gate": null,
       "evasions": [],
-      "decision": "0106",
+      "decision": "0108",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
-      "summary": "Because the Chrome DevTools MCP companion can see cookies and request headers, reviewers verify it is only aimed at local or development environments signed in with test accounts, and that nothing it captures leaves the machine.",
-      "adoption": "Nothing needed: adopt states it when it offers the companion, and it is checked in review."
+      "summary": "Browser tools can read page content and browser state, including cookies and request data. Reviewers verify they are used only on local or development environments with test accounts, and that nothing observed leaves the machine.",
+      "adoption": "Nothing needed: adopt states the limits for both browser companions, and review checks them."
     },
     {
       "id": "SEC-049",
@@ -5184,7 +5184,7 @@
       "evasions": [],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "expo-secure-store is the only credential store and the storage module's keys never hold tokens or other credentials, which reviewers confirm, because a key-name scan misses renamed keys and flags legitimate secure-store writes.",
       "adoption": "Nothing needed: checked in review; reviewers move any credential found in general storage behind the secure-store wrapper."
@@ -5205,7 +5205,7 @@
       "evasions": [],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-050.storageModule"],
       "summary": "A dependency-cruiser rule over the resolved import graph (static, dynamic and require) lets only the storage module import @react-native-async-storage/async-storage, expo-sqlite/kv-store, expo-sqlite/localStorage/install and react-native-mmkv.",
       "adoption": "Baseline: existing imports go into the dependency-cruiser known-violations file (shrink-only under check-baselines), with a codemod to the storage module."
@@ -5230,7 +5230,7 @@
       ],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-051.namespace"],
       "summary": "The storage module's get, set and remove accept only the key union of the keys module, whose values match the configured app namespace, and a global no-restricted-syntax selector fails storage calls that pass a string or template literal instead of a declared key.",
       "adoption": "Baseline: existing literal keys go into the shrink-only ESLint bulk suppressions."
@@ -5254,7 +5254,7 @@
       ],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-052.credentialModule", "rules.SEC-052.consumers"],
       "summary": "A dependency-cruiser rule lets only the credential wrapper import the secure-store library, and only the API client and the auth context import that wrapper; whether an allowed caller keeps the token out of state and context values is checked in review (SEC-049).",
       "adoption": "Baseline: existing imports go into the dependency-cruiser known-violations file, which only shrinks."
@@ -5275,7 +5275,7 @@
       "evasions": ["a second HTTP client instance without the interceptor"],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.MOB-013.clientModule"],
       "summary": "A contract test shipped with the API client puts a token in the mocked secure store and asserts that a request carries Authorization: Bearer, an Accept listing application/json and application/problem+json, the active locale and no cookie credentials.",
       "adoption": "Fix first: the kit's API client and its contract test ship with the mobile track, and a project keeping its own client adapts it to the contract test."
@@ -5295,7 +5295,7 @@
       "evasions": ["a second HTTP client instance without the interceptor"],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-054.loginRoute"],
       "summary": "A contract test asserts that a 401 on a protected request clears the secure-store token and calls the handler once, while a 401 on the exactly matched login route does neither.",
       "adoption": "Fix first: the kit's interceptor and its contract test ship with the mobile track, and a project keeping its own client adapts it to the contract test."
@@ -5333,7 +5333,7 @@
       "evasions": [],
       "decision": "0083",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Sign-out and a 401 clear everything the session left behind, including the push registration that would otherwise keep delivering notifications to a signed-out device, which reviewers confirm.",
       "adoption": "Nothing needed: checked in review against the sign-out path."
@@ -5353,7 +5353,7 @@
       "evasions": ["a credential file under a name missing from the pattern list"],
       "decision": "0084",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-057.patterns"],
       "summary": "A check runs git ls-files and git check-ignore against a configurable list of credential file patterns (keystores, .p8 and .p12 keys, build-service and service-account JSON, platform service config) and allows only *.example placeholders.",
       "adoption": "Fix first: untrack and rotate any committed credential file before adopting."
@@ -5371,7 +5371,7 @@
       "evasions": [],
       "decision": "0012",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Web and mobile clients may hide or disable controls a user cannot use, but the backend authorizes every action, which reviewers confirm.",
       "adoption": "Nothing needed: checked in review."
@@ -5388,7 +5388,7 @@
       "evasions": [],
       "decision": "0073",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "The cookie max-age is set below the token expiration and both values are documented side by side in each app's example env file, so a user never looks signed in while every call fails.",
@@ -5429,7 +5429,7 @@
       "evasions": [],
       "decision": "0085",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Deployments receive secrets from the platform at runtime, and no image, bundle or build artifact contains one, which reviewers confirm.",
       "adoption": "Nothing needed: checked in review."
@@ -5454,7 +5454,7 @@
       ],
       "decision": "0085",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-009.qualityJob"],
       "summary": "A workflow check fails when a quality job, its reusable workflow or the workflow-level env references the secrets context or passes secrets: inherit, so builds, tests and the mobile bundle export run without credentials.",
       "adoption": "Fix first: move secret-dependent steps out of the quality job into deploy jobs that need them."
@@ -5478,7 +5478,7 @@
       ],
       "decision": "0084",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-063.config"],
       "summary": "A CI step runs a checksum-verified, pinned gitleaks over the commit range with the project config and pre-commit runs it on staged changes, covering the source files of every track, so no separate per-track credential regex scan ships; violation fixtures use synthetic secret-shaped strings that match no real provider format.",
       "adoption": "Fix first: findings in history are rotated, then recorded in the scanner's ignore file under code-owner review."
@@ -5503,7 +5503,7 @@
       ],
       "decision": "0085",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [
         "trackRoots.<track>",
         "rules.SEC-064.keyPatterns",
@@ -5531,7 +5531,7 @@
       ],
       "decision": "0032",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.SEC-065.scanPaths"],
       "summary": "A token scan of workflow uses: references (40-hex SHA required), .mcp.json and package scripts (exact versions, no @latest) and shell scripts (no clone or download of an unpinned ref) fails on any moving reference that is not allowlisted.",
       "adoption": "Allowlist: adopt offers automated SHA pinning of existing tag-pinned actions, and anything left gets a dated allowlist entry rather than a hard failure."
@@ -5576,7 +5576,7 @@
       ],
       "decision": "0074",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.bff-auth.originHelper"],
       "profiles": ["next"],
       "summary": "The cross-stack/same-origin-mutations rule fails every exported POST, PUT, PATCH and DELETE handler in a route file that does not call the shared assertSameOrigin helper before doing any work.",
@@ -5599,7 +5599,7 @@
       "evasions": ["an allowedOrigins value computed at runtime"],
       "decision": "0074",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "A config check reads experimental.serverActions.allowedOrigins and fails on \"null\" or any entry containing *, unless a dated allowlist entry records why, because a wildcard admits sibling tenant subdomains.",
@@ -5624,7 +5624,7 @@
       ],
       "decision": "0057",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A shipped feature test has a non-platform user create a tenant-scoped record with another tenant's id and asserts that the tenant trait's creating hook throws instead of saving it.",
       "adoption": "Nothing needed: the behaviour ships with the tenant trait and the test ships complete."
@@ -5647,7 +5647,7 @@
       ],
       "decision": "0074",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "The cross-stack/no-mutating-get-handler rule fails exported GET and HEAD handlers in route files that set or delete cookies or call an upstream method other than GET or HEAD, because SameSite=Lax cookies ride top-level navigations.",
@@ -5672,7 +5672,7 @@
       ],
       "decision": "0039",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The check asserts that every mandated test of the authentication and authorization suites exists and reads PHP tokens, ignoring comments and strings, to fail on ->todo(, ->skip(, markTestIncomplete( and markTestSkipped( in those suites, with waivers only as dated allowlist entries; BE-107 owns the runner flags.",
       "adoption": "Allowlist: a suite that cannot run yet needs a dated allowlist waiver; failOnSkipped stays off so environment skips elsewhere keep working."
@@ -5692,7 +5692,7 @@
       "evasions": [],
       "decision": "0070",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "A web architecture test imports the proxy module and fails when it exports runtime, because the Next.js 16 proxy runs only on the Node.js runtime and a runtime export is left over from the edge middleware model.",
@@ -5718,14 +5718,14 @@
       ],
       "decision": "0106",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A doctor check requires chrome-devtools-mcp to come from the Standard's pinned marketplace entry, which runs an exact version with --isolated, --no-usage-statistics, --no-performance-crux and --redact-network-headers, with no second copy beside it and no committed enabledMcpjsonServers or enableAllProjectMcpServers.",
       "adoption": "Opt-in: adopt offers the companion and installs it at project scope when the user agrees; headless and CI runs disable the server."
     },
     {
       "id": "SEC-074",
-      "title": "Ask before the browser companion opens a non-development site, runs a page script or uploads a file",
+      "title": "Ask before browser companions leave development hosts or run unsafe actions",
       "track": "shared",
       "tier": 2,
       "module": null,
@@ -5734,19 +5734,19 @@
       "gate": {
         "kind": "hook",
         "id": "PreToolUse",
-        "discriminator": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page"
+        "discriminator": "mcp__plugin_playwright-mcp_playwright__browser_navigate"
       },
       "evasions": [
-        "a page reached from an allowed page by a link or redirect, which opens no new page through the tool",
+        "a page reached from an allowed page by a link or redirect, or a subresource requested by that page",
         "the bypassPermissions mode skips the ask decision",
         "a browser MCP server under another name than the companion's",
         "the project opts out or switches the hooks off (the opt-out line, \"disabled\": true in the manifest, CROSS_STACK_STANDARD_DISABLE, or the plugin disabled in Claude Code settings), or Node.js is missing, so no hook runs"
       ],
       "decision": "0106",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["hooks.preToolUse.browserHosts"],
-      "summary": "On every Chrome DevTools MCP action the PreToolUse hook asks unless the explicit URL opened, or the session's known current page, is http(s) on a local or browserHosts host; back, forward, page scripts, uploads and unknown tools always ask, and every call is denied without an explicit true in the consent record.",
+      "summary": "On every browser MCP action the PreToolUse hook asks unless the explicit URL opened, or the session's known current page, is http(s) on a local or browserHosts host; back navigation, page scripts, Playwright server-side code, uploads, request details and unknown tools always ask, and every call is denied without an explicit true in the consent record.",
       "adoption": "Nothing needed: development hosts beyond the built-in ones go in hooks.preToolUse.browserHosts."
     },
     {
@@ -5769,7 +5769,7 @@
       ],
       "decision": "0106",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Every Figma MCP companion tool that is not a known read (anything that can create, edit or upload to a Figma file) makes the PreToolUse hook ask the user first; reads such as get_design_context and get_metadata pass, and every call is denied when the project declined the companion.",
       "adoption": "Nothing needed: reading designs asks nothing."
@@ -5794,7 +5794,7 @@
       ],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A custom PHPStan rule requires the message arguments of abort(), Response::deny(), the response helper and problem-detail title and detail to be __() or trans() calls, so every message the API returns can be localized.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -5814,7 +5814,7 @@
       "evasions": [],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A reflection test over app/ requires every class that uses the Notifiable trait to implement HasLocalePreference, so mail and notifications render in the recipient's stored locale rather than the request's.",
       "adoption": "Allowlist: dated entries per model until its locale preference is stored."
@@ -5835,7 +5835,7 @@
       "evasions": [],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "With two or more configured locales, a test resolves the HTTP kernel, gathers the global and route middleware of every api/ route (asserting the set is not empty) and fails when the locale middleware is missing or runs after authentication, throttling or SubstituteBindings, so 401, 404 and 429 messages are localized too.",
       "adoption": "Nothing needed: the kit's bootstrap template prepends the locale middleware to the api group."
@@ -5858,7 +5858,7 @@
       ],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "A custom PHPStan rule reports setLocale() calls outside the locale middleware and the helpers that switch the locale for a block and restore it, so no request value changes the locale without passing the configured-locale allowlist.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -5878,7 +5878,7 @@
       "evasions": [],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "A test compares the backend's single supported-locales config list with the locales in .cross-stack/standard.json and fails on any difference, so the API accepts exactly the configured locales and falls back to the default for any other.",
       "adoption": "Nothing needed: adopt writes the config list from the manifest."
@@ -5899,7 +5899,7 @@
       "evasions": [],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales", "modules.i18n.parityIgnore"],
       "summary": "A test loads lang/<locale>/*.php and lang/<locale>.json for every configured locale and fails on a missing or extra key, an empty value, a :placeholder mismatch or a value identical to the source locale's without a dated allowlist entry.",
       "adoption": "Allowlist: dated entries for framework strings a brownfield locale still lacks."
@@ -5923,7 +5923,7 @@
       ],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "A custom PHPStan rule resolves literal keys passed to __(), trans(), trans_choice() and Lang::get() against the group and JSON lang files of each configured locale, so a missing key never renders as its raw name.",
       "adoption": "Baseline: existing findings go into the PHPStan baseline, which only shrinks."
@@ -5946,7 +5946,7 @@
       ],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "A reflection test reads each FormRequest's rules() and requires an attributes() entry or a validation.attributes lang entry for every field in every configured locale, so validation messages never show raw field names.",
       "adoption": "Allowlist: dated entries per FormRequest until its attribute names are translated."
@@ -5970,7 +5970,7 @@
       ],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "When the i18n module is off, a test fails on a second locale directory under lang/, setLocale() calls or a locale middleware in app/ and bootstrap/, and *_<locale> columns in the migrated schema, so a project wires localization completely or not at all.",
       "adoption": "Fix first: remove leftover locale fragments or switch the module on; a project that published only the default locale's lang files already passes."
@@ -5987,7 +5987,7 @@
       "evasions": [],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers check new locale values, because the parity gate catches only missing, empty and source-identical values, not machine output or filler committed to make a check pass.",
       "adoption": "Nothing needed: checked in review."
@@ -6029,7 +6029,7 @@
       ],
       "decision": "0081",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "cross-stack/no-physical-direction splits class strings into utilities, strips variant, important and negative prefixes and reports physical margin, padding, inset, text-align, rounding, border, float, clear and scroll utilities, plus the deprecated start and end inset names, whenever a configured locale is right-to-left.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6054,7 +6054,7 @@
       ],
       "decision": "0081",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "cross-stack/no-physical-direction reads inline styles, same-file style objects and React Native style sheets and reports physical side properties, shorthands, corner radii and left or right textAlign and float values whenever a configured locale is right-to-left.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6071,7 +6071,7 @@
       "evasions": [],
       "decision": "0081",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Where a value must stay physical, the same place carries its right-to-left counterpart (the rtl: variant on the web, a direction check on mobile) and a described disable comment, and elements such as back chevrons or edge slide-ins mirror with the direction.",
       "adoption": "Nothing needed: checked in review."
@@ -6096,7 +6096,7 @@
       ],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The installed i18n library's type augmentation is generated from the source locale's messages, so the type check rejects an unknown static namespace or key, and the kit's check-typed-keys sub-check fails when the augmentation is missing or out of date.",
       "adoption": "Nothing needed: adopt generates the augmentation; parity gaps are handled by the parity rules."
@@ -6120,7 +6120,7 @@
       ],
       "decision": "0078",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.i18n.allowedStrings"],
       "summary": "react/jsx-no-literals with noStrings and a project allowlist reports JSX text and string attributes in web and mobile components, tests and fixtures excepted, so every visible string passes through the message files that parity checks.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6140,7 +6140,7 @@
       "evasions": [],
       "decision": "0078",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "cross-stack/no-locale-script-literal matches string, template and JSX text literals in JavaScript and TypeScript source, test files excepted, against the Unicode scripts of the configured non-source locales, presentation forms included, so right-to-left and other translated text lives only in message files.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6164,7 +6164,7 @@
       ],
       "decision": "0078",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales", "modules.i18n.localizedFieldHelper"],
       "summary": "cross-stack/no-locale-branching reports conditional, logical, if and switch tests that compare a value with a configured locale literal outside the localized-field helper, so copy comes from message files rather than hard-coded locale branches.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6185,7 +6185,7 @@
       "evasions": ["presentation fields named without the _label suffix", "keys built at run time"],
       "decision": "0078",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "cross-stack/no-label-field-read reports reads of properties ending in _label through dot access, literal computed keys and destructuring in web and mobile code, so enum and status labels render from the client's message files.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6205,7 +6205,7 @@
       "evasions": ["inputs outside the test table", "a second helper the test does not import"],
       "decision": "0078",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales", "modules.i18n.defaultLocale"],
       "summary": "A table-driven test over the configured locales asserts that the helper returns the current locale's value, then the default locale's, then the others', skipping empty values.",
       "adoption": "Nothing needed: the kit ships the helper and its test."
@@ -6225,7 +6225,7 @@
       "evasions": ["a second routing configuration the test does not import"],
       "decision": "0079",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales", "modules.i18n.defaultLocale", "modules.i18n.localeCookie"],
       "profiles": ["next"],
       "summary": "A test imports the routing configuration and asserts localePrefix always, localeDetection false, locales and defaultLocale equal to the project configuration and a locale cookie name other than the library default, so the URL alone decides the locale.",
@@ -6246,7 +6246,7 @@
       "evasions": ["a request configuration that does not use the exported constant"],
       "decision": "0079",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.i18n.timeZone"],
       "profiles": ["next"],
       "summary": "A test asserts that the time zone the request configuration exports is a valid IANA zone equal to the configured business time zone, so server and client render dates identically.",
@@ -6271,7 +6271,7 @@
       ],
       "decision": "0079",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "A cross-stack/module-boundary entry reports static, dynamic, require and export-from imports of next/link and of useRouter, usePathname, redirect and permanentRedirect from next/navigation outside the i18n navigation module, so every link and redirect keeps the locale prefix.",
@@ -6298,7 +6298,7 @@
       ],
       "decision": "0079",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "A global no-restricted-syntax selector reports template literals whose text starts with a slash followed by the locale identifier anywhere in web code, because the locale-aware wrappers add the prefix, the navigation module included.",
@@ -6319,7 +6319,7 @@
       "evasions": ["pathname splitting outside the helper"],
       "decision": "0079",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales", "modules.i18n.defaultLocale"],
       "profiles": ["next"],
       "summary": "A test feeds the helper every configured locale, region and script subtags included, plus unknown segments, and asserts that only configured locales are returned and anything else yields the default.",
@@ -6340,7 +6340,7 @@
       "evasions": [],
       "decision": "0079",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "An architecture test lists the page files under the app directory and fails on any outside the locale segment, framework root files excepted, so no screen is reachable without a locale.",
@@ -6364,7 +6364,7 @@
       ],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "profiles": ["next"],
       "summary": "cross-stack/html-lang-dir requires the root layout's html element to bind lang and dir to expressions, with the direction taken from the hard-coded right-to-left locale list, so layout and assistive technology follow the active locale.",
@@ -6389,7 +6389,7 @@
       ],
       "decision": "0082",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.i18n.languageModule"],
       "summary": "cross-stack/confine-api confines I18nManager.forceRTL, allowRTL and swapLeftAndRightInRTL, in member, destructured, namespace and require forms, and reload calls to the configured language utility, which persists the choice, applies the direction and reloads behind a reload-loop guard.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6410,7 +6410,7 @@
       "evasions": [],
       "decision": "0082",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "A config check evaluates the resolved app config, dynamic config files included, and fails when the expo-localization plugin's supportedLocales misses a configured locale or supportsRTL or forcesRTL is true, since on SDK 57 those static options override the in-app language choice.",
       "adoption": "Nothing needed: adopt writes supportedLocales from the manifest."
@@ -6432,7 +6432,7 @@
       "evasions": ["keys cast to a plain string or a looser type", "keys built at run time"],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The type check runs with the i18n library's typed resources generated from the source locale's messages, so an unknown static key fails compilation, and the kit's check-typed-keys sub-check fails when the typed resources are missing or out of date.",
       "adoption": "Nothing needed: adopt generates the typed resources."
@@ -6471,7 +6471,7 @@
       "evasions": [],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "The parity checker flattens each locale's message files and compares key sets with the source locale in both directions, grouping plural forms under their base key so a locale with other plural categories is not reported as missing keys.",
       "adoption": "Allowlist: dated entries for keys a brownfield locale still lacks."
@@ -6493,7 +6493,7 @@
       "evasions": [],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "The parity checker fails on any message value in any configured locale that is empty after trimming, because an empty string renders blank UI instead of falling back.",
       "adoption": "Allowlist: dated entries for values a brownfield locale still lacks."
@@ -6515,7 +6515,7 @@
       "evasions": [],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales", "modules.i18n.parityIgnore"],
       "summary": "The parity checker compares each non-source value with the source value after normalizing whitespace and fails on equality unless the key has a dated allowlist entry or matches a configured ignore pattern such as a placeholder-only value.",
       "adoption": "Allowlist: dated entries for intentional copies such as brand names and units."
@@ -6537,7 +6537,7 @@
       "evasions": [],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "The parity checker parses messages as ICU on the web and as i18next interpolation on mobile, including unescaped, formatted and nesting forms, and compares placeholder names per key, using the union across plural forms and allowing count to be absent from zero, one and two forms.",
       "adoption": "Allowlist: dated entries for mismatches being fixed in a brownfield locale."
@@ -6561,7 +6561,7 @@
       ],
       "decision": "0078",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales", "modules.i18n.localizedFieldHelper"],
       "summary": "cross-stack/localized-field-access reports dot, computed-literal, optional-chain and destructuring access to keys ending in _<locale> for the configured locales outside the helper module, with form and mutation code exempt by override because writes address each locale field on purpose.",
       "adoption": "Baseline: existing reads go into ESLint bulk suppressions, shrink-only; unrelated names that end in a locale suffix get dated allowlist entries."
@@ -6578,7 +6578,7 @@
       "evasions": [],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "For failures a screen expects, clients render their own message-file copy selected by the RFC 9457 problem type and show the server's localized detail only when no local copy exists.",
       "adoption": "Nothing needed: checked in review."
@@ -6599,7 +6599,7 @@
       "evasions": ["a second HTTP client that bypasses the proxy or the shared client"],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A template test drives the BFF proxy, or the SPA API client, with a browser Accept-Language that differs from the active locale and asserts the upstream request carries the active locale, so server messages match the screen.",
       "adoption": "Nothing needed: the kit's proxy and client set the header."
@@ -6624,7 +6624,7 @@
       ],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.i18n.languageModule", "modules.i18n.deviceLocalePackages"],
       "summary": "cross-stack/no-locale-auto-detection reports navigator.language and navigator.languages reads, device-locale getters of the configured localization packages and browser language-detector imports outside the language module, so the URL, the per-app system language or the persisted in-app choice decides the language.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines."
@@ -6641,7 +6641,7 @@
       "evasions": [],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Reviewers reject a shortcut that is safe only because a product choice keeps a locale away from a screen, unless a comment where the shortcut lives names that dependency.",
       "adoption": "Nothing needed: checked in review."
@@ -6663,7 +6663,7 @@
       "evasions": [],
       "decision": "0080",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "The parity checker groups plural keys by base key and requires each locale's categories to equal new Intl.PluralRules(locale).resolvedOptions().pluralCategories, applying the same comparison to ICU plural selectors on the web, so correct Arabic plurals pass and missing forms fail.",
       "adoption": "Allowlist: dated entries for plural keys being completed in a brownfield locale."
@@ -6683,7 +6683,7 @@
       "evasions": ["endpoints the test does not exercise", "messages built without the translator"],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "A feature test sends a request that fails validation with each configured Accept-Language and with an unlisted one and asserts the message language and the fallback, so the locale middleware is proven to work and not merely registered.",
       "adoption": "Nothing needed: the kit ships the test against its own validation route."
@@ -6703,7 +6703,7 @@
       "evasions": ["direction computed elsewhere without the shared helper"],
       "decision": "0077",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["locales"],
       "summary": "A unit test derives the direction of every configured locale, region and script subtags included, from the shared right-to-left locale list and asserts the result, because Intl.Locale getTextInfo() is missing on Node.js 22 and in some supported browsers.",
       "adoption": "Nothing needed: the kit ships the list, the helper and the test."
@@ -6723,7 +6723,7 @@
       "evasions": [],
       "decision": "0062",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-001.uiPath", "modules.api-contract.webTypesPath"],
       "summary": "No module in the UI primitive folder imports, directly or transitively, from a feature folder or from the generated API contract, so primitives stay reusable and free of domain shapes.",
       "adoption": "Baseline: existing edges go into the dependency-cruiser known-violations baseline, which PROC-027 keeps shrink-only."
@@ -6743,7 +6743,7 @@
       "evasions": [],
       "decision": "0065",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-001.uiPath", "rules.UI-002.i18nLibrary"],
       "summary": "No module in the UI primitive folder imports the configured i18n library, any of its subpaths or a project module that reaches it, which keeps translation in the calling feature and passes user-facing strings to primitives as props.",
       "adoption": "Baseline: existing edges go into the dependency-cruiser known-violations baseline, which PROC-027 keeps shrink-only."
@@ -6767,7 +6767,7 @@
       ],
       "decision": "0066",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-003.tokenSources"],
       "summary": "Class strings, style objects, SVG props and string literals in web and mobile source name colors only through design tokens, with no hex, rgb(), hsl(), oklch(), color() or named color values outside the configured token source.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -6787,7 +6787,7 @@
       "evasions": ["a z-index declared in a CSS file", "a class string assembled at run time"],
       "decision": "0065",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-004.ladder"],
       "summary": "Stacking order comes only from the z-index token ladder: arbitrary z-[n] classes, [z-index:n] properties, numeric z utilities the theme has removed and numeric zIndex style values are rejected.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -6812,7 +6812,7 @@
       ],
       "decision": "0066",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["stack.styling.use"],
       "summary": "Source files import no .scss, .sass, .less or .styl stylesheet and no CSS-in-JS module outside the styling system declared in the stack table, and render no <style jsx> block, which Next.js supports with no dependency to detect; a competing styling library in the manifest is PROC-007's concern.",
       "adoption": "Baseline: existing preprocessor or CSS-in-JS imports go into ESLint bulk suppressions (shrink-only) while a declared stack migration removes them."
@@ -6861,7 +6861,7 @@
       ],
       "decision": "0066",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-007.tokenSource", "rules.UI-007.cssGlobs"],
       "summary": "Custom properties declared outside the token source's theme block are pure var() aliases of theme tokens, so every design value has a single definition.",
       "adoption": "Allowlist: existing declarations outside the token source get dated entries and move into the source over time."
@@ -6884,7 +6884,7 @@
       ],
       "decision": "0066",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-008.chartTokenModule"],
       "summary": "String and template literals containing var(--color-...) appear only in the configured chart-token module, so charts and SVGs take their colors from one token mapping.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -6907,7 +6907,7 @@
       ],
       "decision": "0066",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A var(--token) reference in string or template literals carries no fallback value, so a missing token fails visibly instead of silently rendering a hard-coded color.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -6948,7 +6948,7 @@
       "evasions": [],
       "decision": "0065",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Web and mobile screens show loading, error and empty states through the shared skeleton, error-state and empty-state primitives rather than hand-rolled per-page blocks, so request states look and behave the same everywhere.",
       "adoption": "Nothing needed: checked in review as screens are touched."
@@ -6988,12 +6988,12 @@
       "targetEnforcement": "REVIEW",
       "gate": null,
       "evasions": [],
-      "decision": "0106",
+      "decision": "0108",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
-      "summary": "With the browser-check module on, each changed screen is opened with the Chrome DevTools MCP companion against a local or development environment and checked for rendering, console errors and failed requests before UI work is reported done.",
-      "adoption": "Nothing needed: applies to new UI work once the companion is installed and the module is on."
+      "summary": "With the browser-check module on, use the Playwright MCP companion to inspect each changed screen against a local or development environment for rendering and console errors; use Chrome DevTools MCP for advanced network and performance diagnostics when needed.",
+      "adoption": "Nothing needed: applies to new UI work once a browser companion is installed and the module is on."
     },
     {
       "id": "UI-014",
@@ -7014,7 +7014,7 @@
       ],
       "decision": "0076",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-014.primitives", "rules.UI-014.extraSources"],
       "summary": "React Native Text and TextInput, in named, namespace, default-member and require forms, through Animated.Text and Animated.createAnimatedComponent(TextInput), plus TextInput from configured extra sources, are referenced only in the configured primitive files, so all text renders through the text primitives.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -7084,7 +7084,7 @@
       ],
       "decision": "0066",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-017.colorModule"],
       "summary": "Each palette in the gate-protected color-token module is declared with satisfies against one shared palette interface, which the kit's check-typed-keys sub-check asserts, so a missing or extra key fails the type check.",
       "adoption": "Fix first: an existing palette file adds the satisfies annotation once; the kit's token module ships with it."
@@ -7101,7 +7101,7 @@
       "evasions": [],
       "decision": "0046",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The client maps each semantic state the API emits to a color token in one module per domain, and screens import that mapping rather than choosing colors inline.",
       "adoption": "Nothing needed: checked in review as screens are touched."
@@ -7124,7 +7124,7 @@
       ],
       "decision": "0065",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-019.touchables"],
       "summary": "Every element on the configured touchable list, including Pressable, the Touchable components, gesture-handler buttons and registered wrappers, carries accessibilityRole or role, and a prop spread passes only for a registered wrapper that sets the role.",
       "adoption": "Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -7141,7 +7141,7 @@
       "evasions": [],
       "decision": "0065",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.UI-020.minTouchTarget"],
       "summary": "Icon-only controls carry an accessibility label, selectable and disabled controls expose their state to assistive technology, and touch targets meet the minimum touch-target size token.",
       "adoption": "Nothing needed: checked in review as controls are touched."
@@ -7158,7 +7158,7 @@
       "evasions": [],
       "decision": "0106",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "With the design module on, UI changes go through the impeccable companion's audit, critique and polish commands against the project's own design tokens before they are reported done, and its new-work or redesign modes are never run on an existing product.",
       "adoption": "Nothing needed: applies to new UI work once the companion is installed and the module is on."
@@ -7183,7 +7183,7 @@
       ],
       "decision": "0106",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "With the design module on, doctor checks that impeccable comes from the Standard's marketplace entry, pinned to a commit and loading its skill and agents without its hooks, that no second copy is installed or copied in beside it, and reports the engine download and the update-check and telemetry switches.",
       "adoption": "Opt-in: adopt offers the companion and installs it at project scope when the user agrees."
@@ -7205,7 +7205,7 @@
       "evasions": [],
       "decision": "0023",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["trackRoots.<track>"],
       "summary": "The project records its tracks, tier, modules and locales in .cross-stack/standard.json, which validates against the published schema and names a track root under trackRoots for every Laravel, web or mobile manifest in the repository.",
       "adoption": "Nothing needed: adopt writes the manifest with a track root for every detected manifest, so the check passes from the first run."
@@ -7230,7 +7230,7 @@
       ],
       "decision": "0008",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.PROC-002.triggers", "decisions.<name>"],
       "summary": "When at least two of the declared tier triggers hold (multi-tenant, more than one developer, long-lived; multi-tenant is implied by the tenancy module), the manifest declares tier 2 or references, under decisions, the project decision record that gives the reason for staying at tier 1.",
       "adoption": "Nothing needed: adopt asks for the triggers and records tier 2, or writes the decision record that declines it and references it from the manifest."
@@ -7255,7 +7255,7 @@
       ],
       "decision": "0010",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["tracks", "modules"],
       "summary": "doctor checks, for every declared track and module, the version's list of required gate files, plumbing, registrations, tests and path-scoped rule files, and reports substrate left behind by a module that is switched off.",
       "adoption": "Nothing needed: adopt installs each declared track and module as a unit; doctor reports leftovers of an undeclared module for removal."
@@ -7279,7 +7279,7 @@
       ],
       "decision": "0015",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The committed .claude/settings.json lists the Standard's marketplace in extraKnownMarketplaces and sets the plugin to true in enabledPlugins, so every contributor's session loads the same skills and hooks.",
       "adoption": "Nothing needed: adopt merges the two entries into an existing .claude/settings.json without touching its other keys."
@@ -7304,7 +7304,7 @@
       ],
       "decision": "0006",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["stack.<concern>.use", "stack.<concern>.reason"],
       "summary": "The manifest's stack section names the installed library for each configured concern, every named package resolves in the track's package.json or composer.json, and a concern marked none states how it is met instead.",
       "adoption": "Nothing needed: adopt pre-fills the table from the installed manifests for the team to review."
@@ -7322,7 +7322,7 @@
       "evasions": [],
       "decision": "0006",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "For each concern the installed library's idiomatic API comes first and its documented escape hatch second, hand-written code carries a comment naming what the library could not express, and an outdated version is upgraded instead of worked around.",
       "adoption": "Nothing needed: checked in review."
@@ -7347,7 +7347,7 @@
       ],
       "decision": "0006",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["stack.competingGroups", "stack.<concern>.deprecated"],
       "summary": "Each concern (state, server state, forms, validation, HTTP, dates, styling, unit tests, end-to-end tests) has one installed library unless a declared migration names the winner and the deprecated loser, and the Standard's own gate tooling is exempt.",
       "adoption": "Baseline: existing competing pairs are declared as a migration with a winner and a deprecated loser, which PROC-008 then confines, and the Standard's own enforcement tools are pre-exempted."
@@ -7371,7 +7371,7 @@
       ],
       "decision": "0007",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["stack.<concern>.deprecated", "stack.<concern>.legacyPaths"],
       "summary": "In web and mobile source, a static, dynamic, require or export-from import of a package declared deprecated for a concern is reported outside that concern's declared legacy paths, so the migration to the winner only moves forward.",
       "adoption": "Baseline: the deprecated library's current import sites are declared as its legacy paths, so only new imports fail."
@@ -7396,7 +7396,7 @@
       ],
       "decision": "0006",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.PROC-019.dir"],
       "summary": "Each package added to the production dependencies of a package.json or composer.json, compared with the base branch, is named in a decision record added or changed in the same change, and that record lists the alternatives considered.",
       "adoption": "Nothing needed: only dependencies added after adoption are checked, because the check compares with the base branch."
@@ -7414,7 +7414,7 @@
       "evasions": [],
       "decision": "0012",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Business rules live on the server, client validation is user-experience feedback while the server decides validity, and a deliberate client mirror of a rule names its backend source and has a test that compares the two.",
       "adoption": "Nothing needed: checked in review."
@@ -7439,7 +7439,7 @@
       ],
       "decision": "0023",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["version"],
       "summary": "doctor hashes each kit-copied gate file, security plumbing included, outside its declared configuration regions and compares the hash and version header with the template manifest of the version recorded in .cross-stack/standard.json, so a locally weakened copy is reported.",
       "adoption": "Nothing needed: adopt records the adopted version, so only later edits outside the configuration regions are reported."
@@ -7457,7 +7457,7 @@
       "evasions": [],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A red gate is answered by fixing the code, by a dated allowlist or shrink-only baseline entry, or by a waiver recorded in a decision record, never by deleting the gate, lowering its level or turning its rule off.",
       "adoption": "Nothing needed: checked in review."
@@ -7483,7 +7483,7 @@
       ],
       "decision": "0021",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["hooks.preToolUse.protect", "hooks.preToolUse.protectCommands"],
       "summary": "Before an agent edits a gate configuration, baseline, allowlist or CI workflow, or adds the opt-out line, the PreToolUse hook asks the user, and the edit goes ahead only with that approval; shell commands that bypass a gate are PROC-026's.",
       "adoption": "Nothing needed: adopt also writes permissions.ask rules for gate configurations and permissions.deny rules for baselines and allowlists into .claude/settings.json, which hold in every permission mode."
@@ -7504,7 +7504,7 @@
       "evasions": [],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["allowlistsDir", "allowlistMaxDays"],
       "summary": "Entries in .cross-stack/allowlists/ validate against a schema that requires a non-empty reason and an ISO expiry date no further ahead than allowlistMaxDays, and the check fails once an entry's expiry date has passed.",
       "adoption": "Allowlist: adopt writes an entry with a reason and an expiry date inside allowlistMaxDays for each existing exception that a gate without a native baseline reports."
@@ -7529,7 +7529,7 @@
       ],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "No file and rule pair in the committed ESLint bulk-suppressions file gains suppressions and no new pair appears compared with the base branch in pull-request CI, and every lint script uses the committed suppressions file rather than --suppressions-location elsewhere, so recorded lint debt only shrinks.",
       "adoption": "Baseline: adopt sets the kit rules to error before running eslint --suppress-all, so existing violations become the starting suppressions and no warning is left outside the baseline."
@@ -7550,7 +7550,7 @@
       "evasions": [],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Every eslint-disable, eslint-disable-line and eslint-disable-next-line comment ends with a -- description giving its reason, so each inline exception explains itself in review.",
       "adoption": "Baseline: existing directives without a description go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -7568,7 +7568,7 @@
       "evasions": [],
       "decision": "0004",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A gate is trusted only after it has been seen failing on a minimal violation and passing on clean code, and a new or changed gate is shown failing before any change relies on it.",
       "adoption": "Nothing needed: checked in review."
@@ -7592,7 +7592,7 @@
       ],
       "decision": "0004",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "doctor --probe copies each enabled rule's shipped violation probe, generated from a subset of the rule fixtures, into a scratch copy of the project, runs the rule's gate and requires a failure that names the rule, so a probed gate that was wired wrongly or silently disabled is found.",
       "adoption": "Nothing needed: the probes run in the upgrade skill and a scheduled workflow, never as a required check on every pull request."
@@ -7616,7 +7616,7 @@
       ],
       "decision": "0001",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.PROC-019.dir"],
       "summary": "When the manifest declares tier 2, the configured decisions directory exists and every record in it parses as MADR with a number, a status and a date.",
       "adoption": "Nothing needed: adopt creates the decisions directory with a first record when tier 2 is declared."
@@ -7657,7 +7657,7 @@
       "evasions": [],
       "decision": "0014",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Before reporting work as done, the agent re-reads its diff, runs the project's check scripts and pastes their real output verbatim, and never claims that a check it did not run has passed.",
       "adoption": "Nothing needed: checked in review."
@@ -7685,7 +7685,7 @@
       ],
       "decision": "0020",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["hooks.stop.enabled", "hooks.stop.budgetSeconds", "hooks.stop.command"],
       "summary": "When an agent finishes a turn, the project's fast check runs within a time budget, and a failure blocks the stop with the failing command and the end of its output.",
       "adoption": "Baseline: adopt makes check:fast green through shrink-only baselines and dated allowlist entries before the Stop gate runs, and a project that cannot yet sets hooks.stop.enabled to false."
@@ -7702,7 +7702,7 @@
       "evasions": [],
       "decision": "0013",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "Convenience duplication is extracted only at its third copy, and an abstraction with a single caller, an Action included, is treated as a defect to inline.",
       "adoption": "Nothing needed: checked in review."
@@ -7719,7 +7719,7 @@
       "evasions": [],
       "decision": "0013",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A duplicated business rule is extracted at its second copy, including a rule rendered on two surfaces such as web and PDF or web and native, so the copies cannot drift.",
       "adoption": "Nothing needed: checked in review."
@@ -7741,7 +7741,7 @@
       "evasions": [],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The eslint-comments no-use rule allows only eslint-disable-next-line directives, so file-wide, block and same-line disables and inline rule configuration fail lint; PROC-031 covers naming the disabled rules and unused directives.",
       "adoption": "Baseline: existing block and same-line disables go into ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -7768,7 +7768,7 @@
       ],
       "decision": "0021",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["hooks.preToolUse.protectCommands"],
       "summary": "Before an agent runs a shell command that skips or weakens a gate, such as --no-verify, git commit -n, a lefthook-disabling variable, an audit or test-runner override, a baseline deleted or regenerated outside its baseline:update script, a write onto a protected file or an appended opt-out line, the user is asked and the command runs only with that approval.",
       "adoption": "Nothing needed: the sanctioned baseline:update scripts, which regenerate a baseline and fail when it grows, are not inspected, so routine baseline maintenance asks nothing."
@@ -7793,7 +7793,7 @@
       ],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The committed dependency-cruiser known-violations file gains no entry compared with the base branch in pull-request CI, and every depcruise invocation in the check scripts reads that file through --ignore-known, so a fixed violation stays fixed and a new one cannot be recorded as known.",
       "adoption": "Baseline: adopt writes the current violations to the known-violations file, which becomes the starting point that can only shrink."
@@ -7817,7 +7817,7 @@
       ],
       "decision": "0094",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A doctor check requires the repository's pull request template to hold a section for the rule IDs or ADRs a change follows, a section for pasting the real output of the project's check and a checkbox confirming that the output is real and current.",
       "adoption": "Nothing needed: adopt copies the kit template, or merges the sections into an existing pull request template."
@@ -7841,7 +7841,7 @@
       ],
       "decision": "0022",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The block between the cross-stack-standard begin and end markers, together with any AGENTS.md that CLAUDE.md imports, stays under 200 lines, so the always-loaded context stays small and track detail lives in path-scoped rule files.",
       "adoption": "Nothing needed: adopt merges the block into existing CLAUDE.md and AGENTS.md files; a project whose AGENTS.md is long moves detail into path-scoped rule files."
@@ -7870,7 +7870,7 @@
       ],
       "decision": "0020",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["hooks.postToolUse.budgetSeconds", "hooks.postToolUse.phpstan"],
       "summary": "After an agent edits or writes a file, the project's installed formatter formats it and file-scoped ESLint runs from the track root within a time budget, and lint errors go back to the agent as file:line rule message lines, so they are fixed while the file is still in context.",
       "adoption": "Nothing needed: the hook only reports, and a project without a formatter or ESLint installed is skipped."
@@ -7894,7 +7894,7 @@
       ],
       "decision": "0005",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A config check resolves the ESLint configuration for a sample file on each JavaScript track and fails unless @eslint-community/eslint-comments/no-unlimited-disable is at error and linterOptions.reportUnusedDisableDirectives is \"error\", so a directive names its rules and a stale one fails lint.",
       "adoption": "Nothing needed: adopt removes unused directives with eslint --fix and records existing unlimited disables as ESLint bulk suppressions, which PROC-015 keeps shrink-only."
@@ -7916,7 +7916,7 @@
       "evasions": [],
       "decision": "0059",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The kit's doctor check, run in each JavaScript track's check chain, reads the resolved eslint, typescript and @types/node versions and the engines field and fails outside the supported ranges, such as TypeScript 7 or later, under which typed lint rules and dependency-cruiser stop checking without failing.",
       "adoption": "Fix first: a project outside the ranges pins the supported versions, which adopt proposes, before the check is enabled."
@@ -7937,7 +7937,7 @@
       "evasions": ["a check member that calls depcruise directly instead of through the wrapper"],
       "decision": "0059",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The kit's check-depcruise wrapper runs dependency-cruiser with JSON output and fails when summary.totalCruised is 0 or summary.error is above 0, because an unsupported TypeScript version or a wrong path makes dependency-cruiser pass silently and its exit status wraps at 256.",
       "adoption": "Nothing needed: adopt points the boundaries member of each JavaScript check chain at the wrapper."
@@ -7962,7 +7962,7 @@
       ],
       "decision": "0092",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The committed jscpd baseline gains no clone compared with the base branch in pull-request CI, every jscpd invocation in the check scripts reads that baseline, and the sanctioned baseline:update script fails on growth, so recorded duplication only shrinks.",
       "adoption": "Baseline: adopt records the existing clones in the committed baseline, which becomes the starting point that can only shrink."
@@ -7987,7 +7987,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A CI-parity sub-check reads composer.json and requires the check script to run pint --test, Larastan, the Pest suite with its coverage floor and the baseline-growth check, plus a check:fast script for the Stop hook, while dependency audits stay out of both because they need the network.",
       "adoption": "Nothing needed: adopt writes check and check:fast into composer.json and keeps any stricter existing member; doctor reports a missing PCOV or Xdebug coverage driver."
@@ -8012,7 +8012,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A CI-parity sub-check reads package.json and requires the check script to run the typecheck, ESLint, the formatter check, dependency-cruiser, knip and the test suite with its coverage thresholds, plus a check:fast script for the Stop hook.",
       "adoption": "Nothing needed: adopt writes check and check:fast into package.json and keeps any stricter existing member."
@@ -8037,7 +8037,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-009.qualityJob"],
       "summary": "A CI-parity sub-check requires the web quality job, or the reusable web workflow it calls, to have a step that runs the framework's production build without continue-on-error, so errors only a build reveals fail the pull request instead of a later deploy.",
       "adoption": "Fix first: the reusable web workflow ships the build step; a build that needs a runtime secret is fixed before adopting."
@@ -8062,7 +8062,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-004.members"],
       "summary": "A CI-parity sub-check reads package.json and requires the check script to run the typecheck, ESLint, the structure rules, the formatter check, dependency-cruiser, knip and the test suite with its coverage thresholds, plus a check:fast script for the Stop hook.",
       "adoption": "Nothing needed: adopt writes check and check:fast into package.json, renaming an existing aggregate script rather than keeping two."
@@ -8087,7 +8087,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-009.qualityJob"],
       "summary": "A CI-parity sub-check requires the mobile quality job, or the reusable mobile workflow it calls, to have a step that runs npx expo export for iOS and Android without continue-on-error, so Metro resolution and transform errors that typecheck and tests miss fail the pull request.",
       "adoption": "Fix first: the reusable mobile workflow ships the export step; the bundle must build in mock mode without secrets."
@@ -8111,7 +8111,7 @@
       ],
       "decision": "0054",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [
         "modules.api-contract.exportCommand",
         "modules.api-contract.openapiPath",
@@ -8141,7 +8141,7 @@
       ],
       "decision": "0054",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [
         "modules.api-contract.artifact",
         "modules.api-contract.webTypesPath",
@@ -8170,7 +8170,7 @@
       ],
       "decision": "0084",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-009.qualityJob"],
       "summary": "A workflow check requires each declared track's quality job to run a blocking production-only audit at high severity (composer audit --locked --no-dev, npm audit --omit=dev --audit-level=high or the lockfile's equivalent) without continue-on-error, in CI only because audits need the network.",
       "adoption": "Allowlist: a finding that cannot be fixed yet becomes a dated, reasoned exception, never a lowered threshold."
@@ -8195,7 +8195,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-009.qualityJob"],
       "summary": "A CI-parity sub-check splits each track's check script into its members and requires a quality-job step running each one without continue-on-error, or a call to the Standard's reusable track workflow, so local and CI runs stay identical and a failure names its member.",
       "adoption": "Nothing needed: adopt replaces hand-listed quality steps with a thin caller of the reusable track workflow."
@@ -8220,7 +8220,7 @@
       ],
       "decision": "0060",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A token check requires every ESLint invocation in the JavaScript check scripts to pass --max-warnings=0 and the mobile chain to call ESLint directly rather than expo lint, so warnings cannot pile up unseen.",
       "adoption": "Baseline: bulk suppressions record errors, not warnings, so adopt sets the kit's rules to error before recording existing findings in the shrink-only suppressions file."
@@ -8245,7 +8245,7 @@
       ],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-011.deployJobPattern", "rules.CI-009.qualityJob"],
       "summary": "A workflow check requires every job whose name matches the build, deploy or release pattern to reach the quality job through needs:, or to run only on a successful workflow_run of the quality workflow, so nothing ships without a green quality run.",
       "adoption": "Fix first: existing build, deploy and release jobs gain needs: on the quality job; deployment itself stays out of scope."
@@ -8266,7 +8266,7 @@
       "evasions": ["a copied job edited so its step list no longer matches the reusable workflow"],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["rules.CI-009.qualityJob"],
       "summary": "A workflow check fails when a track's check-member step sequence is defined in more than one job instead of being called through workflow_call, so a fix to the quality job cannot miss a copy.",
       "adoption": "Nothing needed: adopt replaces copied quality jobs with thin callers of the reusable track workflow."
@@ -8284,7 +8284,7 @@
       "evasions": [],
       "decision": "0090",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "The default branch requires a pull request, lists the reusable workflow's quality check as a required status check and blocks force pushes and deletion; this is a repository setting, so reviewers confirm it.",
       "adoption": "Nothing needed: checked in review; a repository setting the organization applies."
@@ -8308,7 +8308,7 @@
       ],
       "decision": "0094",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["hooks.preToolUse.protect"],
       "summary": "A doctor check parses CODEOWNERS and requires every protected-path glob, the built-in list plus hooks.preToolUse.protect, to match an owned entry, so gate changes have a human reviewer behind the gate-file guard.",
       "adoption": "Nothing needed: adopt generates CODEOWNERS entries from the protected-path list and merges them into an existing file."
@@ -8333,7 +8333,7 @@
       ],
       "decision": "0094",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A doctor check parses the lefthook configuration and requires pre-commit jobs on staged files for the pinned gitleaks scan and for each declared track's formatter and linter, with the hooks installed and core.hooksPath unset.",
       "adoption": "Nothing needed: adopt migrates an existing husky or core.hooksPath setup into lefthook and never leaves two hook managers installed."
@@ -8381,7 +8381,7 @@
       ],
       "decision": "0054",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": ["modules.api-contract.artifact"],
       "summary": "With the api-contract module on and no client track in the repository, a workflow check asserts that an upload step follows the export step in the reusable Laravel workflow and that the artifact name carries the document's info.version, so standalone clients can pin a version.",
       "adoption": "Nothing needed: the reusable Laravel workflow ships the upload step after the export step."
@@ -8405,7 +8405,7 @@
       ],
       "decision": "0095",
       "defaultEnabled": true,
-      "since": "1.0.0",
+      "since": "0.1.0",
       "configurable": [],
       "summary": "A doctor check reads the Renovate or Dependabot configuration and requires a release-age delay, a group for next, laravel/framework and expo without automerge, holds on the TypeScript, ESLint and mobile Jest majors and, on the mobile track, SDK-locked packages kept out of regular updates.",
       "adoption": "Nothing needed: adopt writes the Renovate template, or checks an existing Dependabot configuration for the same delay, groups and holds."

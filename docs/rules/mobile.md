@@ -78,7 +78,7 @@ Every directory directly under the mobile source root is on the configured folde
 | Enabled by default | yes |
 | Configurable | `rules.MOB-001.sourceRoot` (planned), `rules.MOB-001.folders` (planned), `rules.MOB-001.ignore` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-001/` |
 | Adoption | Allowlist: the source root and folder list come from config and tsconfig, so both the src/app layout and the older root layout pass; extra folders get dated allowlist entries. |
 
@@ -99,7 +99,7 @@ Each file under the routes directory has a default export, because the file-base
 | Enabled by default | yes |
 | Configurable | `rules.MOB-002.routesDir` (planned), `rules.MOB-002.exempt` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-002/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -120,7 +120,7 @@ createContext is reachable only from files in the configured contexts folder, wh
 | Enabled by default | yes |
 | Configurable | `rules.MOB-003.contextsDir` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-003/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -141,7 +141,7 @@ A structure check fails on a .tsx file under the configured utils, constants and
 | Enabled by default | yes |
 | Configurable | `rules.MOB-004.folders` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-004/` |
 | Adoption | Allowlist: existing .tsx files in those folders get dated allowlist entries until they move. |
 
@@ -162,7 +162,7 @@ A cross-stack/confine-api entry reports functions and variables named like a hoo
 | Enabled by default | yes |
 | Configurable | `rules.MOB-005.allowedDirs` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-005/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -187,7 +187,7 @@ The cross-stack/type-only-module rule, applied through a files override to the c
 | Enabled by default | yes |
 | Configurable | `rules.MOB-006.typesDir` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-006/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -234,7 +234,7 @@ Modules under the routes directory never import the server-state library, so dat
 | Enabled by default | yes |
 | Configurable | `rules.MOB-002.routesDir` (planned), `rules.MOB-008.serverStateLibrary` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-008/` |
 | Adoption | Baseline: dependency-cruiser known-violations, shrink-only under check-baselines:depcruise. |
 
@@ -255,7 +255,7 @@ useContext is reachable only from the configured contexts folder, so consumers c
 | Enabled by default | yes |
 | Configurable | `rules.MOB-003.contextsDir` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-009/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -281,7 +281,7 @@ Every path git tracks matches its on-disk entry case-sensitively, and the check 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-010/` |
 | Adoption | Fix first: a git mv of each reported file fixes every finding at adoption. |
 
@@ -302,7 +302,7 @@ Static, dynamic and require imports whose relative path climbs out of the import
 | Enabled by default | yes |
 | Configurable | `rules.MOB-011.pathAlias` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-011/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only; the alias comes from tsconfig paths, so both @/\* to ./src/\* and the older root layout work. |
 
@@ -323,7 +323,7 @@ A list screen keeps its page, filters and sort in navigation params, the mobile 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0063](../decisions/0063-client-state-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## MOB-013
@@ -343,7 +343,7 @@ The HTTP library is reachable only from the API client module, and the API clien
 | Enabled by default | yes |
 | Configurable | `rules.MOB-013.clientModule` (planned), `rules.MOB-013.httpLibrary` (planned), `rules.MOB-013.consumers` (planned) |
 | Decision | [ADR 0063](../decisions/0063-client-state-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-013/` |
 | Adoption | Baseline: dependency-cruiser known-violations, shrink-only under check-baselines:depcruise. |
 
@@ -370,7 +370,7 @@ The server-state library's QueryClient constructor is reachable only from the co
 | Enabled by default | yes |
 | Configurable | `rules.MOB-014.providerModule` (planned) |
 | Decision | [ADR 0063](../decisions/0063-client-state-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-014/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -417,7 +417,7 @@ A cross-stack/confine-api entry reports member chains that read .response.status
 | Enabled by default | yes |
 | Configurable | `rules.MOB-016.errorModule` (planned) |
 | Decision | [ADR 0048](../decisions/0048-http-status-vocabulary.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-016/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -443,7 +443,7 @@ A table-driven contract test shipped with the error normalizer asserts that a re
 | Enabled by default | yes |
 | Configurable | `rules.MOB-017.errorFormat` (planned), `rules.MOB-017.statusVocabulary` (planned) |
 | Decision | [ADR 0048](../decisions/0048-http-status-vocabulary.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-017/` |
 | Adoption | Nothing needed: the kit ships the normalizer with its test; a project keeping its own normalizer adapts it to the test table. |
 
@@ -469,7 +469,7 @@ A cross-stack/confine-api entry reports member chains reading .data.data, in dot
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.shape` (planned), `rules.MOB-013.clientModule` (planned) |
 | Decision | [ADR 0052](../decisions/0052-api-success-shape.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-018/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -495,7 +495,7 @@ A check flags type aliases, interfaces and string-literal unions whose name or m
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.openapiPath` (planned), `modules.api-contract.mobileTypesPath` (planned) |
 | Decision | [ADR 0054](../decisions/0054-generated-api-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-019/` |
 | Adoption | Allowlist: existing hand-written mirrors get dated entries in .cross-stack/allowlists/MOB-019.json until they are replaced by generated types. |
 
@@ -569,7 +569,7 @@ Computed process.env reads are reported, because the bundler inlines only static
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0069](../decisions/0069-typed-env-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-022/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -595,7 +595,7 @@ The router's Redirect component is reachable only from \_layout files and the co
 | Enabled by default | yes |
 | Configurable | `rules.MOB-002.routesDir` (planned), `rules.MOB-023.entryRoute` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-023/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -620,7 +620,7 @@ Forms with more than the configured number of fields validate each field on the 
 | Enabled by default | yes |
 | Configurable | `rules.WEB-042.fieldThreshold` (planned) |
 | Decision | [ADR 0067](../decisions/0067-forms.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## MOB-025
@@ -640,7 +640,7 @@ A global no-restricted-syntax selector reports identifiers, member properties an
 | Enabled by default | yes |
 | Configurable | `modules.tenancy.column` (planned) |
 | Decision | [ADR 0057](../decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-025/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -668,7 +668,7 @@ A global no-restricted-syntax selector reports an object property keyed Content-
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0087](../decisions/0087-file-uploads.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-028/` |
 | Adoption | Baseline: ESLint bulk suppressions, shrink-only under check-baselines:eslint-suppressions. |
 
@@ -695,7 +695,7 @@ When the user switches the active tenant, the app registers its push token again
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0057](../decisions/0057-tenancy-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## MOB-030
@@ -736,7 +736,7 @@ The mobile test:coverage run uses jest --coverage with collectCoverageFrom, so u
 | Enabled by default | yes |
 | Configurable | `rules.MOB-031.thresholds` (planned) |
 | Decision | [ADR 0091](../decisions/0091-coverage-floors.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-031/` |
 | Adoption | Baseline: floors start at the coverage measured at adoption and ratchet upward only. |
 
@@ -762,7 +762,7 @@ knip builds the module graph from the Expo entry points and fails on unused file
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0092](../decisions/0092-dead-code-and-duplication-gates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-032/` |
 | Adoption | Allowlist: current knip findings are recorded as dated entries in .cross-stack/allowlists/MOB-032.json that may only shrink. |
 
@@ -789,7 +789,7 @@ jscpd runs over the mobile TypeScript sources with the committed baseline and --
 | Enabled by default | yes |
 | Configurable | `rules.MOB-033.minLines` (planned), `rules.MOB-033.minTokens` (planned) |
 | Decision | [ADR 0092](../decisions/0092-dead-code-and-duplication-gates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/MOB-033/` |
 | Adoption | Baseline: the jscpd baseline is recorded at adoption and kept shrink-only by PROC-034. |
 
@@ -815,7 +815,7 @@ expo-secure-store is the only credential store and the storage module's keys nev
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review; reviewers move any credential found in general storage behind the secure-store wrapper. |
 
 ## SEC-050
@@ -835,7 +835,7 @@ A dependency-cruiser rule over the resolved import graph (static, dynamic and re
 | Enabled by default | yes |
 | Configurable | `rules.SEC-050.storageModule` (planned) |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/SEC-050/` |
 | Adoption | Baseline: existing imports go into the dependency-cruiser known-violations file (shrink-only under check-baselines), with a codemod to the storage module. |
 
@@ -856,7 +856,7 @@ The storage module's get, set and remove accept only the key union of the keys m
 | Enabled by default | yes |
 | Configurable | `rules.SEC-051.namespace` (planned) |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/SEC-051/` |
 | Adoption | Baseline: existing literal keys go into the shrink-only ESLint bulk suppressions. |
 
@@ -883,7 +883,7 @@ A dependency-cruiser rule lets only the credential wrapper import the secure-sto
 | Enabled by default | yes |
 | Configurable | `rules.SEC-052.credentialModule` (planned), `rules.SEC-052.consumers` (planned) |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/SEC-052/` |
 | Adoption | Baseline: existing imports go into the dependency-cruiser known-violations file, which only shrinks. |
 
@@ -909,7 +909,7 @@ A contract test shipped with the API client puts a token in the mocked secure st
 | Enabled by default | yes |
 | Configurable | `rules.MOB-013.clientModule` (planned) |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/SEC-053/` |
 | Adoption | Fix first: the kit's API client and its contract test ship with the mobile track, and a project keeping its own client adapts it to the contract test. |
 
@@ -934,7 +934,7 @@ A contract test asserts that a 401 on a protected request clears the secure-stor
 | Enabled by default | yes |
 | Configurable | `rules.SEC-054.loginRoute` (planned) |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/SEC-054/` |
 | Adoption | Fix first: the kit's interceptor and its contract test ship with the mobile track, and a project keeping its own client adapts it to the contract test. |
 
@@ -984,7 +984,7 @@ Sign-out and a 401 clear everything the session left behind, including the push 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review against the sign-out path. |
 
 ## SEC-057
@@ -1004,7 +1004,7 @@ A check runs git ls-files and git check-ignore against a configurable list of cr
 | Enabled by default | yes |
 | Configurable | `rules.SEC-057.patterns` (planned) |
 | Decision | [ADR 0084](../decisions/0084-secret-scanning-and-dependency-audits.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/SEC-057/` |
 | Adoption | Fix first: untrack and rotate any committed credential file before adopting. |
 
@@ -1029,7 +1029,7 @@ cross-stack/confine-api confines I18nManager.forceRTL, allowRTL and swapLeftAndR
 | Enabled by default | yes |
 | Configurable | `modules.i18n.languageModule` (planned) |
 | Decision | [ADR 0082](../decisions/0082-mobile-rtl-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/I18N-029/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -1055,7 +1055,7 @@ A config check evaluates the resolved app config, dynamic config files included,
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0082](../decisions/0082-mobile-rtl-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/I18N-030/` |
 | Adoption | Nothing needed: adopt writes supportedLocales from the manifest. |
 
@@ -1076,7 +1076,7 @@ The type check runs with the i18n library's typed resources generated from the s
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0080](../decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/I18N-031/` |
 | Adoption | Nothing needed: adopt generates the typed resources. |
 
@@ -1102,7 +1102,7 @@ React Native Text and TextInput, in named, namespace, default-member and require
 | Enabled by default | yes |
 | Configurable | `rules.UI-014.primitives` (planned), `rules.UI-014.extraSources` (planned) |
 | Decision | [ADR 0076](../decisions/0076-mobile-app-structure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/UI-014/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -1181,7 +1181,7 @@ Each palette in the gate-protected color-token module is declared with satisfies
 | Enabled by default | yes |
 | Configurable | `rules.UI-017.colorModule` (planned) |
 | Decision | [ADR 0066](../decisions/0066-design-tokens.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/UI-017/` |
 | Adoption | Fix first: an existing palette file adds the satisfies annotation once; the kit's token module ships with it. |
 
@@ -1208,7 +1208,7 @@ The client maps each semantic state the API emits to a color token in one module
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0046](../decisions/0046-enums-on-the-wire.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review as screens are touched. |
 
 ## UI-019
@@ -1228,7 +1228,7 @@ Every element on the configured touchable list, including Pressable, the Touchab
 | Enabled by default | yes |
 | Configurable | `rules.UI-019.touchables` (planned) |
 | Decision | [ADR 0065](../decisions/0065-ui-primitives-and-request-states.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/UI-019/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -1254,7 +1254,7 @@ Icon-only controls carry an accessibility label, selectable and disabled control
 | Enabled by default | yes |
 | Configurable | `rules.UI-020.minTouchTarget` (planned) |
 | Decision | [ADR 0065](../decisions/0065-ui-primitives-and-request-states.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review as controls are touched. |
 
 ## CI-004
@@ -1274,7 +1274,7 @@ A CI-parity sub-check reads package.json and requires the check script to run th
 | Enabled by default | yes |
 | Configurable | `rules.CI-004.members` (planned) |
 | Decision | [ADR 0090](../decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/CI-004/` |
 | Adoption | Nothing needed: adopt writes check and check:fast into package.json, renaming an existing aggregate script rather than keeping two. |
 
@@ -1300,7 +1300,7 @@ A CI-parity sub-check requires the mobile quality job, or the reusable mobile wo
 | Enabled by default | yes |
 | Configurable | `rules.CI-009.qualityJob` (planned) |
 | Decision | [ADR 0090](../decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/mobile/violations/CI-005/` |
 | Adoption | Fix first: the reusable mobile workflow ships the export step; the bundle must build in mock mode without secrets. |
 
