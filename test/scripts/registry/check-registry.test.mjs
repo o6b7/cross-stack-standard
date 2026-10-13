@@ -410,20 +410,24 @@ describe("check-registry: configurable keys", () => {
 });
 
 describe("check-registry: release gate", () => {
-  it("requires a default-on rule to be at its target and not planned for a later version", () => {
+  it("allows pre-1.0 guidance promotions and requires target levels from 1.0 onward", () => {
     decision();
-    repo.write("VERSION", "1.0.0\n");
+    repo.write("VERSION", "0.1.0\n");
     repo.registry([
-      reviewRule({ targetEnforcement: "FORCED", gate: { kind: "script", id: "check-a" } }),
+      reviewRule({
+        targetEnforcement: "FORCED",
+        gate: { kind: "script", id: "check-a" },
+        since: "0.1.0",
+      }),
       reviewRule({
         id: "PROC-103",
         targetEnforcement: "FORCED",
         gate: { kind: "script", id: "check-b" },
         defaultEnabled: false,
       }),
-      reviewRule({ id: "PROC-104", since: "1.1.0" }),
+      reviewRule({ id: "PROC-104", since: "0.2.0" }),
       reviewRule({ id: "PROC-105", since: "1.1.0", defaultEnabled: false }),
-      reviewRule({ id: "PROC-106", since: "1.0.0-rc.1" }),
+      reviewRule({ id: "PROC-106", since: "0.1.0-rc.1" }),
     ]);
     assert.deepEqual(checkRegistry({ root: repo.root }).errors, [], "only with --release");
     assert.deepEqual(
@@ -431,9 +435,21 @@ describe("check-registry: release gate", () => {
         (error) => `${error.id} ${error.message}`,
       ),
       [
-        "PROC-101 release: a default-on rule ships as REVIEW below its target FORCED, and promoting a default-on rule later is a MAJOR change; ship its gate and fixtures, or set defaultEnabled to false",
-        "PROC-104 release: a default-on rule cannot ship in 1.0.0 while its since is 1.1.0; set defaultEnabled to false until that version",
+        "PROC-104 release: a default-on rule cannot ship in 0.1.0 while its since is 0.2.0; set defaultEnabled to false until that version",
       ],
+    );
+
+    repo.write("VERSION", "1.0.0-rc.1\n");
+    assert.deepEqual(
+      checkRegistry({ root: repo.root, release: true }).errors.map((error) => error.id),
+      ["PROC-101"],
+      "the stable policy starts with 1.0 release candidates",
+    );
+
+    repo.write("VERSION", "1.0.0\n");
+    assert.deepEqual(
+      checkRegistry({ root: repo.root, release: true }).errors.map((error) => error.id),
+      ["PROC-101"],
     );
   });
 

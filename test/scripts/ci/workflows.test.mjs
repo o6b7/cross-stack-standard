@@ -197,10 +197,10 @@ describe("ci.yml", () => {
   });
 
   test("the Claude Code CLI is the verified pin", () => {
-    assert.match(yaml, /CLAUDE_CODE_VERSION: "2\.1\.282"/);
+    assert.match(yaml, /CLAUDE_CODE_VERSION: "2\.1\.296"/);
     assert.match(
       read("docs/maintainers/verified-versions.md"),
-      /`@anthropic-ai\/claude-code` 2\.1\.282/,
+      /\| Claude Code CLI \| 2\.1\.296 on npm \(`@anthropic-ai\/claude-code`;/,
     );
   });
 

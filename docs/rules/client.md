@@ -70,7 +70,7 @@ The cross-stack/env-module-only rule reports process.env and globalThis.process 
 | Enabled by default | yes |
 | Configurable | `rules.WEB-011.envModules` (planned) |
 | Decision | [ADR 0069](../decisions/0069-typed-env-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-011/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -98,7 +98,7 @@ A custom lint rule flags configured client paginator helpers and a table library
 | Enabled by default | yes |
 | Configurable | `rules.WEB-012.clientHelpers` (planned) |
 | Decision | [ADR 0049](../decisions/0049-server-driven-collections.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-012/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -125,7 +125,7 @@ Web and mobile list screens send page, filters and sort to the API and drive the
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0049](../decisions/0049-server-driven-collections.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-021
@@ -145,7 +145,7 @@ Web and mobile list screens send page, filters and sort to the API and drive the
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-021/` |
 | Adoption | Baseline: existing occurrences go into ESLint bulk suppressions (eslint --suppress-all), shrink-only under check-baselines. |
 
@@ -166,7 +166,7 @@ A config check resolves the ESLint configuration for a sample source file on eac
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-022/` |
 | Adoption | Baseline: promote warnings to errors, then record existing errors with ESLint bulk suppressions (eslint --suppress-all), shrink-only under check-baselines. |
 
@@ -187,7 +187,7 @@ The core no-restricted-exports rule with every restrictDefaultExports option on 
 | Enabled by default | yes |
 | Configurable | `rules.WEB-023.defaultExportGlobs` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-023/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -208,7 +208,7 @@ A sub-check reads package.json and requires the check script of each JavaScript 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-024/` |
 | Adoption | Fix first: format the codebase once in a dedicated commit before the member is added. |
 
@@ -234,7 +234,7 @@ Core max-lines, counting code lines only with blank lines and comments skipped, 
 | Enabled by default | yes |
 | Configurable | `rules.WEB-025.maxLines` (planned) |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-025/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -255,7 +255,7 @@ Core complexity fails any function above the configured cyclomatic complexity on
 | Enabled by default | yes |
 | Configurable | `rules.WEB-026.max` (planned) |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-026/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -276,7 +276,7 @@ The Standard's own MIT rule cross-stack/no-commented-code parses comment bodies 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0061](../decisions/0061-own-eslint-plugin-no-commented-code.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-027/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -303,7 +303,7 @@ A custom lint rule flags array literals passed as queryKey or as the key argumen
 | Enabled by default | yes |
 | Configurable | `rules.WEB-033.allowedPaths` (planned) |
 | Decision | [ADR 0064](../decisions/0064-query-key-factories-and-url-state.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-033/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -331,7 +331,7 @@ Live surfaces on web and mobile poll through the server-state cache, and a modul
 | Enabled by default | yes |
 | Configurable | `decisions.<name>` (planned), `rules.WEB-039.libraries` (planned) |
 | Decision | [ADR 0056](../decisions/0056-polling-before-push.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-039/` |
 | Adoption | Fix first: an existing realtime client needs an ADR referenced from the manifest's decisions section. |
 
@@ -357,7 +357,7 @@ Core no-console plus no-restricted-globals on console, which also catches aliasi
 | Enabled by default | yes |
 | Configurable | `rules.WEB-040.loggerModule` (planned) |
 | Decision | [ADR 0088](../decisions/0088-structured-redacted-logging.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-040/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -382,7 +382,7 @@ Core max-depth fails blocks nested deeper than the configured depth on web and m
 | Enabled by default | yes |
 | Configurable | `rules.WEB-050.max` (planned) |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-050/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -403,7 +403,7 @@ Core max-lines-per-function fails functions longer than the configured number of
 | Enabled by default | yes |
 | Configurable | `rules.WEB-051.max` (planned) |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-051/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -424,7 +424,7 @@ The Standard's own cross-stack/no-untracked-todo rule reads every comment on web
 | Enabled by default | yes |
 | Configurable | `rules.WEB-053.ticketPattern` (planned) |
 | Decision | [ADR 0093](../decisions/0093-todo-policy.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/WEB-053/` |
 | Adoption | Baseline: existing untracked markers go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -450,7 +450,7 @@ The resolved compiler options of each web and mobile tsconfig, extends chain inc
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/MOB-026/` |
 | Adoption | Fix first: the Expo and Next.js templates already set strict: true; a project without it fixes the reported tsc errors before the check is enabled. |
 
@@ -476,7 +476,7 @@ Known evasions:
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/MOB-027/` |
 | Adoption | Baseline: existing @ts-ignore comments become described @ts-expect-error comments or go into ESLint bulk suppressions, shrink-only. |
 
@@ -497,7 +497,7 @@ Web and mobile clients may hide or disable controls a user cannot use, but the b
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0012](../decisions/0012-backend-authority.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## SEC-066
@@ -538,7 +538,7 @@ cross-stack/no-physical-direction reads inline styles, same-file style objects a
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0081](../decisions/0081-logical-direction-styling.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-013/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -564,7 +564,7 @@ Where a value must stay physical, the same place carries its right-to-left count
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0081](../decisions/0081-logical-direction-styling.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## I18N-016
@@ -584,7 +584,7 @@ react/jsx-no-literals with noStrings and a project allowlist reports JSX text an
 | Enabled by default | yes |
 | Configurable | `modules.i18n.allowedStrings` (planned) |
 | Decision | [ADR 0078](../decisions/0078-labels-and-multilingual-content.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-016/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -610,7 +610,7 @@ cross-stack/no-locale-script-literal matches string, template and JSX text liter
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0078](../decisions/0078-labels-and-multilingual-content.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-017/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -631,7 +631,7 @@ cross-stack/no-label-field-read reports reads of properties ending in \_label th
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0078](../decisions/0078-labels-and-multilingual-content.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-019/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -657,7 +657,7 @@ The parity checker flattens each locale's message files and compares key sets wi
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0080](../decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-033/` |
 | Adoption | Allowlist: dated entries for keys a brownfield locale still lacks. |
 
@@ -678,7 +678,7 @@ The parity checker fails on any message value in any configured locale that is e
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0080](../decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-034/` |
 | Adoption | Allowlist: dated entries for values a brownfield locale still lacks. |
 
@@ -699,7 +699,7 @@ The parity checker compares each non-source value with the source value after no
 | Enabled by default | yes |
 | Configurable | `locales`, `modules.i18n.parityIgnore` (planned) |
 | Decision | [ADR 0080](../decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-035/` |
 | Adoption | Allowlist: dated entries for intentional copies such as brand names and units. |
 
@@ -720,7 +720,7 @@ The parity checker parses messages as ICU on the web and as i18next interpolatio
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0080](../decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-036/` |
 | Adoption | Allowlist: dated entries for mismatches being fixed in a brownfield locale. |
 
@@ -741,7 +741,7 @@ cross-stack/localized-field-access reports dot, computed-literal, optional-chain
 | Enabled by default | yes |
 | Configurable | `locales`, `modules.i18n.localizedFieldHelper` (planned) |
 | Decision | [ADR 0078](../decisions/0078-labels-and-multilingual-content.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-037/` |
 | Adoption | Baseline: existing reads go into ESLint bulk suppressions, shrink-only; unrelated names that end in a locale suffix get dated allowlist entries. |
 
@@ -767,7 +767,7 @@ For failures a screen expects, clients render their own message-file copy select
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0077](../decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## I18N-040
@@ -787,7 +787,7 @@ cross-stack/no-locale-auto-detection reports navigator.language and navigator.la
 | Enabled by default | yes |
 | Configurable | `modules.i18n.languageModule` (planned), `modules.i18n.deviceLocalePackages` (planned) |
 | Decision | [ADR 0077](../decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-040/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -814,7 +814,7 @@ The parity checker groups plural keys by base key and requires each locale's cat
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0080](../decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/I18N-042/` |
 | Adoption | Allowlist: dated entries for plural keys being completed in a brownfield locale. |
 
@@ -835,7 +835,7 @@ Class strings, style objects, SVG props and string literals in web and mobile so
 | Enabled by default | yes |
 | Configurable | `rules.UI-003.tokenSources` (planned) |
 | Decision | [ADR 0066](../decisions/0066-design-tokens.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/UI-003/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -862,7 +862,7 @@ Web and mobile screens show loading, error and empty states through the shared s
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0065](../decisions/0065-ui-primitives-and-request-states.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review as screens are touched. |
 
 ## PROC-008
@@ -882,7 +882,7 @@ In web and mobile source, a static, dynamic, require or export-from import of a 
 | Enabled by default | yes |
 | Configurable | `stack.<concern>.deprecated`, `stack.<concern>.legacyPaths` (planned) |
 | Decision | [ADR 0007](../decisions/0007-one-mechanism-per-concern.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-008/` |
 | Adoption | Baseline: the deprecated library's current import sites are declared as its legacy paths, so only new imports fail. |
 
@@ -907,7 +907,7 @@ No file and rule pair in the committed ESLint bulk-suppressions file gains suppr
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0005](../decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-015/` |
 | Adoption | Baseline: adopt sets the kit rules to error before running eslint --suppress-all, so existing violations become the starting suppressions and no warning is left outside the baseline. |
 
@@ -933,7 +933,7 @@ Every eslint-disable, eslint-disable-line and eslint-disable-next-line comment e
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0005](../decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-016/` |
 | Adoption | Baseline: existing directives without a description go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -954,7 +954,7 @@ The eslint-comments no-use rule allows only eslint-disable-next-line directives,
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0005](../decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-025/` |
 | Adoption | Baseline: existing block and same-line disables go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -975,7 +975,7 @@ The committed dependency-cruiser known-violations file gains no entry compared w
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0005](../decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-027/` |
 | Adoption | Baseline: adopt writes the current violations to the known-violations file, which becomes the starting point that can only shrink. |
 
@@ -1001,7 +1001,7 @@ A config check resolves the ESLint configuration for a sample file on each JavaS
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0005](../decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-031/` |
 | Adoption | Nothing needed: adopt removes unused directives with eslint --fix and records existing unlimited disables as ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -1026,7 +1026,7 @@ The kit's doctor check, run in each JavaScript track's check chain, reads the re
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0059](../decisions/0059-javascript-toolchain-pins.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-032/` |
 | Adoption | Fix first: a project outside the ranges pins the supported versions, which adopt proposes, before the check is enabled. |
 
@@ -1047,7 +1047,7 @@ The kit's check-depcruise wrapper runs dependency-cruiser with JSON output and f
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0059](../decisions/0059-javascript-toolchain-pins.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/PROC-033/` |
 | Adoption | Nothing needed: adopt points the boundaries member of each JavaScript check chain at the wrapper. |
 
@@ -1072,7 +1072,7 @@ A token check requires every ESLint invocation in the JavaScript check scripts t
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/client/violations/CI-010/` |
 | Adoption | Baseline: bulk suppressions record errors, not warnings, so adopt sets the kit's rules to error before recording existing findings in the shrink-only suppressions file. |
 

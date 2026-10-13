@@ -132,6 +132,7 @@ function identityFiles() {
     },
     LICENSE,
     "plugins/cross-stack-standard/LICENSE": LICENSE,
+    "skills/cross-stack-standard/LICENSE": LICENSE,
     "README.md": README,
     "SECURITY.md": "# Security\n\nReport privately to qusaii.abdullah@gmail.com.\n",
     "CODE_OF_CONDUCT.md": "# Code of Conduct\n\nContact: Qusaii.Abdullah@gmail.com\n",
@@ -267,6 +268,7 @@ describe("check-identity: complete trees", () => {
       "package.json",
       "LICENSE",
       "plugins/cross-stack-standard/LICENSE",
+      "skills/cross-stack-standard/LICENSE",
       "packages/eslint-config/package.json",
       "packages/eslint-config/LICENSE",
       "packages/laravel/composer.json",
@@ -295,9 +297,9 @@ describe("check-identity: complete trees", () => {
         "IDENTITY-MISSING package.json",
         "IDENTITY-MISSING LICENSE",
         "IDENTITY-MISSING plugins/cross-stack-standard/LICENSE",
+        "IDENTITY-MISSING skills/cross-stack-standard/LICENSE",
         "IDENTITY-MISSING packages/empty",
         "IDENTITY-MISSING packages/empty/LICENSE",
-        "IDENTITY-MISSING packages/*/composer.json",
         "IDENTITY-MISSING README.md",
         "IDENTITY-MISSING SECURITY.md",
         "IDENTITY-MISSING CODE_OF_CONDUCT.md",
@@ -305,9 +307,19 @@ describe("check-identity: complete trees", () => {
       ],
     );
     const noPackages = checkIdentity(tree({}), { release: true });
-    assert.ok(
-      noPackages.findings.some((f) => f.file === "packages" && /no gate packages/.test(f.message)),
+    assert.equal(
+      noPackages.findings.some((f) => f.file.startsWith("packages/")),
+      false,
     );
+  });
+
+  it("allows a plugin and portable-skill release before gate packages ship", () => {
+    const files = identityFiles();
+    for (const rel of Object.keys(files)) {
+      if (rel.startsWith("packages/")) delete files[rel];
+    }
+    const result = checkIdentity(tree(files), { release: true });
+    assert.equal(result.ok, true, summary(result.findings).join("\n"));
   });
 });
 
@@ -457,6 +469,14 @@ describe("check-identity: detects each wrong value", () => {
       "IDENTITY-LICENSE plugins/cross-stack-standard/LICENSE:0 differs from LICENSE; run node scripts/build-plugin-data.mjs",
     ],
     [
+      "portable skill LICENSE differs from the root LICENSE",
+      (r) =>
+        writeFiles(r, {
+          "skills/cross-stack-standard/LICENSE": LICENSE.replace("MIT License", "MIT"),
+        }),
+      "IDENTITY-LICENSE skills/cross-stack-standard/LICENSE:0 differs from LICENSE; run node scripts/build-agent-skill.mjs",
+    ],
+    [
       "package LICENSE holder",
       (r) => writeFiles(r, { "packages/eslint-config/LICENSE": "Copyright 2026 Someone\n" }),
       'IDENTITY-LICENSE packages/eslint-config/LICENSE:1 copyright holder is "Someone"; expected "Qusai Abdullah"',
@@ -530,12 +550,16 @@ describe("check-identity: detects each wrong value", () => {
     it(name, () => {
       const root = validTree();
       mutate(root);
-      // A root LICENSE change regenerates the plugin copy (build-plugin-data); mirror it here so
-      // the case reports only its own finding.
+      // Root LICENSE changes regenerate both distributable copies; mirror them here so the case
+      // reports only its own finding.
       if (copy) {
         fs.copyFileSync(
           path.join(root, "LICENSE"),
           path.join(root, "plugins", "cross-stack-standard", "LICENSE"),
+        );
+        fs.copyFileSync(
+          path.join(root, "LICENSE"),
+          path.join(root, "skills", "cross-stack-standard", "LICENSE"),
         );
       }
       const result = checkIdentity(root);
@@ -611,7 +635,7 @@ describe("check-identity: CLI", () => {
     assert.equal(
       result.stdout,
       "IDENTITY-CONTACT SECURITY.md:0 does not give the contact email qusaii.abdullah@gmail.com\n" +
-        "check-identity: 14 file(s) checked, 1 finding(s)\n",
+        "check-identity: 15 file(s) checked, 1 finding(s)\n",
     );
   });
 

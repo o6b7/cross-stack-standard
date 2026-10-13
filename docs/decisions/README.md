@@ -19,7 +19,7 @@ conventions in [0001](0001-record-architecture-decisions.md).
 - **Adding a record.** Take the next free number, name the file `NNNN-title-with-dashes.md`, start
   with `status: proposed`, and add a row to the table for its section.
 
-106 records: 94 accepted, 10 proposed, 2 superseded.
+108 records: 96 accepted, 10 proposed, 2 superseded.
 
 ## Foundations
 
@@ -42,30 +42,32 @@ conventions in [0001](0001-record-architecture-decisions.md).
 
 ## Distribution, runtime and repository maintenance
 
-| Number                                         | Title                                                                                                             | Status                                          |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [0015](0015-plugin-distribution.md)            | Distribution as a Claude Code plugin from an in-repo marketplace, enabled per repository                          | Accepted                                        |
-| [0016](0016-self-contained-plugin-runtime.md)  | The installed plugin is self-contained: generated runtime data, Node built-ins only                               | Accepted                                        |
-| [0017](0017-vendored-gate-packages.md)         | Gate code reaches adopters by vendoring in 1.0; packages stay publish-ready                                       | Accepted                                        |
-| [0018](0018-project-detection.md)              | Project detection: manifest first, a bounded fallback that emits every track, explicit opt-out                    | Accepted                                        |
-| [0019](0019-hook-runtime-contract.md)          | Hook runtime contract: one Node entry point that honours opt-out, stays offline, fails open and is fixture-tested | Accepted                                        |
-| [0020](0020-feedback-hooks.md)                 | Feedback hooks: per-file lint after edits and a blocking fast Stop gate, on by default                            | Accepted                                        |
-| [0021](0021-gate-file-protection.md)           | Gate-file protection: PreToolUse ask, permission rules and CODEOWNERS, labelled GUARDED                           | Accepted                                        |
-| [0022](0022-context-budget.md)                 | Context budget and deterministic loading: minimal always-on text, path-scoped rule templates, rules cited by ID   | Accepted                                        |
-| [0023](0023-adopter-manifest-and-upgrade.md)   | Adopter manifest, adopt and upgrade                                                                               | Accepted                                        |
-| [0024](0024-versioning.md)                     | Versioning the Standard: one VERSION, stamped and drift-checked; SemVer defined by adopter build impact           | Accepted                                        |
-| [0025](0025-release-tooling.md)                | Release tooling: a manual release flow with a stamp script; release-please and Changesets rejected                | Accepted                                        |
-| [0026](0026-no-early-access-channel.md)        | No early-access channel in 1.0: releases and tag pins only                                                        | Accepted                                        |
-| [0027](0027-branching-model.md)                | Branching model: main stable and default, dev integration, release and hotfix branches                            | Accepted                                        |
-| [0028](0028-license.md)                        | License: MIT                                                                                                      | Accepted                                        |
-| [0029](0029-code-of-conduct.md)                | Code of conduct: Contributor Covenant 3.0                                                                         | Accepted                                        |
-| [0030](0030-maintainers-brand-guard.md)        | Maintainers: keyed-HMAC brand guard on every publishing channel                                                   | Accepted                                        |
-| [0031](0031-maintainers-repository-ci.md)      | Maintainers: repository CI and settings with one aggregate required check, pinned tools and smoke runs on dev     | Accepted                                        |
-| [0032](0032-supply-chain-pinning.md)           | Supply-chain pinning: nothing fetched at a moving ref                                                             | Accepted                                        |
-| [0033](0033-maintainers-dependency-updater.md) | Maintainers: this repository's dependency updater is Renovate without automerge                                   | Accepted                                        |
-| [0034](0034-design-module.md)                  | design module: impeccable as an optional, pinned integration                                                      | Superseded by [0106](0106-companion-plugins.md) |
-| [0035](0035-browser-check-module.md)           | browser-check module: Chrome DevTools MCP as an opt-in, pinned, privacy-configured template                       | Superseded by [0106](0106-companion-plugins.md) |
-| [0106](0106-companion-plugins.md)              | Companion plugins: caveman, impeccable, Figma MCP and Chrome DevTools MCP, pinned and offered at adoption         | Accepted                                        |
+| Number                                            | Title                                                                                                             | Status                                                        |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [0015](0015-plugin-distribution.md)               | Distribution as a Claude Code plugin from an in-repo marketplace, enabled per repository                          | Accepted                                                      |
+| [0016](0016-self-contained-plugin-runtime.md)     | The installed plugin is self-contained: generated runtime data, Node built-ins only                               | Accepted                                                      |
+| [0017](0017-vendored-gate-packages.md)            | Gate code reaches adopters by vendoring in 1.0; packages stay publish-ready                                       | Accepted                                                      |
+| [0018](0018-project-detection.md)                 | Project detection: manifest first, a bounded fallback that emits every track, explicit opt-out                    | Accepted                                                      |
+| [0019](0019-hook-runtime-contract.md)             | Hook runtime contract: one Node entry point that honours opt-out, stays offline, fails open and is fixture-tested | Accepted                                                      |
+| [0020](0020-feedback-hooks.md)                    | Feedback hooks: per-file lint after edits and a blocking fast Stop gate, on by default                            | Accepted                                                      |
+| [0021](0021-gate-file-protection.md)              | Gate-file protection: PreToolUse ask, permission rules and CODEOWNERS, labelled GUARDED                           | Accepted                                                      |
+| [0022](0022-context-budget.md)                    | Context budget and deterministic loading: minimal always-on text, path-scoped rule templates, rules cited by ID   | Accepted                                                      |
+| [0023](0023-adopter-manifest-and-upgrade.md)      | Adopter manifest, adopt and upgrade                                                                               | Accepted                                                      |
+| [0024](0024-versioning.md)                        | Versioning the Standard: one VERSION, stamped and drift-checked; SemVer defined by adopter build impact           | Accepted                                                      |
+| [0025](0025-release-tooling.md)                   | Release tooling: a manual release flow with a stamp script; release-please and Changesets rejected                | Accepted                                                      |
+| [0026](0026-no-early-access-channel.md)           | No early-access channel in 1.0: releases and tag pins only                                                        | Accepted                                                      |
+| [0027](0027-branching-model.md)                   | Branching model: main stable and default, dev integration, release and hotfix branches                            | Accepted                                                      |
+| [0028](0028-license.md)                           | License: MIT                                                                                                      | Accepted                                                      |
+| [0029](0029-code-of-conduct.md)                   | Code of conduct: Contributor Covenant 3.0                                                                         | Accepted                                                      |
+| [0030](0030-maintainers-brand-guard.md)           | Maintainers: keyed-HMAC brand guard on every publishing channel                                                   | Accepted                                                      |
+| [0031](0031-maintainers-repository-ci.md)         | Maintainers: repository CI and settings with one aggregate required check, pinned tools and smoke runs on dev     | Accepted                                                      |
+| [0032](0032-supply-chain-pinning.md)              | Supply-chain pinning: nothing fetched at a moving ref                                                             | Accepted                                                      |
+| [0033](0033-maintainers-dependency-updater.md)    | Maintainers: this repository's dependency updater is Renovate without automerge                                   | Accepted                                                      |
+| [0034](0034-design-module.md)                     | design module: impeccable as an optional, pinned integration                                                      | Superseded by [0106](0106-companion-plugins.md)               |
+| [0035](0035-browser-check-module.md)              | browser-check module: Chrome DevTools MCP as an opt-in, pinned, privacy-configured template                       | Superseded by [0106](0106-companion-plugins.md)               |
+| [0106](0106-companion-plugins.md)                 | Companion plugins: caveman, impeccable, Figma MCP and Chrome DevTools MCP, pinned and offered at adoption         | Extended by [0108](0108-playwright-mcp-for-browser-checks.md) |
+| [0107](0107-pre-1-0-rule-promotion.md)            | Pre-1.0 releases may promote default-on REVIEW rules; 1.0 requires target levels                                  | Accepted                                                      |
+| [0108](0108-playwright-mcp-for-browser-checks.md) | Playwright MCP for routine browser checks; Chrome DevTools MCP for advanced diagnostics                           | Accepted                                                      |
 
 ## Laravel track, with the api-contract and tenancy modules
 

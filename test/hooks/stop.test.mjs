@@ -1169,6 +1169,8 @@ describe("a write that lands while the gate runs", () => {
 
   test("a quiet run records the state from before the run", async (t) => {
     const box = sandbox(t);
+    // Force the intended walk mode and avoid spending the fingerprint deadline probing Git.
+    box.env = { ...box.env, ...nodeOnlyPath(box) };
     const project = makeProject(t, stopFixture("npm"));
     assertSilent(await runStop(box, project));
     assertSilent(await runStop(box, project));
@@ -1465,6 +1467,9 @@ describe("failures block with the command and the end of its output", () => {
 describe("budget", () => {
   test("a gate past its budget is stopped with its process tree: exit 0 and a notice", async (t) => {
     const box = sandbox(t);
+    // Git discovery is unrelated to process-tree termination and can be slow for an outside-git
+    // temp project on some hosts. Keep this budget test independent of that probe.
+    box.env = { ...box.env, ...nodeOnlyPath(box) };
     const pidFile = path.join(box.dir, "gate.pid");
     const files = stopFixture("web-mobile-roots");
     files[".cross-stack/standard.json"].hooks = { stop: { budgetSeconds: 5 } };
@@ -1628,13 +1633,15 @@ describe("ecosystems and track roots", () => {
 
   test(
     "a Composer gate past its budget is stopped too",
-    { skip: COMPOSER_UNAVAILABLE },
+    { skip: COMPOSER_UNAVAILABLE || GIT_UNAVAILABLE },
     async (t) => {
       const box = sandbox(t);
       const files = stopFixture("composer");
       files["composer.json"].scripts["check:fast"] = ['@php -r "sleep(60);"'];
       files[".cross-stack/standard.json"].hooks = { stop: { budgetSeconds: 5 } };
       const project = makeProject(t, files);
+      // Keep Git discovery on the test path from consuming the budget before Composer starts.
+      initRepo(box, project.root);
       const result = await runStop(box, project);
       assertNotice(
         result,

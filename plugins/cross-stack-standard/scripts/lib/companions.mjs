@@ -76,6 +76,26 @@ export const CHROME_SAFE_TOOLS = Object.freeze(
 /** Chrome DevTools MCP tools that open a page, checked against the allowed hosts. */
 export const CHROME_NAVIGATION_TOOLS = Object.freeze(new Set(["navigate_page", "new_page"]));
 
+/** Playwright MCP tools safe to use on a known local or configured development page. */
+export const PLAYWRIGHT_SAFE_TOOLS = Object.freeze(
+  new Set([
+    "browser_click",
+    "browser_close",
+    "browser_console_messages",
+    "browser_drag",
+    "browser_emulate_media",
+    "browser_find",
+    "browser_fill_form",
+    "browser_hover",
+    "browser_resize",
+    "browser_select_option",
+    "browser_snapshot",
+    "browser_take_screenshot",
+    "browser_type",
+    "browser_wait_for",
+  ]),
+);
+
 /** Figma MCP tools that only read. Every other Figma tool can change a file and asks. */
 export const FIGMA_READ_TOOLS = Object.freeze(
   new Set([
@@ -510,11 +530,18 @@ export function companionForSkill(skill, companions) {
   if (typeof skill !== "string" || skill === "") return null;
   const [plugin, name] = skill.includes(":") ? skill.split(":", 2) : [null, skill];
   return (
-    companions.find((companion) =>
-      plugin === null
-        ? (companion.skills ?? []).includes(name) && ownsName(companion, name)
-        : plugin === companion.name && (companion.skills ?? []).includes(name),
-    ) ?? null
+    companions.find((companion) => {
+      if (plugin === null)
+        return (companion.skills ?? []).includes(name) && ownsName(companion, name);
+      if (plugin === companion.name) return (companion.skills ?? []).includes(name);
+      // The Standard ships this usage skill beside the Playwright MCP companion so its
+      // first-party skill call observes the same consent and installation gate as the MCP tools.
+      return (
+        plugin === "cross-stack-standard" &&
+        companion.name === "playwright-mcp" &&
+        name === "playwright"
+      );
+    }) ?? null
   );
 }
 
@@ -525,9 +552,11 @@ export function companionForSkill(skill, companions) {
  * @param {unknown} sessionId
  * @returns {string | null}
  */
-export function readCurrentPage(dataDir, sessionId) {
+export function readCurrentPage(dataDir, sessionId, companion = null) {
   if (!dataDir || typeof sessionId !== "string" || sessionId === "") return null;
-  const url = readJsonFile(path.join(dataDir, PAGES_FILE))?.[sessionId]?.url;
+  const key =
+    typeof companion === "string" && companion !== "" ? `${sessionId}:${companion}` : sessionId;
+  const url = readJsonFile(path.join(dataDir, PAGES_FILE))?.[key]?.url;
   return typeof url === "string" && url !== "" ? url : null;
 }
 
@@ -539,12 +568,14 @@ export function readCurrentPage(dataDir, sessionId) {
  * @param {string | null} url
  * @param {Date} [now]
  */
-export function writeCurrentPage(dataDir, sessionId, url, now = new Date()) {
+export function writeCurrentPage(dataDir, sessionId, url, now = new Date(), companion = null) {
   if (!dataDir || typeof sessionId !== "string" || sessionId === "") return;
   const file = path.join(dataDir, PAGES_FILE);
   const pages = readJsonFile(file);
   const all = pages !== null && typeof pages === "object" && !Array.isArray(pages) ? pages : {};
-  all[sessionId] = {
+  const key =
+    typeof companion === "string" && companion !== "" ? `${sessionId}:${companion}` : sessionId;
+  all[key] = {
     url: typeof url === "string" && url !== "" ? url : null,
     at: now.toISOString(),
   };
@@ -568,6 +599,14 @@ export function writeCurrentPage(dataDir, sessionId, url, now = new Date()) {
  * @returns {string | null}
  */
 export function pageAfter(tool, input, current) {
+  if (tool === "browser_navigate") return typeof input?.url === "string" ? input.url : null;
+  if (tool === "browser_navigate_back") return null;
+  if (tool === "browser_close") return null;
+  if (tool === "browser_tabs") {
+    if (input?.action === "new") return typeof input?.url === "string" ? input.url : null;
+    if (input?.action === "list") return current;
+    return null;
+  }
   if (tool === "new_page") return typeof input?.url === "string" ? input.url : null;
   if (tool === "navigate_page") {
     const type = input?.type ?? (input?.url !== undefined ? "url" : null);
@@ -815,7 +854,7 @@ export function checkBrowserUrl(url, browserHosts) {
  *
  * - {@link companionGate}: consent not an explicit `true` denies; a copy not at the pin, not
  *   enabled, or beside another copy asks.
- * - Chrome DevTools MCP, on every action: a navigation to a URL or a new page needs an explicit
+ * - Both browser MCP companions, on every action: a navigation to a URL or a new page needs an explicit
  *   http(s) URL on a local or configured host; every other action, a reload included, needs the
  *   session's current page to be known and on such a host; back and forward, a page script, a
  *   file upload and an unknown tool always ask. A missing URL is never taken for a local one.
@@ -843,7 +882,10 @@ export function gateToolCall({
   if (companion === null) return null;
   const status = statuses.find((entry) => entry.name === companion.name);
   const tool = toolName.slice(companion.toolPrefix.length);
-  const rule = { "chrome-devtools-mcp": "SEC-074", figma: "SEC-075" }[companion.name] ?? null;
+  const rule =
+    { "playwright-mcp": "SEC-074", "chrome-devtools-mcp": "SEC-074", figma: "SEC-075" }[
+      companion.name
+    ] ?? null;
   const result = (decision, reason) => ({
     companion: companion.name,
     decision,
@@ -887,6 +929,50 @@ export function gateToolCall({
       blocked = ask("an upload sends a local file to the page");
     } else if (CHROME_SAFE_TOOLS.has(tool)) {
       blocked = onCurrentPage();
+    } else {
+      blocked = ask(`${tool} is not on the Standard's reviewed list`);
+    }
+    if (blocked !== null) return blocked;
+  }
+
+  if (companion.name === "playwright-mcp") {
+    const ask = (why) =>
+      result(
+        "ask",
+        `The browser companion: ${why}; confirm this ${tool} call only for a local or test environment (SEC-074, SEC-048).`,
+      );
+    const target = (url, what) => {
+      const check = checkBrowserUrl(url, browserHosts);
+      return check.ok ? null : ask(`${what}: ${check.why}`);
+    };
+    const onCurrentPage = () =>
+      currentPage === null
+        ? ask(
+            "the current page of this session is not known (open the local development URL with browser_navigate first)",
+          )
+        : target(currentPage, `the current page ${cut(currentPage, 80)}`);
+    let blocked;
+    if (tool === "browser_navigate") {
+      blocked = target(toolInput?.url, "the page to open");
+    } else if (tool === "browser_tabs") {
+      if (toolInput?.action === "new") blocked = target(toolInput?.url, "the page to open");
+      else if (toolInput?.action === "list") blocked = onCurrentPage();
+      else blocked = ask("closing or switching tabs makes the current page unknown");
+    } else if (tool === "browser_navigate_back") {
+      blocked = ask("browser_navigate_back can leave the checked development host");
+    } else if (tool === "browser_evaluate") {
+      blocked = ask("browser_evaluate runs JavaScript in the page and can read its data");
+    } else if (tool === "browser_run_code_unsafe") {
+      blocked = ask("browser_run_code_unsafe executes arbitrary code in the MCP server process");
+    } else if (tool === "browser_file_upload" || tool === "browser_drop") {
+      blocked = ask(`${tool} can send a local file or data to the page`);
+    } else if (tool === "browser_network_request" || tool === "browser_network_requests") {
+      blocked = ask(`${tool} can expose request headers and bodies`);
+    } else if (PLAYWRIGHT_SAFE_TOOLS.has(tool)) {
+      blocked =
+        typeof toolInput?.filename === "string" && toolInput.filename !== ""
+          ? ask(`${tool} would save browser output to ${cut(toolInput.filename, 80)}`)
+          : onCurrentPage();
     } else {
       blocked = ask(`${tool} is not on the Standard's reviewed list`);
     }

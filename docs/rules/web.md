@@ -114,7 +114,7 @@ Every file and directory name under the web source root is kebab-case, with fram
 | Enabled by default | yes |
 | Configurable | `rules.WEB-001.exempt` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-001/` |
 | Adoption | Allowlist: existing non-kebab names get dated entries in .cross-stack/allowlists/WEB-001.json that may only shrink; greenfield projects start clean. |
 
@@ -135,7 +135,7 @@ Every \*.test.\* and \*.spec.\* file has a same-stem source file in the same dir
 | Enabled by default | yes |
 | Configurable | `rules.WEB-002.testPatterns` (planned) |
 | Decision | [ADR 0068](../decisions/0068-frontend-testing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-002/` |
 | Adoption | Allowlist: existing aggregate test folders get dated entries in .cross-stack/allowlists/WEB-002.json that may only shrink. |
 
@@ -156,7 +156,7 @@ Each feature folder contains only the hooks/, components/ and lib/ subfolders, h
 | Enabled by default | yes |
 | Configurable | `rules.WEB-003.featuresPath` (planned), `rules.WEB-003.allowedSubfolders` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-003/` |
 | Adoption | Allowlist: existing non-conforming feature folders get dated entries in .cross-stack/allowlists/WEB-003.json that may only shrink. |
 
@@ -177,7 +177,7 @@ Files under the features path never re-export, whether through export \* from, e
 | Enabled by default | yes |
 | Configurable | `rules.WEB-003.featuresPath` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-004/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -198,7 +198,7 @@ On the resolved import graph a feature reaches another feature only through that
 | Enabled by default | yes |
 | Configurable | `rules.WEB-003.featuresPath` (planned), `rules.WEB-005.publicSurface` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-005/` |
 | Adoption | Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines. |
 
@@ -219,7 +219,7 @@ No module under the shared lib folder reaches the features folder through any ch
 | Enabled by default | yes |
 | Configurable | `rules.WEB-006.libPath` (planned), `rules.WEB-006.exemptPaths` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-006/` |
 | Adoption | Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines. |
 
@@ -240,7 +240,7 @@ The resolved import graph of the web source root, type-only imports included, co
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-007/` |
 | Adoption | Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines. |
 
@@ -261,7 +261,7 @@ Features, UI primitives, shared lib and shared hooks never resolve an import int
 | Enabled by default | yes |
 | Configurable | `rules.WEB-008.appRoot` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-008/` |
 | Adoption | Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines. |
 
@@ -282,7 +282,7 @@ Modules in a feature's lib/ folder never import React, the web framework or the 
 | Enabled by default | yes |
 | Configurable | `rules.WEB-003.featuresPath` (planned), `rules.WEB-009.frameworkModules` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-009/` |
 | Adoption | Baseline: existing violations go into the dependency-cruiser known-violations baseline, shrink-only under check-baselines. |
 
@@ -303,7 +303,7 @@ A web architecture test imports the typed env module and fails when any schema k
 | Enabled by default | yes |
 | Configurable | `rules.WEB-011.envModules` (planned), `rules.WEB-010.exampleFile` (planned), `rules.WEB-010.runtimeProvided` (planned) |
 | Decision | [ADR 0085](../decisions/0085-environment-files.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-010/` |
 | Adoption | Fix first: add the missing keys to the example env file at adoption. |
 
@@ -324,7 +324,7 @@ Data fetched from the API is held only in the installed server-state library's c
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0063](../decisions/0063-client-state-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-015
@@ -344,7 +344,7 @@ List filters, sort and page live in the URL through one URL-state idiom (nuqs wh
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0063](../decisions/0063-client-state-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-016
@@ -364,7 +364,7 @@ Files in the route layer assemble feature components and layout and hold no busi
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-017
@@ -384,7 +384,7 @@ A global no-restricted-syntax selector on TSEnumDeclaration bans enums, const an
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0046](../decisions/0046-enums-on-the-wire.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-017/` |
 | Adoption | Baseline: existing enums go into ESLint bulk suppressions, shrink-only, and are replaced by generated unions. |
 
@@ -409,7 +409,7 @@ With the api-contract module, web code takes request, response and enum types fr
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.openapiPath` (planned), `modules.api-contract.webTypesPath` (planned) |
 | Decision | [ADR 0054](../decisions/0054-generated-api-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-018/` |
 | Adoption | Allowlist: existing hand-written mirrors get dated entries in .cross-stack/allowlists/WEB-018.json until they are replaced by generated types. |
 
@@ -436,7 +436,7 @@ Components render generated contract types as they arrive, and where a view-mode
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0054](../decisions/0054-generated-api-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-020
@@ -456,7 +456,7 @@ A config check resolves the ESLint configuration for a sample component file and
 | Enabled by default | yes |
 | Configurable | `rules.WEB-020.componentMap` (planned) |
 | Decision | [ADR 0060](../decisions/0060-javascript-lint-baseline.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-020/` |
 | Adoption | Baseline: existing accessibility errors go into ESLint bulk suppressions, shrink-only; the config check itself needs none. |
 
@@ -477,7 +477,7 @@ knip builds the module graph from the framework's entry points and fails on unus
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0092](../decisions/0092-dead-code-and-duplication-gates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-028/` |
 | Adoption | Allowlist: current knip findings are recorded as dated entries in .cross-stack/allowlists/WEB-028.json that may only shrink. |
 
@@ -505,7 +505,7 @@ jscpd runs over the TypeScript sources with a committed baseline and --fail-on-n
 | Enabled by default | yes |
 | Configurable | `rules.WEB-029.minLines` (planned), `rules.WEB-029.minTokens` (planned) |
 | Decision | [ADR 0092](../decisions/0092-dead-code-and-duplication-gates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-029/` |
 | Adoption | Baseline: the jscpd baseline is recorded at adoption, shrink-only under check-baselines. |
 
@@ -532,7 +532,7 @@ The web test:coverage run uses Vitest v8 coverage with an explicit include list 
 | Enabled by default | yes |
 | Configurable | `rules.WEB-030.thresholds` (planned) |
 | Decision | [ADR 0091](../decisions/0091-coverage-floors.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-030/` |
 | Adoption | Baseline: floors start at the coverage measured at adoption and ratchet upward only. |
 
@@ -611,7 +611,7 @@ Every mutation invalidates the affected resource's root key from its query-key f
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0064](../decisions/0064-query-key-factories-and-url-state.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-035
@@ -631,7 +631,7 @@ Success and error notifications for mutations are raised in one place, the centr
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0007](../decisions/0007-one-mechanism-per-concern.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-036
@@ -651,7 +651,7 @@ Autosaving editors keep the edited value in local state that leads the server co
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0063](../decisions/0063-client-state-layering.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-037
@@ -671,7 +671,7 @@ A cross-stack/confine-api entry lets only the configured client module import th
 | Enabled by default | yes |
 | Configurable | `rules.WEB-037.library` (planned), `rules.WEB-037.allowedPaths` (planned) |
 | Decision | [ADR 0007](../decisions/0007-one-mechanism-per-concern.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-037/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -697,7 +697,7 @@ A global no-restricted-syntax selector flags string and template literals whose 
 | Enabled by default | yes |
 | Configurable | `rules.WEB-038.versionPattern` (planned) |
 | Decision | [ADR 0042](../decisions/0042-api-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-038/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -748,7 +748,7 @@ Forms with more fields than the configured threshold, about five by default, val
 | Enabled by default | yes |
 | Configurable | `rules.WEB-042.fieldThreshold` (planned) |
 | Decision | [ADR 0067](../decisions/0067-forms.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-043
@@ -768,7 +768,7 @@ The errors member of a 422 problem response is mapped onto the matching form fie
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0067](../decisions/0067-forms.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## WEB-044
@@ -788,7 +788,7 @@ A web architecture test imports the routes module, walks every route group under
 | Enabled by default | yes |
 | Configurable | `rules.WEB-044.routesModule` (planned), `rules.WEB-044.publicGroups` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-044/` |
 | Adoption | Nothing needed: the bff-auth module templates ship the routes module and the test. |
 
@@ -815,7 +815,7 @@ The proxy compares the presence-only session hint cookie with the httpOnly token
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-045/` |
 | Adoption | Nothing needed: shipped with the bff-auth module templates. |
 
@@ -841,7 +841,7 @@ The client's unauthorized handler treats a 401 from any endpoint except login as
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-046/` |
 | Adoption | Nothing needed: shipped with the bff-auth module templates. |
 
@@ -866,7 +866,7 @@ Code that recognises auth endpoints compares against the declared auth-path cons
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.authPaths` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-047/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -893,7 +893,7 @@ Every error response the BFF creates locally, such as an unreachable upstream, a
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0053](../decisions/0053-rfc-9457-problem-details.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-048/` |
 | Adoption | Nothing needed: shipped with the bff-auth module templates. |
 
@@ -918,7 +918,7 @@ The BFF reads the upload limit from the env key the backend upload rules also re
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.maxBodyKey` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/WEB-049/` |
 | Adoption | Nothing needed: shipped with the bff-auth module templates. |
 
@@ -970,7 +970,7 @@ A web architecture test parses every module under the configured server paths an
 | Enabled by default | yes |
 | Configurable | `rules.SEC-031.serverPaths` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-031/` |
 | Adoption | Nothing needed: adopt adds the import to existing modules under the server paths. |
 
@@ -991,7 +991,7 @@ A test imports the typed env module and asserts that the API base URL key exists
 | Enabled by default | yes |
 | Configurable | `rules.WEB-011.envModules` (planned), `modules.bff-auth.apiUrlKey` (planned) |
 | Decision | [ADR 0069](../decisions/0069-typed-env-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-032/` |
 | Adoption | Fix first: moving the variable to the server schema is part of adopting bff-auth. |
 
@@ -1017,7 +1017,7 @@ The Next.js proxy only redirects signed-out visitors by cookie presence, while s
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0070](../decisions/0070-proxy-ux-only-session-reverification.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review; reviewers move any validation found in the proxy into the handlers. |
 
 ## SEC-034
@@ -1037,7 +1037,7 @@ The cross-stack/route-handler-session rule flags every exported HTTP method hand
 | Enabled by default | yes |
 | Configurable | `rules.SEC-034.sessionHelper` (planned), `rules.SEC-034.wrappers` (planned) |
 | Decision | [ADR 0070](../decisions/0070-proxy-ux-only-session-reverification.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-034/` |
 | Adoption | Allowlist: no bulk suppression for a Tier-1 rule; each existing handler without the check gets a dated allowlist entry. |
 
@@ -1065,7 +1065,7 @@ Unit tests of the shipped assertSameOrigin helper pass only Sec-Fetch-Site same-
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.allowedOrigins` (planned) |
 | Decision | [ADR 0074](../decisions/0074-bff-csrf-defense.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-035/` |
 | Adoption | Nothing needed: the helper ships with the bff-auth module; clients that strip both Origin and Sec-Fetch-Site can no longer mutate through the BFF. |
 
@@ -1086,7 +1086,7 @@ A table-driven test over the session module's set, clear and hint writers assert
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.cookieSlug` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-036/` |
 | Adoption | Nothing needed: the session module ships with bff-auth; existing cookies are renamed with the migration playbook. |
 
@@ -1112,7 +1112,7 @@ The cross-stack/session-cookie-single-writer rule flags cookie set and delete ca
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.sessionModule` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-037/` |
 | Adoption | Baseline: existing writers go into the shrink-only ESLint bulk suppressions. |
 
@@ -1137,7 +1137,7 @@ A login route test with a mocked upstream asserts that the response JSON holds n
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.tokenPath` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-038/` |
 | Adoption | Nothing needed: the login handler ships with bff-auth. |
 
@@ -1162,7 +1162,7 @@ Route tests with a mocked upstream assert Max-Age=0 for every token cookie and t
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-039/` |
 | Adoption | Nothing needed: the logout handler and the catch-all ship with bff-auth. |
 
@@ -1187,7 +1187,7 @@ One table of cookie states runs against every presence predicate, request-side a
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-040/` |
 | Adoption | Nothing needed: the predicates ship with bff-auth. |
 
@@ -1212,7 +1212,7 @@ A forwarder test with a mocked fetch asserts that outbound headers equal the req
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.requestHeaders` (planned), `modules.bff-auth.responseHeaders` (planned), `modules.bff-auth.forcedUpstreamHeaders` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-041/` |
 | Adoption | Nothing needed: the forwarder ships with bff-auth. |
 
@@ -1238,7 +1238,7 @@ The proxy builds the upstream URL from the decoded segment array, rejects empty,
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.apiBasePath` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-042/` |
 | Adoption | Nothing needed: the URL builder ships with bff-auth and replaces any string-joining proxy. |
 
@@ -1264,7 +1264,7 @@ A web architecture test lists every route file in the app directory and fails an
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-043/` |
 | Adoption | Allowlist: existing dedicated handlers get dated entries that name their reason. |
 
@@ -1285,7 +1285,7 @@ The cross-stack/no-direct-api-origin rule flags absolute http(s) URL literals pa
 | Enabled by default | yes |
 | Configurable | `rules.SEC-031.serverPaths` (planned) |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-044/` |
 | Adoption | Baseline: existing direct calls go into the shrink-only ESLint bulk suppressions. |
 
@@ -1311,7 +1311,7 @@ The kit's floor check reads the next version resolved in the lockfile and fails 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0071](../decisions/0071-nextjs-security-floor.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-045/` |
 | Adoption | Fix first: upgrade next to the floor before adopting; it is a patch-level bump within 16.x. |
 
@@ -1332,7 +1332,7 @@ The scope-aware cross-stack/no-web-storage rule flags the localStorage and sessi
 | Enabled by default | yes |
 | Configurable | `rules.SEC-046.storageModule` (planned) |
 | Decision | [ADR 0083](../decisions/0083-credential-and-client-storage.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-046/` |
 | Adoption | Allowlist: no ESLint bulk suppressions for this rule; each existing use needs a dated allowlist entry linked to a migration ADR. |
 
@@ -1360,7 +1360,7 @@ The cross-stack/no-raw-html rule flags the dangerouslySetInnerHTML key in JSX at
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0086](../decisions/0086-no-raw-html-sinks.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-047/` |
 | Adoption | Allowlist: existing sinks get dated entries until they move behind the sanitizing wrapper. |
 
@@ -1374,7 +1374,7 @@ Known evasions:
 
 **Point browser tooling only at local or dev test accounts, and copy nothing it observes.**
 
-Because the Chrome DevTools MCP companion can see cookies and request headers, reviewers verify it is only aimed at local or development environments signed in with test accounts, and that nothing it captures leaves the machine.
+Browser tools can read page content and browser state, including cookies and request data. Reviewers verify they are used only on local or development environments with test accounts, and that nothing observed leaves the machine.
 
 | Property | Value |
 | --- | --- |
@@ -1386,9 +1386,9 @@ Because the Chrome DevTools MCP companion can see cookies and request headers, r
 | Profiles | all |
 | Enabled by default | yes |
 | Configurable | — |
-| Decision | [ADR 0106](../decisions/0106-companion-plugins.md) |
-| Since | 1.0.0 |
-| Adoption | Nothing needed: adopt states it when it offers the companion, and it is checked in review. |
+| Decision | [ADR 0108](../decisions/0108-playwright-mcp-for-browser-checks.md) |
+| Since | 0.1.0 |
+| Adoption | Nothing needed: adopt states the limits for both browser companions, and review checks them. |
 
 ## SEC-059
 
@@ -1407,7 +1407,7 @@ The cookie max-age is set below the token expiration and both values are documen
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0073](../decisions/0073-bff-auth-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review; adopt writes both values next to each other in the example env files. |
 
 ## SEC-060
@@ -1452,7 +1452,7 @@ The cross-stack/same-origin-mutations rule fails every exported POST, PUT, PATCH
 | Enabled by default | yes |
 | Configurable | `modules.bff-auth.originHelper` (planned) |
 | Decision | [ADR 0074](../decisions/0074-bff-csrf-defense.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-067/` |
 | Adoption | Allowlist: no bulk suppression for a Tier-1 rule; existing handlers get dated allowlist entries until they call the helper. |
 
@@ -1478,7 +1478,7 @@ A config check reads experimental.serverActions.allowedOrigins and fails on "nul
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0074](../decisions/0074-bff-csrf-defense.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-068/` |
 | Adoption | Allowlist: an existing wildcard entry needs a dated allowlist entry with its reason. |
 
@@ -1503,7 +1503,7 @@ The cross-stack/no-mutating-get-handler rule fails exported GET and HEAD handler
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0074](../decisions/0074-bff-csrf-defense.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-070/` |
 | Adoption | Baseline: existing findings go into the shrink-only ESLint bulk suppressions. |
 
@@ -1529,7 +1529,7 @@ A web architecture test imports the proxy module and fails when it exports runti
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0070](../decisions/0070-proxy-ux-only-session-reverification.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-072/` |
 | Adoption | Fix first: delete the runtime export while renaming middleware to proxy. |
 
@@ -1550,7 +1550,7 @@ A doctor check requires chrome-devtools-mcp to come from the Standard's pinned m
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0106](../decisions/0106-companion-plugins.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/SEC-073/` |
 | Adoption | Opt-in: adopt offers the companion and installs it at project scope when the user agrees; headless and CI runs disable the server. |
 
@@ -1577,7 +1577,7 @@ cross-stack/no-physical-direction splits class strings into utilities, strips va
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0081](../decisions/0081-logical-direction-styling.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-012/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -1603,7 +1603,7 @@ The installed i18n library's type augmentation is generated from the source loca
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0080](../decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-015/` |
 | Adoption | Nothing needed: adopt generates the augmentation; parity gaps are handled by the parity rules. |
 
@@ -1629,7 +1629,7 @@ cross-stack/no-locale-branching reports conditional, logical, if and switch test
 | Enabled by default | yes |
 | Configurable | `locales`, `modules.i18n.localizedFieldHelper` (planned) |
 | Decision | [ADR 0078](../decisions/0078-labels-and-multilingual-content.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-018/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -1656,7 +1656,7 @@ A table-driven test over the configured locales asserts that the helper returns 
 | Enabled by default | yes |
 | Configurable | `locales`, `modules.i18n.defaultLocale` (planned) |
 | Decision | [ADR 0078](../decisions/0078-labels-and-multilingual-content.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-020/` |
 | Adoption | Nothing needed: the kit ships the helper and its test. |
 
@@ -1682,7 +1682,7 @@ A test imports the routing configuration and asserts localePrefix always, locale
 | Enabled by default | yes |
 | Configurable | `locales`, `modules.i18n.defaultLocale` (planned), `modules.i18n.localeCookie` (planned) |
 | Decision | [ADR 0079](../decisions/0079-web-locale-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-021/` |
 | Adoption | Fix first: brownfield routing is migrated to the kit's routing module. |
 
@@ -1707,7 +1707,7 @@ A test asserts that the time zone the request configuration exports is a valid I
 | Enabled by default | yes |
 | Configurable | `modules.i18n.timeZone` (planned) |
 | Decision | [ADR 0079](../decisions/0079-web-locale-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-022/` |
 | Adoption | Nothing needed: adopt writes the configured zone. |
 
@@ -1732,7 +1732,7 @@ A cross-stack/module-boundary entry reports static, dynamic, require and export-
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0079](../decisions/0079-web-locale-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-023/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -1758,7 +1758,7 @@ A global no-restricted-syntax selector reports template literals whose text star
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0079](../decisions/0079-web-locale-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-024/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -1786,7 +1786,7 @@ A test feeds the helper every configured locale, region and script subtags inclu
 | Enabled by default | yes |
 | Configurable | `locales`, `modules.i18n.defaultLocale` (planned) |
 | Decision | [ADR 0079](../decisions/0079-web-locale-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-025/` |
 | Adoption | Nothing needed: the kit ships the helper and its test. |
 
@@ -1811,7 +1811,7 @@ An architecture test lists the page files under the app directory and fails on a
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0079](../decisions/0079-web-locale-routing.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-026/` |
 | Adoption | Allowlist: dated entries for legacy pages still being moved under the locale segment. |
 
@@ -1832,7 +1832,7 @@ cross-stack/html-lang-dir requires the root layout's html element to bind lang a
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0077](../decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-027/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, shrink-only under check-baselines. |
 
@@ -1857,7 +1857,7 @@ A template test drives the BFF proxy, or the SPA API client, with a browser Acce
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0077](../decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-039/` |
 | Adoption | Nothing needed: the kit's proxy and client set the header. |
 
@@ -1882,7 +1882,7 @@ A unit test derives the direction of every configured locale, region and script 
 | Enabled by default | yes |
 | Configurable | `locales` |
 | Decision | [ADR 0077](../decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/I18N-044/` |
 | Adoption | Nothing needed: the kit ships the list, the helper and the test. |
 
@@ -1907,7 +1907,7 @@ No module in the UI primitive folder imports, directly or transitively, from a f
 | Enabled by default | yes |
 | Configurable | `rules.UI-001.uiPath` (planned), `modules.api-contract.webTypesPath` (planned) |
 | Decision | [ADR 0062](../decisions/0062-frontend-layer-boundaries.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/UI-001/` |
 | Adoption | Baseline: existing edges go into the dependency-cruiser known-violations baseline, which PROC-027 keeps shrink-only. |
 
@@ -1928,7 +1928,7 @@ No module in the UI primitive folder imports the configured i18n library, any of
 | Enabled by default | yes |
 | Configurable | `rules.UI-001.uiPath` (planned), `rules.UI-002.i18nLibrary` (planned) |
 | Decision | [ADR 0065](../decisions/0065-ui-primitives-and-request-states.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/UI-002/` |
 | Adoption | Baseline: existing edges go into the dependency-cruiser known-violations baseline, which PROC-027 keeps shrink-only. |
 
@@ -1949,7 +1949,7 @@ Stacking order comes only from the z-index token ladder: arbitrary z-\[n\] class
 | Enabled by default | yes |
 | Configurable | `rules.UI-004.ladder` (planned) |
 | Decision | [ADR 0065](../decisions/0065-ui-primitives-and-request-states.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/UI-004/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -1975,7 +1975,7 @@ Source files import no .scss, .sass, .less or .styl stylesheet and no CSS-in-JS 
 | Enabled by default | yes |
 | Configurable | `stack.styling.use` (planned) |
 | Decision | [ADR 0066](../decisions/0066-design-tokens.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/UI-005/` |
 | Adoption | Baseline: existing preprocessor or CSS-in-JS imports go into ESLint bulk suppressions (shrink-only) while a declared stack migration removes them. |
 
@@ -2029,7 +2029,7 @@ Custom properties declared outside the token source's theme block are pure var()
 | Enabled by default | yes |
 | Configurable | `rules.UI-007.tokenSource` (planned), `rules.UI-007.cssGlobs` (planned) |
 | Decision | [ADR 0066](../decisions/0066-design-tokens.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/UI-007/` |
 | Adoption | Allowlist: existing declarations outside the token source get dated entries and move into the source over time. |
 
@@ -2055,7 +2055,7 @@ String and template literals containing var(--color-...) appear only in the conf
 | Enabled by default | yes |
 | Configurable | `rules.UI-008.chartTokenModule` (planned) |
 | Decision | [ADR 0066](../decisions/0066-design-tokens.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/UI-008/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -2081,7 +2081,7 @@ A var(--token) reference in string or template literals carries no fallback valu
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0066](../decisions/0066-design-tokens.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/UI-009/` |
 | Adoption | Baseline: existing violations go into ESLint bulk suppressions, which PROC-015 keeps shrink-only. |
 
@@ -2147,7 +2147,7 @@ Known evasions:
 
 **Browser-check every changed screen before reporting UI work done.**
 
-With the browser-check module on, each changed screen is opened with the Chrome DevTools MCP companion against a local or development environment and checked for rendering, console errors and failed requests before UI work is reported done.
+With the browser-check module on, use the Playwright MCP companion to inspect each changed screen against a local or development environment for rendering and console errors; use Chrome DevTools MCP for advanced network and performance diagnostics when needed.
 
 | Property | Value |
 | --- | --- |
@@ -2159,9 +2159,9 @@ With the browser-check module on, each changed screen is opened with the Chrome 
 | Profiles | all |
 | Enabled by default | yes |
 | Configurable | — |
-| Decision | [ADR 0106](../decisions/0106-companion-plugins.md) |
-| Since | 1.0.0 |
-| Adoption | Nothing needed: applies to new UI work once the companion is installed and the module is on. |
+| Decision | [ADR 0108](../decisions/0108-playwright-mcp-for-browser-checks.md) |
+| Since | 0.1.0 |
+| Adoption | Nothing needed: applies to new UI work once a browser companion is installed and the module is on. |
 
 ## CI-002
 
@@ -2180,7 +2180,7 @@ A CI-parity sub-check reads package.json and requires the check script to run th
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0090](../decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/CI-002/` |
 | Adoption | Nothing needed: adopt writes check and check:fast into package.json and keeps any stricter existing member. |
 
@@ -2206,7 +2206,7 @@ A CI-parity sub-check requires the web quality job, or the reusable web workflow
 | Enabled by default | yes |
 | Configurable | `rules.CI-009.qualityJob` (planned) |
 | Decision | [ADR 0090](../decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/web/violations/CI-003/` |
 | Adoption | Fix first: the reusable web workflow ships the build step; a build that needs a runtime secret is fixed before adopting. |
 

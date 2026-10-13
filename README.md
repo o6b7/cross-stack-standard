@@ -52,12 +52,14 @@ In a Claude Code session, in the repository you want to adopt:
 
 The Claude Code hooks and project tool need Node.js 22.13 or later on your `PATH`. Without it the
 hooks cannot start; Claude Code reports a non-blocking hook error and the session carries on. The
-plugin is validated in CI with Claude Code 2.1.282; a minimum supported version is not stated yet.
+CI validator is pinned to Claude Code 2.1.296, and local strict validation passed on that version.
+A minimum supported version is not stated yet.
 
-**Always-on context cost:** about 220 tokens for the core skill's description (Claude Code's
-projection is ~880 because it also counts the five user-only skills, which stay out of context),
-about 90 for the SessionStart summary, and about 910 for the managed `CLAUDE.md` block in an
-adopted project. Figures and method: [release guide](docs/maintainers/release.md#context-budget).
+**Always-on context cost:** Claude Code's plugin projection is about 927 tokens, including five
+user-only skills whose descriptions stay out of runtime context. The core skill description is
+about 220 tokens; the SessionStart summary is about 90; the managed `CLAUDE.md` block is about 910
+in an adopted project. Runtime `/context` has not yet been measured in an authenticated session.
+Figures and method: [release guide](docs/maintainers/release.md#context-budget).
 
 Next: [Getting started](docs/getting-started.md) walks through the first session.
 
@@ -78,8 +80,8 @@ cp -R skills/cross-stack-standard ~/.codex/skills/
 ```
 
 Other hosts that support the Agent Skills format can install the same directory through their skill
-manager. It includes the rule index and track references, so it does not depend on the Claude Code
-plugin path.
+manager. It includes the rule index, track references and its own MIT license, so it does not depend
+on the Claude Code plugin path.
 
 | Host                     | What is included                                                                           |
 | ------------------------ | ------------------------------------------------------------------------------------------ |
@@ -177,21 +179,22 @@ units ([ADR 0010](docs/decisions/0010-opt-in-modules.md)). Defaults follow from 
 locales you declare ([ADR 0011](docs/decisions/0011-default-module-set.md)); an explicit value
 always wins.
 
-**Companion plugins.** The marketplace also pins four third-party plugins to reviewed commits:
-caveman (terse replies, off until `/caveman`), impeccable (design review), the Figma MCP server and
-the Chrome DevTools MCP server. `/cross-stack-standard:adopt` offers them, all recommended, in one
-question and installs only the ones you tick
-([ADR 0106](docs/decisions/0106-companion-plugins.md)).
+**Companion plugins.** The marketplace also pins five third-party plugins to reviewed commits:
+caveman (terse replies, off until `/caveman`), impeccable (design review), the Figma MCP server,
+Playwright MCP for routine browser checks and Chrome DevTools MCP for advanced diagnostics.
+`/cross-stack-standard:adopt` offers them in one question and installs only the ones you approve
+([ADR 0106](docs/decisions/0106-companion-plugins.md),
+[ADR 0108](docs/decisions/0108-playwright-mcp-for-browser-checks.md)).
 
-| Module          | What it adds                                                                  | Default                                      |
-| --------------- | ----------------------------------------------------------------------------- | -------------------------------------------- |
-| `api-contract`  | Resource success shape, RFC 9457 problem details, generated TypeScript types  | On with the `laravel` track                  |
-| `i18n`          | Configured locales, RTL derived per locale, parity, logical-direction styling | On when `locales` lists more than one locale |
-| `bff-auth`      | Cookie BFF for Next.js in front of the API: session, CSRF, header allow-list  | On with `web` (profile `next`) and `laravel` |
-| `tenancy`       | Tenant scoping that fails closed, isolation suites, background tenant context | Off                                          |
-| `design`        | Rules for the impeccable companion: audit, critique and polish of UI changes  | On when adopt installs impeccable            |
-| `browser-check` | Rules for the Chrome DevTools MCP companion: check changed screens locally    | On when adopt installs Chrome DevTools MCP   |
-| `observability` | Error tracking across stacks (planned after 1.0)                              | Off                                          |
+| Module          | What it adds                                                                  | Default                                               |
+| --------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `api-contract`  | Resource success shape, RFC 9457 problem details, generated TypeScript types  | On with the `laravel` track                           |
+| `i18n`          | Configured locales, RTL derived per locale, parity, logical-direction styling | On when `locales` lists more than one locale          |
+| `bff-auth`      | Cookie BFF for Next.js in front of the API: session, CSRF, header allow-list  | On with `web` (profile `next`) and `laravel`          |
+| `tenancy`       | Tenant scoping that fails closed, isolation suites, background tenant context | Off                                                   |
+| `design`        | Rules for the impeccable companion: audit, critique and polish of UI changes  | On when adopt installs impeccable                     |
+| `browser-check` | Routine Playwright MCP checks; Chrome DevTools MCP for advanced diagnostics   | On when adopt records consent for either browser tool |
+| `observability` | Error tracking across stacks (planned after 1.0)                              | Off                                                   |
 
 ```json
 {

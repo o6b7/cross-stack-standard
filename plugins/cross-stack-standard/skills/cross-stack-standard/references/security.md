@@ -33,7 +33,7 @@ Where each track's security rules are listed:
   SEC-039, SEC-040, SEC-041, SEC-042, SEC-043, SEC-044, SEC-059, SEC-067, SEC-068, SEC-070.
 - Tenant isolation, in [tenancy.md](tenancy.md): SEC-015, SEC-016, SEC-017, SEC-018, SEC-019,
   SEC-020, SEC-021, SEC-069.
-- Browser tooling, in [companions.md](companions.md): SEC-048, SEC-073.
+- Browser tooling, in [companions.md](companions.md): SEC-048, SEC-073, SEC-074.
 
 ## Rules
 

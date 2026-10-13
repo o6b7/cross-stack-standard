@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/allowlist.schema.json",
+  "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.1.0/plugins/cross-stack-standard/data/allowlist.schema.json",
   "title": "Cross-Stack Standard allowlist",
   "description": "A dated allowlist for one rule, stored as .cross-stack/allowlists/<RULE-ID>.json. Every entry needs a reason, an owner and an expiry date; expired entries fail the check.",
   "type": "object",

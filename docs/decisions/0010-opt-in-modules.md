@@ -44,8 +44,8 @@ adoption structurally impossible.
   profile only), `design`, `browser-check` and `observability` (after 1.0). They are declared under
   `modules` in `.cross-stack/standard.json` and validated by the published schema. Defaults are a
   separate decision ([0011](0011-default-module-set.md)). `design` and `browser-check` switch on the
-  rules for the impeccable and Chrome DevTools MCP companion plugins
-  ([0106](0106-companion-plugins.md)).
+  rules for the impeccable and browser companion plugins (Playwright MCP or Chrome DevTools MCP;
+  [0106](0106-companion-plugins.md), [0108](0108-playwright-mcp-for-browser-checks.md)).
 - **Whole units.** A module is adopted as a complete unit: files, registration, route groups,
   seeds, gates and tests. A module that is not declared leaves no substrate behind: no dormant
   trait, no unused middleware, no half-wired locale.

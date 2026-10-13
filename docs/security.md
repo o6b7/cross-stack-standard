@@ -72,10 +72,11 @@ one data file that the templates and a floor check read
 
 ## Third-party modules
 
-The Standard's marketplace pins four companion plugins to reviewed commits: caveman, impeccable,
-the Figma MCP server and the Chrome DevTools MCP server
-([ADR 0106](decisions/0106-companion-plugins.md)). `/cross-stack-standard:adopt` offers them in
-one question and installs only the ones you tick, with `claude plugin install
+The Standard's marketplace pins five companion plugins to reviewed commits: caveman, impeccable,
+the Figma MCP server, Playwright MCP and the Chrome DevTools MCP server
+([ADR 0106](decisions/0106-companion-plugins.md),
+[ADR 0108](decisions/0108-playwright-mcp-for-browser-checks.md)). `/cross-stack-standard:adopt` offers them in
+one question and installs only the ones you approve, with `claude plugin install
 <name>@cross-stack-standard`. Never install them from their upstream instructions: those track the
 latest commit and turn on hooks the companion entries leave off. In 0.1.0 the related rules
 (UI-021, UI-022, SEC-048, SEC-073, UI-013) are REVIEW.
@@ -101,7 +102,27 @@ run against the project's own design tokens (UI-021).
 A remote MCP server at `mcp.figma.com`, with the Figma plugin's skills. It reads what your Figma
 account can see, and only after you sign in once in `/mcp`.
 
-### Chrome DevTools MCP (`browser-check` module)
+### Playwright MCP (`browser-check` module)
+
+The companion pins Microsoft's [`playwright-mcp`](https://github.com/microsoft/playwright-mcp)
+repository to commit `f183dad4a52965583e3cc1d59b88cdc279e2e57d` and starts the exact
+`@playwright/mcp@0.0.83` package. It uses an isolated in-memory Chromium profile, runs headless,
+disables page-provided WebMCP tools, and limits console output to errors. It may fetch the npm
+package and Chromium from Microsoft's browser CDN on first use. It runs locally with your user
+privileges and can read page content. Use only local or development hosts with test accounts, never
+real credentials, and never copy cookies, tokens, headers or personal data into chat, commits, logs
+or issues (SEC-048).
+
+The PreToolUse hook checks top-level navigation URLs and the current page against local hosts and
+`hooks.preToolUse.browserHosts`; it asks before page-side JavaScript, arbitrary Playwright code in
+the server process, uploads, network request details, back navigation and tools outside the reviewed
+list (SEC-074). Ask before submitting forms or changing app state. The server itself is not a
+security boundary, and the hook cannot reliably detect cross-origin redirects, link navigation or
+subresource requests. Stop if the page reports a host outside the intended development environment.
+The package currently pins Playwright and playwright-core to an alpha build; see the
+[maintainer version record](maintainers/verified-versions.md) and [ADR 0108](decisions/0108-playwright-mcp-for-browser-checks.md).
+
+### Chrome DevTools MCP (advanced)
 
 The companion starts `chrome-devtools-mcp` at an exact version, with a temporary browser profile,
 usage statistics, CrUX lookups and update checks off, and sensitive network headers redacted.

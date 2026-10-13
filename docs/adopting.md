@@ -121,21 +121,23 @@ Both print one finding per line and exit `1` on a failure, so they drop straight
 Modules are installed and removed as whole units: files, registration, route groups, seeds and
 tests ([ADR 0010](decisions/0010-opt-in-modules.md)). To turn one on, set it to `true` in the
 manifest and run `/cross-stack-standard:adopt` again: on a project already at the plugin's version
-it keeps your settings and installs what is missing. `design` and `browser-check` follow the
-impeccable and Chrome DevTools MCP companions that adopt installs; the other modules record the
+it keeps your settings and installs what is missing. `design` follows impeccable, and `browser-check`
+is on when adopt records consent for Playwright MCP or Chrome DevTools MCP; the other modules record the
 choice, and their rules apply as guidance.
 To turn a module off, set it to `false` and remove what it installed. The `i18n` module also needs a
 `locales` list whose first entry is the source locale.
 
 ## Companion plugins
 
-Adopt also offers four companion plugins, all recommended, in one question: caveman, impeccable,
-the Figma MCP server and the Chrome DevTools MCP server. Each comes from the Standard's marketplace,
-pinned to a reviewed commit, and is installed only when you tick it: impeccable, Figma and Chrome
-DevTools MCP at project scope for the whole team, caveman at user scope. New plugins load in the
-next session. Read [Security](security.md#third-party-modules) for what each one can reach, and
-run `/cross-stack-standard:doctor` later to find missing, duplicate or hand-copied copies
-([ADR 0106](decisions/0106-companion-plugins.md)).
+Adopt offers five companion plugins in one question: caveman, impeccable, the Figma MCP server,
+Playwright MCP for routine browser checks, and Chrome DevTools MCP for advanced diagnostics. Each
+comes from the Standard's marketplace, pinned to a reviewed commit, and is installed only when you
+approve it: impeccable, Figma, Playwright and Chrome DevTools MCP at project scope for the whole
+team, caveman at user scope. New plugins load in the next session. Read
+[Security](security.md#third-party-modules) for what each one can reach, and run
+`/cross-stack-standard:doctor` later to find missing, duplicate or hand-copied copies
+([ADR 0106](decisions/0106-companion-plugins.md),
+[ADR 0108](decisions/0108-playwright-mcp-for-browser-checks.md)).
 
 ## Rolling out to a team
 

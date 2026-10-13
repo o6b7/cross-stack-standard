@@ -165,6 +165,10 @@ export function git(dir, args) {
  */
 export function initRepo(dir) {
   git(dir, ["init", "-q", "-b", "main"]);
+  // Keep the next-commit identity checks independent of the developer or CI runner's global
+  // Git configuration. The staged brand scan resolves identities from this repository config.
+  git(dir, ["config", "user.name", "Test"]);
+  git(dir, ["config", "user.email", "test@example.com"]);
   git(dir, ["config", "commit.gpgsign", "false"]);
   git(dir, ["config", "tag.gpgsign", "false"]);
   git(dir, ["config", "core.autocrlf", "false"]);

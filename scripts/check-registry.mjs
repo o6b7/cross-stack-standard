@@ -30,9 +30,9 @@
  *     fixture with its ID printed, is internally consistent, names the registry's gate and was
  *     produced from the current inputs (fingerprint recomputed). A partial (filtered) report is
  *     an error unless --allow-partial is given.
- *  9. release (with --release) — every default-on rule is at its target level and its `since`
- *     is not later than VERSION, because promoting a default-on rule after the release is a MAJOR
- *     change (docs/decisions/0024-versioning.md).
+ *  9. release (with --release) — no default-on rule is scheduled after VERSION. Before 1.0,
+ *     releases may promote default-on REVIEW rules with explicit notes; starting with 1.0, every
+ *     default-on rule must be at its target level (docs/decisions/0107-pre-1-0-rule-promotion.md).
  *
  * The fixture report is the `fixture-report.json` that scripts/run-fixtures.mjs writes
  * (`formatVersion` 2): one entry in `results` per rule and host, with `clean.ok` (the gate passed
@@ -125,8 +125,8 @@ Options:
   --root <dir>             Repository root (default: the repository holding this script)
   --fixture-report <file>  fixture-report.json written by scripts/run-fixtures.mjs
   --allow-partial          Accept a filtered (partial) fixture report; for local debugging only
-  --release                Also apply the release gate: a default-on rule must be at its target
-                           level and its since must not be later than VERSION
+  --release                Also apply the release gate: default-on rules must be available in
+                           VERSION; from 1.0 onward they must also be at their target level
   --json                   Print a machine-readable report
   --verbose                Also print the evidence of every gate found
   --help                   Show this help
@@ -769,7 +769,8 @@ export function checkRegistry({
     }
   }
 
-  // 9. Release gate: what a default-on rule may claim in the version being released.
+  // 9. Release gate: preview releases may promote default-on guidance; stable releases must
+  // carry every default-on rule at its target so later default changes remain non-breaking.
   if (release) {
     let version = null;
     try {
@@ -784,6 +785,9 @@ export function checkRegistry({
       });
     }
     if (version) {
+      // SemVer permits breaking changes in 0.x MINOR releases. Once the major version reaches 1,
+      // changing a default-on REVIEW rule to its target could newly fail an adopter's build.
+      const stablePolicy = Number(version.split(".")[0]) >= 1;
       for (const { rule, index } of validRules) {
         if (ids.get(rule.id)?.index !== index || rule.defaultEnabled !== true) continue;
         const at = { id: rule.id, path: registryPath, line: lineOf(index), check: "release" };
@@ -792,7 +796,7 @@ export function checkRegistry({
             ...at,
             message: `release: a default-on rule cannot ship in ${version} while its since is ${rule.since}; set defaultEnabled to false until that version`,
           });
-        } else if (effectiveTarget(rule) !== rule.enforcement) {
+        } else if (stablePolicy && effectiveTarget(rule) !== rule.enforcement) {
           errors.push({
             ...at,
             message: `release: a default-on rule ships as ${rule.enforcement} below its target ${effectiveTarget(rule)}, and promoting a default-on rule later is a MAJOR change; ship its gate and fixtures, or set defaultEnabled to false`,

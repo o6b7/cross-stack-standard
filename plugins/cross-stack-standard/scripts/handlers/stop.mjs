@@ -282,7 +282,9 @@ export function homeSpellings(home = safeHomedir()) {
   // A root directory as home would turn every absolute path into `~`.
   if (trimmed === "" || /^[A-Za-z]:$/.test(trimmed)) return [];
   const spellings = new Set([trimmed]);
-  if (IS_WINDOWS || /^[A-Za-z]:[\\/]/.test(trimmed)) {
+  // Only expand Windows absolute paths. A POSIX path supplied by a caller or test on Windows
+  // should retain its original spelling rather than gaining a second, unrelated backslash form.
+  if (/^[A-Za-z]:[\\/]/.test(trimmed) || /^(?:\\\\|\/\/)[^\\/]+[\\/][^\\/]+/.test(trimmed)) {
     spellings.add(trimmed.replace(/\\/g, "/"));
     spellings.add(trimmed.replace(/\//g, "\\"));
   }

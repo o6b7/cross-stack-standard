@@ -49,7 +49,7 @@ single-locale project gets none of the modules it has no use for.
 | `bff-auth`      | on      | `tracks` includes `web` with the `next` profile, and also `laravel`                                                                                                                                                           |
 | `tenancy`       | off     | multi-tenancy is a product fact the kit cannot infer from manifests                                                                                                                                                           |
 | `design`        | off     | on when adopt installs the impeccable companion the user ticked ([0106](0106-companion-plugins.md))                                                                                                                           |
-| `browser-check` | off     | on when adopt installs the Chrome DevTools MCP companion the user ticked ([0106](0106-companion-plugins.md))                                                                                                                  |
+| `browser-check` | off     | on when adopt records consent for Playwright MCP or Chrome DevTools MCP ([0106](0106-companion-plugins.md), [0108](0108-playwright-mcp-for-browser-checks.md))                                                                |
 | `observability` | off     | needs an error-tracking account ([0099](0099-observability-module.md))                                                                                                                                                        |
 
 - **Explicit values win.** A value in the manifest always overrides the default, for example

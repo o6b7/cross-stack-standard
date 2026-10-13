@@ -56,7 +56,7 @@ const EVENTS = [
   "UserPromptSubmit",
 ];
 const COMPANION_MATCHER =
-  "mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*";
+  "mcp__plugin_playwright-mcp_playwright__.*|mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*";
 
 function assertSilent(result, label = "") {
   assert.equal(result.exitCode, 0, `${label} exit code\n${result.stdout}${result.stderr}`);

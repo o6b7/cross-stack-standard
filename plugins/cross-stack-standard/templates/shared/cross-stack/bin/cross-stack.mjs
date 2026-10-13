@@ -1,4 +1,4 @@
-// cross-stack-standard v0.0.0
+// cross-stack-standard v0.1.0
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Qusai Abdullah
 //
@@ -2306,10 +2306,10 @@ function runCommand(argv, out, err) {
 // Written by scripts/build-plugin-data.mjs from VERSION and schemas/*.json. Do not edit by hand.
 // prettier-ignore
 const GENERATED = {
-  "version": "0.0.0",
+  "version": "0.1.0",
   "standardSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/standard.schema.json",
+    "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.1.0/plugins/cross-stack-standard/data/standard.schema.json",
     "title": "Cross-Stack Standard project manifest",
     "description": "The manifest at .cross-stack/standard.json: which version of the Standard a project adopted, its tracks, profile, tier and modules, and the settings of the Standard's hooks.",
     "type": "object",
@@ -2421,6 +2421,9 @@ const GENERATED = {
             "type": "boolean"
           },
           "figma": {
+            "type": "boolean"
+          },
+          "playwright-mcp": {
             "type": "boolean"
           },
           "chrome-devtools-mcp": {
@@ -2761,7 +2764,7 @@ const GENERATED = {
   },
   "allowlistSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/allowlist.schema.json",
+    "$id": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.1.0/plugins/cross-stack-standard/data/allowlist.schema.json",
     "title": "Cross-Stack Standard allowlist",
     "description": "A dated allowlist for one rule, stored as .cross-stack/allowlists/<RULE-ID>.json. Every entry needs a reason, an owner and an expiry date; expired entries fail the check.",
     "type": "object",

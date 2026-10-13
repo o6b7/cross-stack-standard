@@ -38,6 +38,7 @@ const MANIFEST = path.join(".cross-stack", "standard.json");
 /** Modules that follow a companion's answer. */
 export const MODULE_OF = Object.freeze({
   impeccable: "design",
+  "playwright-mcp": "browser-check",
   "chrome-devtools-mcp": "browser-check",
 });
 
@@ -179,9 +180,11 @@ export function run(
         const value = manifest.value;
         value.companions = { ...(value.companions ?? {}), ...plan.consent };
         if (value.modules !== null && typeof value.modules === "object") {
+          const modules = new Map();
           for (const [name, module] of Object.entries(MODULE_OF)) {
-            value.modules[module] = plan.consent[name] === true;
+            modules.set(module, (modules.get(module) ?? false) || plan.consent[name] === true);
           }
+          for (const [module, enabled] of modules) value.modules[module] = enabled;
         }
         fs.writeFileSync(manifest.file, `${JSON.stringify(value, null, 2)}\n`);
         for (const [name, approved] of Object.entries(plan.consent)) {

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.0.0/plugins/cross-stack-standard/data/standard.schema.json",
+  "$schema": "https://raw.githubusercontent.com/o6b7/cross-stack-standard/v0.1.0/plugins/cross-stack-standard/data/standard.schema.json",
   "version": "0.0.0",
   "tracks": ["laravel", "web", "mobile"],
   "profile": "next",

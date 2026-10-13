@@ -80,7 +80,9 @@ describe("walk order", () => {
     const files = { "package.json": NEXT };
     for (const name of ["b", "a", "c", "a/z", "a/y"]) files[`${name}/package.json`] = NEXT;
     const project = makeProject(t, files);
-    assert.deepEqual(detectTracks(project.root).sources.web, [
+    const detection = detectTracks(project.root, { timeMs: 5_000 });
+    assert.equal(detection.truncated, null);
+    assert.deepEqual(detection.sources.web, [
       "package.json",
       "a/package.json",
       "b/package.json",

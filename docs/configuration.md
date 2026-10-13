@@ -120,15 +120,15 @@ registration, gates and tests ([ADR 0010](decisions/0010-opt-in-modules.md)). A 
 The 0.1.0 defaults below follow [ADR 0011](decisions/0011-default-module-set.md). They depend only
 on manifest facts (tracks, profile, locales), and an explicit value in the manifest always wins.
 
-| Module          | What it covers                                                                                 | 0.1.0 default                                     | Decision                                                                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `api-contract`  | Resource success shape without double wrapping, RFC 9457 problem details, a generated contract | on when `tracks` includes `laravel`               | [0052](decisions/0052-api-success-shape.md), [0053](decisions/0053-rfc-9457-problem-details.md), [0054](decisions/0054-generated-api-contract.md) |
-| `i18n`          | Configured locales, server-localized messages, locale parity, right-to-left layout             | on when `locales` lists more than one locale      | [0077](decisions/0077-i18n-module.md)                                                                                                             |
-| `bff-auth`      | Next.js cookie BFF: session cookies, same-origin checks, per-handler session re-verification   | on for `web` with `next` when `laravel` is listed | [0073](decisions/0073-bff-auth-module.md), [0074](decisions/0074-bff-csrf-defense.md)                                                             |
-| `tenancy`       | Multi-tenant isolation: tenant scoping, tenant context in background work, isolation suites    | off                                               | [0057](decisions/0057-tenancy-module.md)                                                                                                          |
-| `design`        | Rules for the impeccable companion: audit, critique and polish of UI changes                   | on when adopt installs impeccable                 | [0106](decisions/0106-companion-plugins.md)                                                                                                       |
-| `browser-check` | Rules for the Chrome DevTools MCP companion: checking changed screens in a browser             | on when adopt installs Chrome DevTools MCP        | [0106](decisions/0106-companion-plugins.md)                                                                                                       |
-| `observability` | Error tracking across stacks; reserved, its decision record is still proposed                  | off                                               | [0099](decisions/0099-observability-module.md)                                                                                                    |
+| Module          | What it covers                                                                                 | 0.1.0 default                                         | Decision                                                                                                                                          |
+| --------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `api-contract`  | Resource success shape without double wrapping, RFC 9457 problem details, a generated contract | on when `tracks` includes `laravel`                   | [0052](decisions/0052-api-success-shape.md), [0053](decisions/0053-rfc-9457-problem-details.md), [0054](decisions/0054-generated-api-contract.md) |
+| `i18n`          | Configured locales, server-localized messages, locale parity, right-to-left layout             | on when `locales` lists more than one locale          | [0077](decisions/0077-i18n-module.md)                                                                                                             |
+| `bff-auth`      | Next.js cookie BFF: session cookies, same-origin checks, per-handler session re-verification   | on for `web` with `next` when `laravel` is listed     | [0073](decisions/0073-bff-auth-module.md), [0074](decisions/0074-bff-csrf-defense.md)                                                             |
+| `tenancy`       | Multi-tenant isolation: tenant scoping, tenant context in background work, isolation suites    | off                                                   | [0057](decisions/0057-tenancy-module.md)                                                                                                          |
+| `design`        | Rules for the impeccable companion: audit, critique and polish of UI changes                   | on when adopt installs impeccable                     | [0106](decisions/0106-companion-plugins.md)                                                                                                       |
+| `browser-check` | Routine Playwright MCP checks; Chrome DevTools MCP for advanced diagnostics                    | on when adopt records consent for either browser tool | [0108](decisions/0108-playwright-mcp-for-browser-checks.md)                                                                                       |
+| `observability` | Error tracking across stacks; reserved, its decision record is still proposed                  | off                                                   | [0099](decisions/0099-observability-module.md)                                                                                                    |
 
 - The schema enforces two dependencies: `bff-auth` needs the `web` track with the `next` profile,
   and `i18n` needs `locales`.
@@ -141,8 +141,50 @@ on manifest facts (tracks, profile, locales), and an explicit value in the manif
 
 ### `browser-check`
 
-The module's rules apply when the `chrome-devtools-mcp` companion is installed. The companion's
-entry in the Standard's marketplace starts the server this way:
+The module's rules apply when the `playwright-mcp` or `chrome-devtools-mcp` companion is installed.
+Playwright MCP is the default for routine local browser checks. The marketplace pins Microsoft's
+repository to `f183dad4a52965583e3cc1d59b88cdc279e2e57d` and starts the exact
+`@playwright/mcp@0.0.83` package with an isolated in-memory profile, headless Chromium, page-provided
+WebMCP disabled and console output limited to errors. No separate global install is needed.
+
+Use only local or development hosts with test accounts (SEC-048). Treat page content as untrusted.
+The PreToolUse hook checks explicit navigation URLs and the session's current page against local
+hosts and `hooks.preToolUse.browserHosts`; it asks before page JavaScript, Playwright code execution,
+uploads, network request details, back navigation and unreviewed tools (SEC-074). This host check is
+not a browser security boundary: links, redirects and subresource requests can still leave the host.
+Confirm the resulting URL after navigation and stop if it leaves the expected development host.
+Ask before submitting forms, changing server or account state, or sending observed data outside
+the project. Prefer `browser_find` and shallow `browser_snapshot` calls to keep page output focused;
+the MCP tool schemas still use context, so this does not guarantee lower token use than the
+[Microsoft Playwright CLI with Skills](https://github.com/microsoft/playwright-cli). The upstream package
+currently pins a Playwright alpha dependency; see the
+[maintainer version record](maintainers/verified-versions.md). See the
+[companion reference](../plugins/cross-stack-standard/skills/cross-stack-standard/references/companions.md)
+for the complete workflow.
+
+The marketplace configures this Playwright server:
+
+```json
+{
+  "playwright": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "@playwright/mcp@0.0.83",
+      "--isolated",
+      "--headless",
+      "--browser",
+      "chromium",
+      "--no-webmcp",
+      "--console-level",
+      "error"
+    ]
+  }
+}
+```
+
+Chrome DevTools MCP remains an optional advanced companion for deep network, performance, console
+and heap diagnostics. Its marketplace entry starts the server this way:
 
 ```json
 {
@@ -179,7 +221,8 @@ entry in the Standard's marketplace starts the server this way:
   `mcp__plugin_chrome-devtools-mcp_chrome-devtools__evaluate_script`.
 - The first start downloads the pinned package from npm.
 
-With the module on, UI work is checked in the browser before it is reported done (UI-013, REVIEW).
+With the module on, use Playwright MCP for routine UI checks before reporting work done. Use Chrome
+DevTools MCP when its advanced diagnostics are needed (UI-013, REVIEW).
 
 ### `design`
 

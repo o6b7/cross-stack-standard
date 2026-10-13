@@ -213,6 +213,10 @@ jobs:
       - name: Registry integrity
         run: node scripts/check-registry.mjs
 
+      - name: Release registry policy
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        run: node scripts/check-registry.mjs --release
+
       - name: Generated rule docs are current
         run: node scripts/generate-rule-docs.mjs --check
 
@@ -232,7 +236,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
-      CLAUDE_CODE_VERSION: "2.1.282"
+      CLAUDE_CODE_VERSION: "2.1.296"
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
     steps:
       - name: Check out

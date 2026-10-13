@@ -45,6 +45,7 @@ import path from "node:path";
 
 import {
   appendLog,
+  companionForTool,
   gateSkillCall,
   gateToolCall,
   inspectCompanionCommand,
@@ -417,13 +418,14 @@ function companionResult(decision, reason, context) {
  */
 export function companionToolGate(ctx, toolName, toolInput) {
   const { companions, statuses } = companionContext(ctx);
+  const companion = companionForTool(toolName, companions);
   const gate = gateToolCall({
     toolName,
     toolInput,
     companions,
     statuses,
     browserHosts: ctx.config?.preToolUse?.browserHosts ?? [],
-    currentPage: readCurrentPage(ctx.dataDir, ctx.input.session_id),
+    currentPage: readCurrentPage(ctx.dataDir, ctx.input.session_id, companion?.name),
   });
   if (gate === null) return {};
   appendLog(ctx.dataDir, {

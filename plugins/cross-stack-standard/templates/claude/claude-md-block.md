@@ -1,7 +1,7 @@
 <!-- cross-stack-standard:begin -->
 <!-- markdownlint-disable MD041 -->
 <!--
-cross-stack-standard v0.0.0
+cross-stack-standard v0.1.0
 SPDX-License-Identifier: MIT
 Copyright (c) 2026 Qusai Abdullah
 Managed block: /cross-stack-standard:upgrade rewrites everything between the markers.

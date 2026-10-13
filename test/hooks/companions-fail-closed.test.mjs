@@ -2,7 +2,7 @@
  * Regressions for the companion gates failing closed, run through the real hook entry point with
  * a mocked Claude Code configuration (installed_plugins.json in a temporary directory): no
  * install, no network. Covers consent (only an explicit true permits a companion, in every
- * missing, invalid or false form), Chrome DevTools MCP on every action against the session's
+ * missing, invalid or false form), both browser MCP servers on every action against the session's
  * current page, Figma reads and writes, Skill calls, shell installs and enables, and hand copies.
  */
 
@@ -20,6 +20,7 @@ const COMPANIONS = loadCompanions(PLUGIN_DIR);
 const byName = Object.fromEntries(COMPANIONS.map((companion) => [companion.name, companion]));
 const NAMES = COMPANIONS.map((companion) => companion.name);
 const APPROVED = Object.fromEntries(NAMES.map((name) => [name, true]));
+const PLAYWRIGHT = "mcp__plugin_playwright-mcp_playwright__";
 const CHROME = "mcp__plugin_chrome-devtools-mcp_chrome-devtools__";
 const FIGMA = "mcp__plugin_figma_figma__";
 const BLOCKED = ["ask", "deny"];
@@ -92,6 +93,11 @@ describe("consent fails closed: only an explicit true permits a companion", () =
     test(`${label}: every companion use and install is denied`, async (t) => {
       const { pre } = setup(t, manifest);
       const denied = [
+        [`${PLAYWRIGHT}browser_navigate`, { url: "http://localhost:3000/" }],
+        [
+          "Bash",
+          { command: "claude plugin install playwright-mcp@cross-stack-standard --scope project" },
+        ],
         [`${CHROME}navigate_page`, { type: "url", url: "http://localhost:3000/" }],
         [`${CHROME}take_screenshot`, {}],
         [`${FIGMA}get_metadata`, {}],
@@ -99,6 +105,7 @@ describe("consent fails closed: only an explicit true permits a companion", () =
         ["Skill", { skill: "impeccable" }],
         ["Skill", { skill: "caveman" }],
         ["Skill", { skill: "impeccable:impeccable" }],
+        ["Skill", { skill: "cross-stack-standard:playwright" }],
         ["Skill", { skill: "figma:figma-use" }],
         ["Bash", { command: "claude plugin install figma@cross-stack-standard --scope project" }],
         ["Bash", { command: "claude plugin install --scope user caveman@cross-stack-standard" }],
@@ -115,6 +122,7 @@ describe("consent fails closed: only an explicit true permits a companion", () =
     const { pre } = setup(t, { companions: APPROVED });
     assert.equal(await pre(`${FIGMA}get_metadata`, {}), "silent");
     assert.equal(await pre("Skill", { skill: "impeccable" }), "silent");
+    assert.equal(await pre("Skill", { skill: "cross-stack-standard:playwright" }), "silent");
     assert.equal(await pre("Skill", { skill: "caveman:caveman-commit" }), "silent");
     assert.equal(
       await pre("Bash", {
@@ -235,6 +243,53 @@ describe("Chrome DevTools MCP fails closed on every action", () => {
     assert.equal(await listed.pre(`${CHROME}navigate_page`, { type: "url", url }), "silent");
     const unlisted = setup(t, { companions: APPROVED });
     assert.ok(BLOCKED.includes(await unlisted.pre(`${CHROME}navigate_page`, { type: "url", url })));
+  });
+});
+
+describe("Playwright MCP fails closed on every action", () => {
+  test("local navigation and routine reads pass; outside hosts and unsafe tools ask", async (t) => {
+    const { pre, post } = setup(t, { companions: APPROVED });
+    const open = { url: "http://localhost:3000/settings" };
+    assert.equal(await pre(`${PLAYWRIGHT}browser_navigate`, open), "silent");
+    await post(`${PLAYWRIGHT}browser_navigate`, open);
+    assert.equal(await pre(`${PLAYWRIGHT}browser_find`, { text: "Save" }), "silent");
+    assert.equal(await pre(`${PLAYWRIGHT}browser_snapshot`, { depth: 2 }), "silent");
+    assert.equal(await pre(`${PLAYWRIGHT}browser_console_messages`, { level: "error" }), "silent");
+    assert.equal(
+      await pre(`${PLAYWRIGHT}browser_navigate`, { url: "https://example.com/" }),
+      "ask",
+    );
+    for (const tool of [
+      "browser_navigate_back",
+      "browser_evaluate",
+      "browser_run_code_unsafe",
+      "browser_file_upload",
+      "browser_drop",
+      "browser_network_request",
+      "browser_network_requests",
+      "browser_future_tool",
+    ]) {
+      assert.equal(await pre(`${PLAYWRIGHT}${tool}`, {}), "ask", tool);
+    }
+  });
+
+  test("the current page is separate from Chrome and from another session", async (t) => {
+    const { pre, post, call } = setup(t, { companions: APPROVED });
+    const open = { url: "http://localhost:3000/" };
+    await post(`${PLAYWRIGHT}browser_navigate`, open, "a");
+    assert.equal(await pre(`${PLAYWRIGHT}browser_snapshot`, {}, "a"), "silent");
+    assert.ok(BLOCKED.includes(await pre(`${PLAYWRIGHT}browser_snapshot`, {}, "b")));
+    assert.ok(BLOCKED.includes(await pre(`${CHROME}take_screenshot`, {}, "a")));
+    await call(
+      "PostToolUseFailure",
+      {
+        tool_name: `${PLAYWRIGHT}browser_navigate`,
+        tool_input: { url: "http://localhost:4000/" },
+        error: "Navigation timeout",
+      },
+      "a",
+    );
+    assert.ok(BLOCKED.includes(await pre(`${PLAYWRIGHT}browser_snapshot`, {}, "a")));
   });
 });
 

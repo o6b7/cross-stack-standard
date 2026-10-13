@@ -1,6 +1,6 @@
 ---
 name: adopt
-description: "Brings the current project under the Cross-Stack Standard, greenfield or brownfield: detects the Laravel, web (Next.js or React) and mobile (Expo) tracks, asks for the tier and modules, asks yes or no for each pinned companion plugin (caveman, impeccable, Figma MCP, Chrome DevTools MCP), records the answers and installs only the approved ones, writes .cross-stack/standard.json, merges the managed CLAUDE.md block and the team settings, copies the path-scoped rule files and the project tool, and reports what changed and what to commit. Never overwrites existing files or weakens stricter settings. Run it as /cross-stack-standard:adopt."
+description: "Brings the current project under the Cross-Stack Standard, greenfield or brownfield: detects the Laravel, web (Next.js or React) and mobile (Expo) tracks, asks for the tier and modules, asks yes or no for each pinned companion plugin (caveman, impeccable, Figma MCP, Playwright MCP, Chrome DevTools MCP), records the answers and installs only the approved ones, writes .cross-stack/standard.json, merges the managed CLAUDE.md block and the team settings, copies the path-scoped rule files and the project tool, and reports what changed and what to commit. Never overwrites existing files or weakens stricter settings. Run it as /cross-stack-standard:adopt."
 argument-hint: "[tier 1|2]"
 disable-model-invocation: true
 ---
@@ -84,15 +84,15 @@ the tier question.
   the project's decision records (PROC-002).
 - **Modules.** Write an explicit value for every module (ADR 0011 defaults):
 
-  | Module          | Default                                                            |
-  | --------------- | ------------------------------------------------------------------ |
-  | `api-contract`  | on when `tracks` includes `laravel`                                |
-  | `i18n`          | on when `locales` lists more than one locale                       |
-  | `bff-auth`      | on with `web` on the `next` profile together with `laravel`        |
-  | `tenancy`       | off; ask, since only the user knows if the product is multi-tenant |
-  | `design`        | on when the `impeccable` companion is installed (below)            |
-  | `browser-check` | on when the `chrome-devtools-mcp` companion is installed (below)   |
-  | `observability` | off (planned after 1.0)                                            |
+  | Module          | Default                                                             |
+  | --------------- | ------------------------------------------------------------------- |
+  | `api-contract`  | on when `tracks` includes `laravel`                                 |
+  | `i18n`          | on when `locales` lists more than one locale                        |
+  | `bff-auth`      | on with `web` on the `next` profile together with `laravel`         |
+  | `tenancy`       | off; ask, since only the user knows if the product is multi-tenant  |
+  | `design`        | on when the `impeccable` companion is installed (below)             |
+  | `browser-check` | on when the user approves `playwright-mcp` or `chrome-devtools-mcp` |
+  | `observability` | off (planned after 1.0)                                             |
 
 - **Companions.** A consent-based install, one yes or no per companion (ADR 0106). Read the
   consent text and the current state first:
@@ -102,10 +102,12 @@ the tier question.
   node "${CLAUDE_PLUGIN_ROOT}/scripts/companions.mjs" status --root . --data-dir "${CLAUDE_PLUGIN_DATA}"
   ```
 
-  Then ask one question per companion, all four in a single prompt, each with the options
+  Then ask one question per companion, all five in a single prompt, each with the options
   **Yes (recommended)** and **No**. Each question states, from `describe`, what the companion
   does, what it can access, its network use and its licence, and that it comes from this plugin's
-  marketplace pinned to a reviewed commit. For `chrome-devtools-mcp`, add that it is for local and
+  marketplace pinned to a reviewed commit. For `playwright-mcp`, say it is the recommended tool
+  for routine local browser checks and its server package is pinned to `@playwright/mcp@0.0.83`; for
+  `chrome-devtools-mcp`, say it is optional and intended for advanced diagnostics in local and
   development environments with test accounts only (SEC-048); for `figma`, that each user signs
   in to Figma once. A companion `status` shows as installed at the pin still gets its question, so
   the answer is recorded; say it is already installed. When `status` reports a second copy from
@@ -235,8 +237,8 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/companions.mjs" record --root . --data-dir "
 ```
 
 `record` writes `companions` into `.cross-stack/standard.json` (the consent record), sets the
-`design` module to the impeccable answer and `browser-check` to the Chrome DevTools MCP answer,
-logs each decision, and prints the plan. Then:
+`design` module to the impeccable answer and turns `browser-check` on when either browser companion
+is approved. It logs each decision and prints the plan. Then:
 
 - **Install:** run each `install` line it printed, exactly as printed, and nothing else. They are
   of these forms (project scope for the team tools, user scope for caveman):
@@ -244,9 +246,15 @@ logs each decision, and prints the plan. Then:
   ```sh
   claude plugin install impeccable@cross-stack-standard --scope project
   claude plugin install figma@cross-stack-standard --scope project
+  claude plugin install playwright-mcp@cross-stack-standard --scope project
   claude plugin install chrome-devtools-mcp@cross-stack-standard --scope project
   claude plugin install caveman@cross-stack-standard --scope user
   ```
+
+  `playwright-mcp` starts the exact `@playwright/mcp@0.0.83` package from npm. It uses an isolated,
+  headless Chromium profile and disables page-provided WebMCP tools. No separate global install is
+  needed. The Playwright skill is the routine browser workflow; Chrome DevTools MCP is optional for
+  projects that need its advanced diagnostics.
 
   The PreToolUse hook denies an install of a companion the user declined, and asks before one
   from another marketplace. If an install reports that marketplace `cross-stack-standard` is
@@ -259,11 +267,11 @@ logs each decision, and prints the plan. Then:
   so. There, the session-start status line shows each companion as installed and unverified.
   Figma needs each user to sign in once in `/mcp`. The first call to a companion's tools is its
   health check: the hooks record the outcome and `status` reports it. For an explicit probe, call
-  the read-only `whoami` (Figma), or `navigate_page` to the explicit local development URL (Chrome
-  DevTools MCP: every other browser action asks until the session has a known local page).
-- A project `.mcp.json` server named `chrome-devtools` duplicates the companion's server: show it
-  and offer to remove it. Never write `enabledMcpjsonServers` or `enableAllProjectMcpServers` into
-  committed settings (SEC-073).
+  the read-only `whoami` (Figma), `browser_navigate` to the explicit local development URL
+  (Playwright MCP), or `navigate_page` to that URL (Chrome DevTools MCP).
+- A project `.mcp.json` server named `playwright` or `chrome-devtools` duplicates the companion's
+  server: show it and offer to remove it. Never write `enabledMcpjsonServers` or
+  `enableAllProjectMcpServers` into committed settings (SEC-073).
 - **Other modules:** this version ships no templates for them. The manifest records the choice and
   their rules apply as guidance.
 

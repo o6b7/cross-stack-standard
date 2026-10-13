@@ -33,7 +33,8 @@ const {
 
 const COMPANIONS = loadCompanions(PLUGIN_DIR);
 const byName = Object.fromEntries(COMPANIONS.map((companion) => [companion.name, companion]));
-const NAMES = ["caveman", "impeccable", "figma", "chrome-devtools-mcp"];
+const NAMES = ["caveman", "impeccable", "figma", "playwright-mcp", "chrome-devtools-mcp"];
+const PLAYWRIGHT = "mcp__plugin_playwright-mcp_playwright__";
 const CHROME = "mcp__plugin_chrome-devtools-mcp_chrome-devtools__";
 const FIGMA = "mcp__plugin_figma_figma__";
 const CLI = path.join(PLUGIN_DIR, "scripts", "companions.mjs");
@@ -102,7 +103,7 @@ function runCli(args, { env = {}, cwd = process.cwd() } = {}) {
 }
 
 describe("companion data", () => {
-  test("lists the four pinned companions with their consent text", () => {
+  test("lists the five pinned companions with their consent text", () => {
     assert.deepEqual(
       COMPANIONS.map((companion) => companion.name),
       NAMES,
@@ -115,6 +116,7 @@ describe("companion data", () => {
     }
     assert.equal(byName.caveman.scope, "user");
     assert.equal(byName.impeccable.module, "design");
+    assert.equal(byName["playwright-mcp"].module, "browser-check");
     assert.equal(byName["chrome-devtools-mcp"].module, "browser-check");
   });
 });
@@ -235,12 +237,13 @@ describe("consent flow", () => {
       companions: COMPANIONS,
       statuses: none,
       approve: ["impeccable", "caveman"],
-      decline: ["figma", "chrome-devtools-mcp"],
+      decline: ["figma", "playwright-mcp", "chrome-devtools-mcp"],
     });
     assert.deepEqual(plan.consent, {
       caveman: true,
       impeccable: true,
       figma: false,
+      "playwright-mcp": false,
       "chrome-devtools-mcp": false,
     });
     assert.deepEqual(
@@ -252,7 +255,7 @@ describe("consent flow", () => {
     );
     assert.deepEqual(
       plan.skipped.map((step) => `${step.name}: ${step.reason}`),
-      ["figma: declined", "chrome-devtools-mcp: declined"],
+      ["figma: declined", "playwright-mcp: declined", "chrome-devtools-mcp: declined"],
     );
   });
 
@@ -280,7 +283,7 @@ describe("consent flow", () => {
       companions: COMPANIONS,
       statuses,
       approve: ["caveman", "impeccable", "figma"],
-      decline: ["chrome-devtools-mcp"],
+      decline: ["playwright-mcp", "chrome-devtools-mcp"],
     });
     assert.deepEqual(
       plan.install.map((step) => step.command),
@@ -305,7 +308,10 @@ describe("consent flow", () => {
   test("every companion must be answered exactly once", () => {
     const answer = (approve, decline) => () =>
       planConsent({ companions: COMPANIONS, statuses: none, approve, decline });
-    assert.throws(answer(["figma"], []), /no answer for caveman, impeccable, chrome-devtools-mcp/);
+    assert.throws(
+      answer(["figma"], []),
+      /no answer for caveman, impeccable, playwright-mcp, chrome-devtools-mcp/,
+    );
     assert.throws(answer(["figma", ...NAMES], []), /answered twice/);
     assert.throws(answer(["slack", ...NAMES], []), /unknown companion "slack"/);
   });
@@ -315,6 +321,7 @@ describe("permission gates", () => {
   const ready = status({
     installed: {
       "figma@cross-stack-standard": pinned("figma"),
+      "playwright-mcp@cross-stack-standard": pinned("playwright-mcp"),
       "chrome-devtools-mcp@cross-stack-standard": pinned("chrome-devtools-mcp"),
     },
   });
@@ -343,6 +350,7 @@ describe("permission gates", () => {
       "http://shop.localhost/",
     ]) {
       assert.equal(gate(`${CHROME}navigate_page`, { url }), null, url);
+      assert.equal(gate(`${PLAYWRIGHT}browser_navigate`, { url }), null, url);
     }
     assert.equal(
       gate(`${CHROME}new_page`, { url: "https://staging.example.dev/" }, ready, ["*.example.dev"]),
@@ -352,6 +360,11 @@ describe("permission gates", () => {
       gate(`${CHROME}navigate_page`, { type: "reload" }, ready, [], "http://localhost:3000/"),
       null,
       "a reload of a local current page",
+    );
+    assert.equal(
+      gate(`${PLAYWRIGHT}browser_snapshot`, {}, ready, [], "http://localhost:3000/"),
+      null,
+      "a read on a known local page",
     );
     assert.equal(hostAllowed("evil-localhost", []), false);
   });
@@ -369,6 +382,27 @@ describe("permission gates", () => {
       assert.match(result.reason, pattern, tool);
     }
     assert.equal(gate(`${CHROME}take_screenshot`, {}, ready, [], "http://localhost:3000/"), null);
+  });
+
+  test("Playwright MCP keeps unsafe, sensitive and unreviewed tools behind a confirmation", () => {
+    for (const [tool, input, pattern] of [
+      ["browser_navigate", { url: "https://example.com/" }, /example\.com is not a local/],
+      ["browser_evaluate", { function: "() => document.cookie" }, /runs JavaScript in the page/],
+      [
+        "browser_run_code_unsafe",
+        { code: "async () => process.env" },
+        /arbitrary code in the MCP server/,
+      ],
+      ["browser_file_upload", { paths: ["/tmp/private.txt"] }, /send a local file or data/],
+      ["browser_drop", { target: "dropzone", data: {} }, /send a local file or data/],
+      ["browser_network_request", { index: 1 }, /expose request headers and bodies/],
+      ["browser_find", { text: "token", filename: "captures/find.txt" }, /save browser output/],
+      ["browser_future_tool", {}, /not on the Standard's reviewed list/],
+    ]) {
+      const result = gate(`${PLAYWRIGHT}${tool}`, input, ready, [], "http://localhost:3000/");
+      assert.equal(result?.decision, "ask", tool);
+      assert.match(result.reason, pattern, tool);
+    }
   });
 
   test("Figma reads pass; anything that can change a file asks", () => {
@@ -492,7 +526,7 @@ describe("companions CLI", () => {
         "--approve",
         "chrome-devtools-mcp,caveman",
         "--decline",
-        "impeccable,figma",
+        "impeccable,figma,playwright-mcp",
       ],
       { env },
     );
@@ -507,12 +541,32 @@ describe("companions CLI", () => {
       caveman: true,
       impeccable: false,
       figma: false,
+      "playwright-mcp": false,
       "chrome-devtools-mcp": true,
     });
     assert.equal(written.modules.design, false);
     assert.equal(written.modules["browser-check"], true);
     const consent = readLog(data, 10).filter((entry) => entry.event === "consent");
-    assert.equal(consent.length, 4);
+    assert.equal(consent.length, 5);
+  });
+
+  test("browser-check is enabled by either browser companion", (t) => {
+    for (const [approve, decline, expected] of [
+      ["caveman,impeccable,figma,playwright-mcp", "chrome-devtools-mcp", true],
+      ["caveman,impeccable,figma,chrome-devtools-mcp", "playwright-mcp", true],
+      ["caveman,impeccable,figma", "playwright-mcp,chrome-devtools-mcp", false],
+    ]) {
+      const project = makeProject(t, manifest());
+      const result = runCli(
+        ["record", "--root", project.root, "--approve", approve, "--decline", decline],
+        { env: { CLAUDE_CONFIG_DIR: configDir(t) } },
+      );
+      assert.equal(result.code, 0, result.stderr);
+      const written = JSON.parse(
+        fs.readFileSync(project.path(".cross-stack/standard.json"), "utf8"),
+      );
+      assert.equal(written.modules["browser-check"], expected);
+    }
   });
 
   test("record refuses partial answers and a missing manifest (exit 2), writing nothing", (t) => {

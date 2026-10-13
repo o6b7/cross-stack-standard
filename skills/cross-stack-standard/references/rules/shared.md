@@ -14,7 +14,7 @@ Rules that apply to every project, whatever its tracks: the project configuratio
 | [SEC-063](#sec-063) | Commit no secret: run a pinned secret scanner over every commit range in CI | 1 | REVIEW | GUARDED |
 | [SEC-064](#sec-064) | Keep env example files to keys and placeholders, never secret values | 1 | REVIEW | GUARDED |
 | [SEC-065](#sec-065) | Pin third-party tooling: actions to full commit SHAs, MCP servers and CLI tools to exact versions | 1 | REVIEW | GUARDED |
-| [SEC-074](#sec-074) | Ask before the browser companion opens a non-development site, runs a page script or uploads a file | 2 | GUARDED | GUARDED |
+| [SEC-074](#sec-074) | Ask before browser companions leave development hosts or run unsafe actions | 2 | GUARDED | GUARDED |
 | [SEC-075](#sec-075) | Ask before the Figma companion runs any tool that can change a Figma file | 2 | GUARDED | GUARDED |
 | [I18N-010](#i18n-010) | Have a person write or review translations, never generate them just to satisfy parity | 2 | REVIEW | REVIEW |
 | [I18N-032](#i18n-032) | Normalize locale digits in numeric input to the configured numbering system before submission | 2 | REVIEW | REVIEW |
@@ -76,7 +76,7 @@ Columns, requests and responses carry attachment ids, and private files are reac
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0087](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0087-file-uploads.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review; stored URLs are migrated to ids when the owning feature is next changed. |
 
 ## SEC-061
@@ -96,7 +96,7 @@ Deployments receive secrets from the platform at runtime, and no image, bundle o
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0085](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0085-environment-files.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## SEC-062
@@ -116,7 +116,7 @@ A workflow check fails when a quality job, its reusable workflow or the workflow
 | Enabled by default | yes |
 | Configurable | `rules.CI-009.qualityJob` (planned) |
 | Decision | [ADR 0085](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0085-environment-files.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/SEC-062/` |
 | Adoption | Fix first: move secret-dependent steps out of the quality job into deploy jobs that need them. |
 
@@ -142,7 +142,7 @@ A CI step runs a checksum-verified, pinned gitleaks over the commit range with t
 | Enabled by default | yes |
 | Configurable | `rules.SEC-063.config` (planned) |
 | Decision | [ADR 0084](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0084-secret-scanning-and-dependency-audits.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/SEC-063/` |
 | Adoption | Fix first: findings in history are rotated, then recorded in the scanner's ignore file under code-owner review. |
 
@@ -168,7 +168,7 @@ An example-file check parses every env example file in the declared track roots 
 | Enabled by default | yes |
 | Configurable | `trackRoots.<track>` (planned), `rules.SEC-064.keyPatterns` (planned), `rules.SEC-064.placeholderPatterns` (planned) |
 | Decision | [ADR 0085](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0085-environment-files.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/SEC-064/` |
 | Adoption | Fix first: blank the values (and rotate any real secret) before adopting. |
 
@@ -194,7 +194,7 @@ A token scan of workflow uses: references (40-hex SHA required), .mcp.json and p
 | Enabled by default | yes |
 | Configurable | `rules.SEC-065.scanPaths` (planned) |
 | Decision | [ADR 0032](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0032-supply-chain-pinning.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/SEC-065/` |
 | Adoption | Allowlist: adopt offers automated SHA pinning of existing tag-pinned actions, and anything left gets a dated allowlist entry rather than a hard failure. |
 
@@ -205,28 +205,28 @@ Known evasions:
 
 ## SEC-074
 
-**Ask before the browser companion opens a non-development site, runs a page script or uploads a file.**
+**Ask before browser companions leave development hosts or run unsafe actions.**
 
-On every Chrome DevTools MCP action the PreToolUse hook asks unless the explicit URL opened, or the session's known current page, is http(s) on a local or browserHosts host; back, forward, page scripts, uploads and unknown tools always ask, and every call is denied without an explicit true in the consent record.
+On every browser MCP action the PreToolUse hook asks unless the explicit URL opened, or the session's known current page, is http(s) on a local or browserHosts host; back navigation, page scripts, Playwright server-side code, uploads, request details and unknown tools always ask, and every call is denied without an explicit true in the consent record.
 
 | Property | Value |
 | --- | --- |
 | Enforcement | GUARDED |
 | Target enforcement | GUARDED |
-| Gate | hook: `PreToolUse` / `mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page` |
+| Gate | hook: `PreToolUse` / `mcp__plugin_playwright-mcp_playwright__browser_navigate` |
 | Tier | 2 |
 | Module | core |
 | Profiles | n/a |
 | Enabled by default | yes |
 | Configurable | `hooks.preToolUse.browserHosts` |
 | Decision | [ADR 0106](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0106-companion-plugins.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | `test/fixtures/shared/violations/SEC-074/` |
 | Adoption | Nothing needed: development hosts beyond the built-in ones go in hooks.preToolUse.browserHosts. |
 
 Known evasions:
 
-- a page reached from an allowed page by a link or redirect, which opens no new page through the tool
+- a page reached from an allowed page by a link or redirect, or a subresource requested by that page
 - the bypassPermissions mode skips the ask decision
 - a browser MCP server under another name than the companion's
 - the project opts out or switches the hooks off (the opt-out line, "disabled": true in the manifest, CROSS_STACK_STANDARD_DISABLE, or the plugin disabled in Claude Code settings), or Node.js is missing, so no hook runs
@@ -248,7 +248,7 @@ Every Figma MCP companion tool that is not a known read (anything that can creat
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0106](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0106-companion-plugins.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | `test/fixtures/shared/violations/SEC-075/` |
 | Adoption | Nothing needed: reading designs asks nothing. |
 
@@ -275,7 +275,7 @@ Reviewers check new locale values, because the parity gate catches only missing,
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0080](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0080-locale-parity.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## I18N-032
@@ -315,7 +315,7 @@ Reviewers reject a shortcut that is safe only because a product choice keeps a l
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0077](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0077-i18n-module.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## UI-021
@@ -335,7 +335,7 @@ With the design module on, UI changes go through the impeccable companion's audi
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0106](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0106-companion-plugins.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: applies to new UI work once the companion is installed and the module is on. |
 
 ## UI-022
@@ -355,7 +355,7 @@ With the design module on, doctor checks that impeccable comes from the Standard
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0106](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0106-companion-plugins.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/UI-022/` |
 | Adoption | Opt-in: adopt offers the companion and installs it at project scope when the user agrees. |
 
@@ -382,7 +382,7 @@ The project records its tracks, tier, modules and locales in .cross-stack/standa
 | Enabled by default | yes |
 | Configurable | `trackRoots.<track>` (planned) |
 | Decision | [ADR 0023](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0023-adopter-manifest-and-upgrade.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-001/` |
 | Adoption | Nothing needed: adopt writes the manifest with a track root for every detected manifest, so the check passes from the first run. |
 
@@ -403,7 +403,7 @@ When at least two of the declared tier triggers hold (multi-tenant, more than on
 | Enabled by default | yes |
 | Configurable | `rules.PROC-002.triggers` (planned), `decisions.<name>` (planned) |
 | Decision | [ADR 0008](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0008-tiers-and-invariants.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-002/` |
 | Adoption | Nothing needed: adopt asks for the triggers and records tier 2, or writes the decision record that declines it and references it from the manifest. |
 
@@ -429,7 +429,7 @@ doctor checks, for every declared track and module, the version's list of requir
 | Enabled by default | yes |
 | Configurable | `tracks`, `modules` |
 | Decision | [ADR 0010](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0010-opt-in-modules.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-003/` |
 | Adoption | Nothing needed: adopt installs each declared track and module as a unit; doctor reports leftovers of an undeclared module for removal. |
 
@@ -455,7 +455,7 @@ The committed .claude/settings.json lists the Standard's marketplace in extraKno
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0015](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0015-plugin-distribution.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-004/` |
 | Adoption | Nothing needed: adopt merges the two entries into an existing .claude/settings.json without touching its other keys. |
 
@@ -481,7 +481,7 @@ The manifest's stack section names the installed library for each configured con
 | Enabled by default | yes |
 | Configurable | `stack.<concern>.use` (planned), `stack.<concern>.reason` (planned) |
 | Decision | [ADR 0006](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0006-stack-first.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-005/` |
 | Adoption | Nothing needed: adopt pre-fills the table from the installed manifests for the team to review. |
 
@@ -507,7 +507,7 @@ For each concern the installed library's idiomatic API comes first and its docum
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0006](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0006-stack-first.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## PROC-007
@@ -527,7 +527,7 @@ Each concern (state, server state, forms, validation, HTTP, dates, styling, unit
 | Enabled by default | yes |
 | Configurable | `stack.competingGroups`, `stack.<concern>.deprecated` |
 | Decision | [ADR 0006](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0006-stack-first.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-007/` |
 | Adoption | Baseline: existing competing pairs are declared as a migration with a winner and a deprecated loser, which PROC-008 then confines, and the Standard's own enforcement tools are pre-exempted. |
 
@@ -554,7 +554,7 @@ Each package added to the production dependencies of a package.json or composer.
 | Enabled by default | yes |
 | Configurable | `rules.PROC-019.dir` (planned) |
 | Decision | [ADR 0006](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0006-stack-first.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-009/` |
 | Adoption | Nothing needed: only dependencies added after adoption are checked, because the check compares with the base branch. |
 
@@ -581,7 +581,7 @@ Business rules live on the server, client validation is user-experience feedback
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0012](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0012-backend-authority.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## PROC-011
@@ -601,7 +601,7 @@ doctor hashes each kit-copied gate file, security plumbing included, outside its
 | Enabled by default | yes |
 | Configurable | `version` |
 | Decision | [ADR 0023](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0023-adopter-manifest-and-upgrade.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-011/` |
 | Adoption | Nothing needed: adopt records the adopted version, so only later edits outside the configuration regions are reported. |
 
@@ -627,7 +627,7 @@ A red gate is answered by fixing the code, by a dated allowlist or shrink-only b
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0005](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## PROC-013
@@ -647,7 +647,7 @@ Before an agent edits a gate configuration, baseline, allowlist or CI workflow, 
 | Enabled by default | yes |
 | Configurable | `hooks.preToolUse.protect`, `hooks.preToolUse.protectCommands` |
 | Decision | [ADR 0021](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0021-gate-file-protection.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | `test/fixtures/shared/violations/PROC-013/` |
 | Adoption | Nothing needed: adopt also writes permissions.ask rules for gate configurations and permissions.deny rules for baselines and allowlists into .claude/settings.json, which hold in every permission mode. |
 
@@ -674,7 +674,7 @@ Entries in .cross-stack/allowlists/ validate against a schema that requires a no
 | Enabled by default | yes |
 | Configurable | `allowlistsDir`, `allowlistMaxDays` |
 | Decision | [ADR 0005](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0005-explicit-exceptions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-014/` |
 | Adoption | Allowlist: adopt writes an entry with a reason and an expiry date inside allowlistMaxDays for each existing exception that a gate without a native baseline reports. |
 
@@ -695,7 +695,7 @@ A gate is trusted only after it has been seen failing on a minimal violation and
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0004](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0004-fail-then-pass.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## PROC-018
@@ -715,7 +715,7 @@ doctor --probe copies each enabled rule's shipped violation probe, generated fro
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0004](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0004-fail-then-pass.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-018/` |
 | Adoption | Nothing needed: the probes run in the upgrade skill and a scheduled workflow, never as a required check on every pull request. |
 
@@ -741,7 +741,7 @@ When the manifest declares tier 2, the configured decisions directory exists and
 | Enabled by default | yes |
 | Configurable | `rules.PROC-019.dir` (planned) |
 | Decision | [ADR 0001](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0001-record-architecture-decisions.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-019/` |
 | Adoption | Nothing needed: adopt creates the decisions directory with a first record when tier 2 is declared. |
 
@@ -793,7 +793,7 @@ Before reporting work as done, the agent re-reads its diff, runs the project's c
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0014](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0014-working-procedure.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## PROC-022
@@ -813,7 +813,7 @@ When an agent finishes a turn, the project's fast check runs within a time budge
 | Enabled by default | yes |
 | Configurable | `hooks.stop.enabled`, `hooks.stop.budgetSeconds`, `hooks.stop.command` |
 | Decision | [ADR 0020](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0020-feedback-hooks.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | `test/fixtures/shared/violations/PROC-022/` |
 | Adoption | Baseline: adopt makes check:fast green through shrink-only baselines and dated allowlist entries before the Stop gate runs, and a project that cannot yet sets hooks.stop.enabled to false. |
 
@@ -843,7 +843,7 @@ Convenience duplication is extracted only at its third copy, and an abstraction 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0013](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0013-dry-policy.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## PROC-024
@@ -863,7 +863,7 @@ A duplicated business rule is extracted at its second copy, including a rule ren
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0013](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0013-dry-policy.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review. |
 
 ## PROC-026
@@ -883,7 +883,7 @@ Before an agent runs a shell command that skips or weakens a gate, such as --no-
 | Enabled by default | yes |
 | Configurable | `hooks.preToolUse.protectCommands` |
 | Decision | [ADR 0021](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0021-gate-file-protection.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | `test/fixtures/shared/violations/PROC-026/` |
 | Adoption | Nothing needed: the sanctioned baseline:update scripts, which regenerate a baseline and fail when it grows, are not inspected, so routine baseline maintenance asks nothing. |
 
@@ -911,7 +911,7 @@ A doctor check requires the repository's pull request template to hold a section
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0094](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0094-developer-workflow-templates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-028/` |
 | Adoption | Nothing needed: adopt copies the kit template, or merges the sections into an existing pull request template. |
 
@@ -937,7 +937,7 @@ The block between the cross-stack-standard begin and end markers, together with 
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0022](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0022-context-budget.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-029/` |
 | Adoption | Nothing needed: adopt merges the block into existing CLAUDE.md and AGENTS.md files; a project whose AGENTS.md is long moves detail into path-scoped rule files. |
 
@@ -963,7 +963,7 @@ After an agent edits or writes a file, the project's installed formatter formats
 | Enabled by default | yes |
 | Configurable | `hooks.postToolUse.budgetSeconds`, `hooks.postToolUse.phpstan` |
 | Decision | [ADR 0020](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0020-feedback-hooks.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | `test/fixtures/shared/violations/PROC-030/` |
 | Adoption | Nothing needed: the hook only reports, and a project without a formatter or ESLint installed is skipped. |
 
@@ -994,7 +994,7 @@ The committed jscpd baseline gains no clone compared with the base branch in pul
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0092](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0092-dead-code-and-duplication-gates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/PROC-034/` |
 | Adoption | Baseline: adopt records the existing clones in the committed baseline, which becomes the starting point that can only shrink. |
 
@@ -1020,7 +1020,7 @@ With the api-contract module on in a repository holding backend and client, a CI
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.exportCommand` (planned), `modules.api-contract.openapiPath` (planned), `modules.api-contract.typeGenerator` (planned), `modules.api-contract.webTypesPath` (planned), `modules.api-contract.mobileTypesPath` (planned) |
 | Decision | [ADR 0054](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0054-generated-api-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-006/` |
 | Adoption | Nothing needed: the first generated types are committed at adoption, before the step is enabled. |
 
@@ -1046,7 +1046,7 @@ With the api-contract module on in a client-only repository, a CI step runs one 
 | Enabled by default | yes |
 | Configurable | `modules.api-contract.artifact` (planned), `modules.api-contract.webTypesPath` (planned), `modules.api-contract.mobileTypesPath` (planned) |
 | Decision | [ADR 0054](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0054-generated-api-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-007/` |
 | Adoption | Nothing needed: the pin starts at the backend's currently published version and the regenerated types are committed at adoption. |
 
@@ -1072,7 +1072,7 @@ A workflow check requires each declared track's quality job to run a blocking pr
 | Enabled by default | yes |
 | Configurable | `rules.CI-009.qualityJob` (planned) |
 | Decision | [ADR 0084](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0084-secret-scanning-and-dependency-audits.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-008/` |
 | Adoption | Allowlist: a finding that cannot be fixed yet becomes a dated, reasoned exception, never a lowered threshold. |
 
@@ -1098,7 +1098,7 @@ A CI-parity sub-check splits each track's check script into its members and requ
 | Enabled by default | yes |
 | Configurable | `rules.CI-009.qualityJob` (planned) |
 | Decision | [ADR 0090](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-009/` |
 | Adoption | Nothing needed: adopt replaces hand-listed quality steps with a thin caller of the reusable track workflow. |
 
@@ -1124,7 +1124,7 @@ A workflow check requires every job whose name matches the build, deploy or rele
 | Enabled by default | yes |
 | Configurable | `rules.CI-011.deployJobPattern` (planned), `rules.CI-009.qualityJob` (planned) |
 | Decision | [ADR 0090](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-011/` |
 | Adoption | Fix first: existing build, deploy and release jobs gain needs: on the quality job; deployment itself stays out of scope. |
 
@@ -1150,7 +1150,7 @@ A workflow check fails when a track's check-member step sequence is defined in m
 | Enabled by default | yes |
 | Configurable | `rules.CI-009.qualityJob` (planned) |
 | Decision | [ADR 0090](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-012/` |
 | Adoption | Nothing needed: adopt replaces copied quality jobs with thin callers of the reusable track workflow. |
 
@@ -1175,7 +1175,7 @@ The default branch requires a pull request, lists the reusable workflow's qualit
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0090](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0090-ci-contract.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Adoption | Nothing needed: checked in review; a repository setting the organization applies. |
 
 ## CI-014
@@ -1195,7 +1195,7 @@ A doctor check parses CODEOWNERS and requires every protected-path glob, the bui
 | Enabled by default | yes |
 | Configurable | `hooks.preToolUse.protect` |
 | Decision | [ADR 0094](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0094-developer-workflow-templates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-014/` |
 | Adoption | Nothing needed: adopt generates CODEOWNERS entries from the protected-path list and merges them into an existing file. |
 
@@ -1221,7 +1221,7 @@ A doctor check parses the lefthook configuration and requires pre-commit jobs on
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0094](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0094-developer-workflow-templates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-015/` |
 | Adoption | Nothing needed: adopt migrates an existing husky or core.hooksPath setup into lefthook and never leaves two hook managers installed. |
 
@@ -1274,7 +1274,7 @@ A doctor check reads the Renovate or Dependabot configuration and requires a rel
 | Enabled by default | yes |
 | Configurable | — |
 | Decision | [ADR 0095](https://github.com/o6b7/cross-stack-standard/blob/main/docs/decisions/0095-adopter-dependency-updates.md) |
-| Since | 1.0.0 |
+| Since | 0.1.0 |
 | Violation fixture | planned — `test/fixtures/shared/violations/CI-018/` |
 | Adoption | Nothing needed: adopt writes the Renovate template, or checks an existing Dependabot configuration for the same delay, groups and holds. |
 

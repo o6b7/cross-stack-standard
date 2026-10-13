@@ -38,7 +38,7 @@
         ]
       },
       {
-        "matcher": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
+        "matcher": "mcp__plugin_playwright-mcp_playwright__.*|mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
         "hooks": [
           {
             "type": "command",
@@ -73,7 +73,7 @@
         ]
       },
       {
-        "matcher": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
+        "matcher": "mcp__plugin_playwright-mcp_playwright__.*|mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
         "hooks": [
           {
             "type": "command",
@@ -86,7 +86,7 @@
     ],
     "PostToolUseFailure": [
       {
-        "matcher": "mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
+        "matcher": "mcp__plugin_playwright-mcp_playwright__.*|mcp__plugin_chrome-devtools-mcp_chrome-devtools__.*|mcp__plugin_figma_figma__.*",
         "hooks": [
           {
             "type": "command",
